@@ -322,13 +322,11 @@
     backdrop-filter: blur(8px);
     white-space: nowrap;
   }
-  .manager-filter { top: auto; bottom: calc(104px + var(--safe-bottom)); left: 8px; }
   .cat-filter     { top: auto; bottom: calc(58px + var(--safe-bottom)); left: 8px; }
   @media (min-width: 768px) {
-    .manager-filter { left: 328px; }
     .cat-filter     { left: 328px; }
   }
-  .manager-btn, .cat-filter-btn {
+  .cat-filter-btn {
     display: flex; align-items: center; gap: 4px;
     height: 28px; padding: 0 11px; border-radius: 7px;
     border: 1.5px solid transparent;
@@ -337,15 +335,10 @@
     cursor: pointer; background: transparent;
     color: var(--text-muted); transition: all 0.15s; white-space: nowrap;
   }
-  .manager-btn:active, .cat-filter-btn:active { opacity: 0.7; }
-  .manager-btn.active, .cat-filter-btn.active { color: white; }
+  .cat-filter-btn:active { opacity: 0.7; }
+  .cat-filter-btn.active { color: white; }
   .filter-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
-  .manager-btn[data-manager="전체"].active  { background:#555;    border-color:#555; }
-  .manager-btn[data-manager="김상재"].active { background:#9B59B6; border-color:#9B59B6; }
-  .manager-btn[data-manager="김유정"].active { background:#F05A22; border-color:#F05A22; }
-  .manager-btn[data-manager="문지연"].active { background:#E91E8C; border-color:#E91E8C; }
-  .manager-btn[data-manager="정성현"].active { background:#1A7FD4; border-color:#1A7FD4; }
 
   .cat-filter-btn[data-cat="전체"].active    { background:#555;    border-color:#555; }
   .cat-filter-btn[data-cat="주민센터"].active { background:#F05A22; border-color:#F05A22; }
@@ -379,8 +372,8 @@
   .map-label-wrap {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 2px 6px;
+    gap: 0;
+    padding: 2px 7px;
     border-radius: 999px;
     background: rgba(255,255,255,0.88);
     border: 1px solid rgba(232,232,228,0.9);
@@ -443,7 +436,6 @@
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
-    .manager-filter { bottom: calc(138px + var(--safe-bottom)); left: 8px; max-width: calc(100vw - 16px); overflow-x:auto; }
     .cat-filter     { bottom: calc(96px + var(--safe-bottom)); left: 8px; max-width: calc(100vw - 16px); overflow-x:auto; }
   }
   /* ── 데스크탑 ── */
@@ -511,9 +503,8 @@
       scrollbar-width: none;
     }
     .filter-bar::-webkit-scrollbar { display: none; }
-    .manager-filter { bottom: calc(142px + var(--safe-bottom)) !important; left: 8px !important; }
     .cat-filter { bottom: calc(94px + var(--safe-bottom)) !important; left: 8px !important; }
-    .manager-btn, .cat-filter-btn {
+    .cat-filter-btn {
       min-height: 32px;
       height: 32px;
       padding: 0 13px;
@@ -637,13 +628,6 @@
 
 <div id="map"></div>
 
-<div class="filter-bar manager-filter" id="managerFilter">
-  <button class="manager-btn active" data-manager="전체" onclick="filterManager(this)">전체</button>
-  <button class="manager-btn" data-manager="김상재" onclick="filterManager(this)"><span class="filter-dot" style="background:#9B59B6"></span>김상재</button>
-  <button class="manager-btn" data-manager="김유정" onclick="filterManager(this)"><span class="filter-dot" style="background:#F05A22"></span>김유정</button>
-  <button class="manager-btn" data-manager="문지연" onclick="filterManager(this)"><span class="filter-dot" style="background:#E91E8C"></span>문지연</button>
-  <button class="manager-btn" data-manager="정성현" onclick="filterManager(this)"><span class="filter-dot" style="background:#1A7FD4"></span>정성현</button>
-</div>
 
 <div class="filter-bar cat-filter" id="catFilter">
   <button class="cat-filter-btn active" data-cat="전체" onclick="filterCat(this)">전체</button>
@@ -656,13 +640,6 @@
 
 
 
-<div class="legend-box" aria-label="근무 상태 범례">
-  <div class="legend-title">상태 안내</div>
-  <div class="legend-item"><span class="status-dot status-working-dot"></span>근무중</div>
-  <div class="legend-item"><span class="status-dot status-upcoming-dot"></span>근무예정</div>
-  <div class="legend-item"><span class="status-dot status-ended-dot"></span>근무종료</div>
-  <div class="legend-item"><span class="status-dot status-off-dot"></span>휴무</div>
-</div>
 
 <button class="fab-list" id="fabBtn" onclick="toggleSheet()">
   📋 목록 <span class="count-badge" id="fabCount">0</span>
@@ -875,7 +852,7 @@ function getMapLabelHtml(group) {
   const name = visible.length === 1
     ? (base.branch || base.name)
     : `${base.branch || base.name} 외 ${visible.length - 1}개`;
-  return `<div class="map-label-wrap"><span class="status-dot ${status.dotClass}"></span><span class="label-text">${name}</span></div>`;
+  return `<div class="map-label-wrap"><span class="label-text">${name}</span></div>`;
 }
 
 let filteredStores = [...stores];
@@ -1029,7 +1006,7 @@ function buildSinglePopup(store) {
   if (status.key === 'working' && getStoreShifts(store).length > 1 && activeShifts.length) {
     statusLabel = activeShifts.map(sh => sh.label).join(' · ') + ' 근무중';
   }
-  const statusBadge = `<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:#F7F7F5;color:#555;margin-bottom:8px;"><span class="status-dot ${status.dotClass}"></span>${statusLabel}</span>`;
+  const statusBadge = `<span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:#F7F7F5;color:#555;margin-bottom:8px;">${statusLabel}</span>`;
   return `
     <div style="display:flex;align-items:center;gap:6px;margin-bottom:7px;">
       <span class="lp-cat-badge" style="background:${catColor(store.cat)}">${store.cat}</span>
@@ -1058,7 +1035,7 @@ function buildGroupPopup(group) {
           <div class="group-store-head">
             <span class="lp-cat-badge" style="background:${catColor(s.cat)}">${s.cat}</span>
             <span class="group-store-name">${s.branch || s.name}</span>
-            <span class="group-status ${working ? 'on' : 'off'}"><span class="status-dot ${status.dotClass}"></span>${statusText}</span>
+            <span class="group-status ${working ? 'on' : 'off'}">${statusText}</span>
           </div>
           <div class="group-store-meta">👤 ${s.manager || '-'} · 🕐 ${getShortShiftText(s)}</div>
         </button>
@@ -1142,7 +1119,7 @@ function renderList() {
       </div>
       <div class="store-address">${s.address}</div>
       <div class="store-meta">
-        <span><span class="status-dot ${status.dotClass}" style="display:inline-block;vertical-align:-1px;margin-right:3px;"></span>${statusText}</span>
+        <span>${statusText}</span>
         <span>🕐 ${getHoursText(s)}</span>
       </div>
     </div>`;
@@ -1195,15 +1172,8 @@ map.on('click', () => { if (sheetState === 'expanded') setSheetState('peek'); })
 
 
 /* ── 필터 ── */
-let activeManager = '전체';
 let activeCat = '전체';
 
-function filterManager(btn) {
-  activeManager = btn.dataset.manager;
-  document.querySelectorAll('.manager-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  applyFilters();
-}
 function filterCat(btn) {
   activeCat = btn.dataset.cat;
   document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
@@ -1213,7 +1183,6 @@ function filterCat(btn) {
 function applyFilters() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   filteredStores = stores.filter(s => {
-    const matchManager = activeManager === '전체' || s.manager === activeManager;
     const matchCat = activeCat === '전체' || s.cat === activeCat;
     const matchSearch = !q || s.branch.includes(q) || s.name.includes(q) ||
       s.address.includes(q) || s.cat.includes(q) ||
@@ -1222,7 +1191,7 @@ function applyFilters() {
       (q === '근무예정' && getStoreStatus(s).key === 'upcoming') ||
       (q === '근무종료' && getStoreStatus(s).key === 'ended') ||
       (q === '휴무' && getStoreStatus(s).key === 'off');
-    return matchManager && matchCat && matchSearch;
+    return matchCat && matchSearch;
   });
   renderList();
   updateMarkers();
@@ -1279,7 +1248,7 @@ function openDetail(id) {
   if (detailStatus.key === 'working' && activeShifts.length === 1 && activeShifts[0].label !== '전일') {
     statusText = `${activeShifts[0].label} 근무중`;
   }
-  document.getElementById('dStatus').innerHTML = `<span class="${detailStatus.textClass}"><span class="status-dot ${detailStatus.dotClass}" style="display:inline-block;vertical-align:-1px;margin-right:5px;"></span>${statusText}</span>`;
+  document.getElementById('dStatus').innerHTML = `<span class="${detailStatus.textClass}">${statusText}</span>`;
   document.getElementById('dType').textContent = s.cat;
 
   // 근무자: 현재 근무 여부와 관계없이 전체 근무자 명단 표시, 근무중 시간대만 강조
