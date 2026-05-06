@@ -6,6 +6,29 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<script>
+(function(){
+  var PASS = "1801";
+  var KEY = "workplace_map_auth_v1";
+
+  function deny(){
+    document.open();
+    document.write('<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>접근 제한</title><style>body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;font-family:Arial,\'Noto Sans KR\',sans-serif;background:#f7f7f5;color:#333}.box{text-align:center;background:white;border:1px solid #eee;border-radius:18px;padding:28px 24px;box-shadow:0 8px 24px rgba(0,0,0,.08)}button{margin-top:16px;border:0;border-radius:10px;padding:10px 16px;background:#F05A22;color:white;font-weight:700}</style></head><body><div class="box"><h2>접근이 제한되었습니다</h2><p>비밀번호가 올바르지 않습니다.</p><button onclick="location.reload()">다시 입력</button></div></body></html>');
+    document.close();
+  }
+
+  if (sessionStorage.getItem(KEY) !== "ok") {
+    var input = prompt("비밀번호를 입력하세요");
+    if (input === PASS) {
+      sessionStorage.setItem(KEY, "ok");
+    } else {
+      deny();
+      throw new Error("Unauthorized");
+    }
+  }
+})();
+</script>
 <title>사업장 MAP</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -277,6 +300,19 @@
   .lp-name { font-weight: 700; font-size: 14px; color: var(--text); }
   .lp-cat-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; color: white; white-space: nowrap; flex-shrink: 0; }
   .lp-addr { color: var(--text-muted); font-size: 12px; margin-bottom: 10px; line-height: 1.5; }
+  .lp-shift-text {
+    font-size: 11px;
+    color: #888;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 178px;
+  }
+  @media (max-width: 767px) {
+    .lp-shift-text { max-width: 145px; }
+  }
   .lp-btn {
     background: var(--primary); color: white; border: none; border-radius: 8px;
     padding: 9px 14px; font-size: 13px; font-weight: 700; cursor: pointer; width: 100%;
@@ -302,7 +338,7 @@
   .group-store-card.working { border-color: #BDE8CF; background: #F7FEFA; }
   .group-store-head { display:flex; align-items:center; gap:6px; margin-bottom:5px; }
   .group-store-name { font-size:13px; font-weight:800; color:var(--text); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .group-store-meta { font-size:11px; color:var(--text-muted); line-height:1.45; }
+  .group-store-meta { font-size:11px; color:var(--text-muted); line-height:1.45; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .group-status { font-size:10px; font-weight:800; padding:2px 7px; border-radius:999px; white-space:nowrap; }
   .group-status.on { background:#E8F8EF; color:#059142; }
   .group-status.off { background:#F2F2F0; color:#999; }
@@ -1411,7 +1447,7 @@ function buildSinglePopup(store) {
     <div class="lp-addr" style="margin-bottom:7px;">${store.address}</div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:nowrap;">
       ${statusBadge}
-      <span style="font-size:11px;color:#888;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;">🕐 ${getShortShiftText(store)}</span>
+      <span class="lp-shift-text" title="${getShortShiftText(store)}">🕐 ${getShortShiftText(store)}</span>
     </div>
     <button class="lp-btn" onclick="selectStoreFromPopup(${store.id})">상세 정보 보기</button>
   `;
