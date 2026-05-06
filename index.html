@@ -7,28 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-<script>
-(function(){
-  var PASS = "1801";
-  var KEY = "workplace_map_auth_v1";
 
-  function deny(){
-    document.open();
-    document.write('<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>접근 제한</title><style>body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;font-family:Arial,\'Noto Sans KR\',sans-serif;background:#f7f7f5;color:#333}.box{text-align:center;background:white;border:1px solid #eee;border-radius:18px;padding:28px 24px;box-shadow:0 8px 24px rgba(0,0,0,.08)}button{margin-top:16px;border:0;border-radius:10px;padding:10px 16px;background:#F05A22;color:white;font-weight:700}</style></head><body><div class="box"><h2>접근이 제한되었습니다</h2><p>비밀번호가 올바르지 않습니다.</p><button onclick="location.reload()">다시 입력</button></div></body></html>');
-    document.close();
-  }
-
-  if (sessionStorage.getItem(KEY) !== "ok") {
-    var input = prompt("비밀번호를 입력하세요");
-    if (input === PASS) {
-      sessionStorage.setItem(KEY, "ok");
-    } else {
-      deny();
-      throw new Error("Unauthorized");
-    }
-  }
-})();
-</script>
 <title>사업장 MAP</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -1148,21 +1127,25 @@ function getStoreShifts(store) {
       const time = person.days && person.days[today];
       if (!time) return;
       const { start, end } = splitTime(time);
-      const label = (person.labels && person.labels[today]) || '전일';
-      // 김영삼도서관은 미화/주차 원본 유지, 그 외는 시간대로 오전/오후 변환
-        const displayLabel = (store.name === '김영삼도서관')
-          ? label
-          : (() => {
-              const sh = timeToMin(start);
-              if (sh < 12*60) return '오전';
-              if (sh < 17*60) return '오후';
-              return '저녁';
-            })();
-        const key = `${displayLabel}|${start}|${end}`;
-      if (!groups[key]) groups[key] = { label, start, end, staff: [] };
-      groups[key].staff.push({ name: person.name, leader: !!person.leader });
+      const rawLabel = (person.labels && person.labels[today]) || person.shift_label || '전일';
+      const shiftType = person.shift_type || '';
+      // 김영삼도서관은 미화/주차와 오전/오후를 함께 보이도록 그룹명 보정
+      const displayLabel = (store.name === '김영삼도서관')
+        ? ([shiftType, rawLabel].filter(Boolean).join('-') || rawLabel)
+        : (() => {
+            const sh = timeToMin(start);
+            if (sh < 12*60) return '오전';
+            if (sh < 17*60) return '오후';
+            return '저녁';
+          })();
+      const key = `${displayLabel}|${start}|${end}`;
+      if (!groups[key]) groups[key] = { label: displayLabel, start, end, staff: [] };
+      groups[key].staff.push({ name: person.name, leader: !!person.leader, phone: person.phone || '' });
     });
-    return Object.values(groups).sort((a, b) => timeToMin(a.start) - timeToMin(b.start));
+    const result = Object.values(groups).sort((a, b) => timeToMin(a.start) - timeToMin(b.start));
+    // 김영삼도서관은 휴관/요일 누락 시에도 직원 목록이 비지 않도록 기본 근무조를 fallback
+    if (!result.length && store.name === '김영삼도서관' && store.shifts && store.shifts.length) return store.shifts;
+    return result;
   }
   return store.shifts || [];
 }
@@ -1223,10 +1206,11 @@ function getScheduleGroups(store) {
       Object.entries(person.days || {}).forEach(([day, time]) => {
         if (!time) return;
         const { start, end } = splitTime(time);
-        const label = (person.labels && person.labels[day]) || '전일';
-        // 김영삼도서관은 미화/주차 원본 유지, 그 외는 시간대로 오전/오후 변환
+        const rawLabel = (person.labels && person.labels[day]) || person.shift_label || '전일';
+        const shiftType = person.shift_type || '';
+        // 김영삼도서관은 미화/주차와 오전/오후를 함께 보이도록 그룹명 보정
         const displayLabel = (store.name === '김영삼도서관')
-          ? label
+          ? ([shiftType, rawLabel].filter(Boolean).join('-') || rawLabel)
           : (() => {
               const sh = timeToMin(start);
               if (sh < 12*60) return '오전';
@@ -1705,7 +1689,8 @@ function openDetail(id) {
         // 김영삼도서관: shift_type(미화/주차)-shift_label(오전/오후) 조합
         const firstDay = Object.keys(person.days || {})[0];
         const rawLabel = firstDay && person.labels ? person.labels[firstDay] : '';
-        groupKey = rawLabel || personLabel || '기타';
+        const shiftType = person.shift_type || '';
+        groupKey = ([shiftType, personLabel || rawLabel].filter(Boolean).join('-')) || rawLabel || '기타';
       } else if (personLabel) {
         // 신청사는 오전/오후/주말/푸드코트 4개 그룹으로 표시
         groupKey = (s.name === '신청사') ? personLabel : (personLabel + '팀');
@@ -1739,6 +1724,10 @@ function openDetail(id) {
       '오전팀':  { hdr: '#FFF0EB', hdrText: '#C94415', dot: '#F05A22' },
       '오후팀':  { hdr: '#E6F1FB', hdrText: '#0C447C', dot: '#185FA5' },
       '저녁팀':  { hdr: '#F5EEFB', hdrText: '#4A1880', dot: '#9B59B6' },
+      '미화-오전': { hdr: '#FFF0EB', hdrText: '#C94415', dot: '#F05A22' },
+      '미화-오후': { hdr: '#FFF0EB', hdrText: '#C94415', dot: '#F05A22' },
+      '주차-오전': { hdr: '#E6F1FB', hdrText: '#0C447C', dot: '#185FA5' },
+      '주차-오후': { hdr: '#E6F1FB', hdrText: '#0C447C', dot: '#185FA5' },
       '미화':    { hdr: '#FFF0EB', hdrText: '#C94415', dot: '#F05A22' },
       '주차':    { hdr: '#E6F1FB', hdrText: '#0C447C', dot: '#185FA5' },
       '오전':    { hdr: '#FFF0EB', hdrText: '#C94415', dot: '#F05A22' },
