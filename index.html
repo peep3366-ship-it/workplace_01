@@ -14,7 +14,267 @@
 
   function deny(){
     document.open();
-    document.write('<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>접근 제한</title><style>body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;font-family:Arial,\'Noto Sans KR\',sans-serif;background:#f7f7f5;color:#333}.box{text-align:center;background:white;border:1px solid #eee;border-radius:18px;padding:28px 24px;box-shadow:0 8px 24px rgba(0,0,0,.08)}button{margin-top:16px;border:0;border-radius:10px;padding:10px 16px;background:#F05A22;color:white;font-weight:700}</style></head><body><div class="box"><h2>접근이 제한되었습니다</h2><p>비밀번호가 올바르지 않습니다.</p><button onclick="location.reload()">다시 입력</button></div></body></html>');
+    document.write('<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>접근 제한</title><style>body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;font-family:Arial,\'Noto Sans KR\',sans-serif;background:#f7f7f5;color:#333}.box{text-align:center;background:white;border:1px solid #eee;border-radius:18px;padding:28px 24px;box-shadow:0 8px 24px rgba(0,0,0,.08)}button{margin-top:16px;border:0;border-radius:10px;padding:10px 16px;background:#F05A22;color:white;font-weight:700}
+  /* ===== 최종 수정: 목록 상단 필터 compact tabs ===== */
+  .list-filter-wrap {
+    padding: 8px 12px 8px !important;
+  }
+
+  .bottom-sheet #catFilter.cat-filter {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 38px !important;
+    height: auto !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 5px !important;
+    padding: 6px !important;
+    overflow: hidden !important;
+    border-radius: 14px !important;
+    background: var(--surface2) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    white-space: nowrap !important;
+  }
+
+  .bottom-sheet #catFilter .filter-sep {
+    display: none !important;
+  }
+
+  .bottom-sheet #catFilter .cat-filter-btn {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    padding: 0 6px !important;
+    border-radius: 999px !important;
+    border: 1.5px solid currentColor !important;
+    background: #fff !important;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: -0.6px !important;
+    white-space: nowrap !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04) !important;
+  }
+
+  /* 기본값: 흰 배경 + 지도 라벨 색상 테두리/글씨 */
+  .bottom-sheet #catFilter .cat-filter-btn[data-cat="전체"]    { color:#555 !important; }
+  .bottom-sheet #catFilter .cat-filter-btn[data-cat="주민센터"] { color:#F05A22 !important; }
+  .bottom-sheet #catFilter .cat-filter-btn[data-cat="문화재단"] { color:#9B59B6 !important; }
+  .bottom-sheet #catFilter .cat-filter-btn[data-cat="시설공단"] { color:#E91E8C !important; }
+  .bottom-sheet #catFilter .cat-filter-btn[data-cat="유관기관"] { color:#27AE60 !important; }
+
+  /* 선택값: 지도 라벨과 동일하게 꽉 찬 색상 */
+  .bottom-sheet #catFilter .cat-filter-btn.active {
+    color:#fff !important;
+  }
+  .bottom-sheet #catFilter .cat-filter-btn[data-cat="전체"].active    { background:#555 !important;    border-color:#555 !important; }
+  .bottom-sheet #catFilter .cat-filter-btn[data-cat="주민센터"].active { background:#F05A22 !important; border-color:#F05A22 !important; }
+  .bottom-sheet #catFilter .cat-filter-btn[data-cat="문화재단"].active { background:#9B59B6 !important; border-color:#9B59B6 !important; }
+  .bottom-sheet #catFilter .cat-filter-btn[data-cat="시설공단"].active { background:#E91E8C !important; border-color:#E91E8C !important; }
+  .bottom-sheet #catFilter .cat-filter-btn[data-cat="유관기관"].active { background:#27AE60 !important; border-color:#27AE60 !important; }
+
+  @media (max-width: 767px) {
+    .bottom-sheet #catFilter .cat-filter-btn {
+      font-size: 11px !important;
+      padding: 0 4px !important;
+    }
+    .store-list {
+      max-height: calc(min(60dvh, 500px) - 138px) !important;
+    }
+  }
+
+
+/* ===== 한줄 필터 최종 수정 ===== */
+.bottom-sheet #catFilter.cat-filter{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  overflow:hidden !important;
+  gap:4px !important;
+  justify-content:space-between !important;
+  align-items:center !important;
+}
+
+.bottom-sheet #catFilter .cat-filter-btn{
+  flex:1 1 0 !important;
+  min-width:0 !important;
+  padding:0 2px !important;
+  font-size:11px !important;
+  letter-spacing:-0.7px !important;
+  white-space:nowrap !important;
+}
+
+@media (max-width: 767px){
+  .bottom-sheet #catFilter .cat-filter-btn{
+    font-size:10.5px !important;
+    padding:0 1px !important;
+  }
+}
+
+
+/* =========================================================
+   FINAL: 목록 상단 사업장구분 필터
+   - 무조건 한 줄
+   - 기본: 흰 배경 + 지도색 테두리/글자
+   - 선택: 지도색 채움 + 흰 글자
+   ========================================================= */
+.bottom-sheet #catFilter.cat-filter,
+#bottomSheet #catFilter.cat-filter {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  column-gap: 4px !important;
+  row-gap: 0 !important;
+
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 4px !important;
+  margin: 0 !important;
+
+  overflow: hidden !important;
+  white-space: nowrap !important;
+
+  background: #F7F7F5 !important;
+  border: 1px solid var(--border, #E8E8E4) !important;
+  border-radius: 13px !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.bottom-sheet #catFilter .filter-sep,
+#bottomSheet #catFilter .filter-sep {
+  display: none !important;
+}
+
+.bottom-sheet #catFilter .cat-filter-btn,
+#bottomSheet #catFilter .cat-filter-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 26px !important;
+  min-height: 26px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 999px !important;
+  border: 1.5px solid currentColor !important;
+
+  background: #FFFFFF !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.8px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  box-shadow: none !important;
+}
+
+/* 기본색 = 지도 라벨 색상 */
+.bottom-sheet #catFilter .cat-filter-btn[data-cat="전체"],
+#bottomSheet #catFilter .cat-filter-btn[data-cat="전체"] {
+  color: #555 !important;
+}
+.bottom-sheet #catFilter .cat-filter-btn[data-cat="주민센터"],
+#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"] {
+  color: #F05A22 !important;
+}
+.bottom-sheet #catFilter .cat-filter-btn[data-cat="문화재단"],
+#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"] {
+  color: #9B59B6 !important;
+}
+.bottom-sheet #catFilter .cat-filter-btn[data-cat="시설공단"],
+#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"] {
+  color: #E91E8C !important;
+}
+.bottom-sheet #catFilter .cat-filter-btn[data-cat="유관기관"],
+#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"] {
+  color: #27AE60 !important;
+}
+
+/* 선택색 = 지도 라벨처럼 채움 */
+.bottom-sheet #catFilter .cat-filter-btn.active,
+#bottomSheet #catFilter .cat-filter-btn.active {
+  color: #FFFFFF !important;
+}
+
+.bottom-sheet #catFilter .cat-filter-btn[data-cat="전체"].active,
+#bottomSheet #catFilter .cat-filter-btn[data-cat="전체"].active {
+  background: #555 !important;
+  border-color: #555 !important;
+}
+.bottom-sheet #catFilter .cat-filter-btn[data-cat="주민센터"].active,
+#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"].active {
+  background: #F05A22 !important;
+  border-color: #F05A22 !important;
+}
+.bottom-sheet #catFilter .cat-filter-btn[data-cat="문화재단"].active,
+#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"].active {
+  background: #9B59B6 !important;
+  border-color: #9B59B6 !important;
+}
+.bottom-sheet #catFilter .cat-filter-btn[data-cat="시설공단"].active,
+#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"].active {
+  background: #E91E8C !important;
+  border-color: #E91E8C !important;
+}
+.bottom-sheet #catFilter .cat-filter-btn[data-cat="유관기관"].active,
+#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"].active {
+  background: #27AE60 !important;
+  border-color: #27AE60 !important;
+}
+
+/* 모바일에서도 5개 고정 한 줄 */
+@media (max-width: 767px) {
+  .bottom-sheet #catFilter.cat-filter,
+  #bottomSheet #catFilter.cat-filter {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    column-gap: 3px !important;
+    height: 33px !important;
+    min-height: 33px !important;
+    padding: 4px !important;
+  }
+
+  .bottom-sheet #catFilter .cat-filter-btn,
+  #bottomSheet #catFilter .cat-filter-btn {
+    height: 25px !important;
+    min-height: 25px !important;
+    font-size: 10.5px !important;
+    letter-spacing: -0.9px !important;
+    padding: 0 !important;
+  }
+}
+
+/* 목록 영역 높이 보정 */
+@media (max-width: 767px) {
+  .store-list {
+    max-height: calc(min(60dvh, 500px) - 132px) !important;
+  }
+}
+
+</style></head><body><div class="box"><h2>접근이 제한되었습니다</h2><p>비밀번호가 올바르지 않습니다.</p><button onclick="location.reload()">다시 입력</button></div></body></html>');
     document.close();
   }
 
@@ -196,6 +456,7 @@
   .cat-culture { background: #9B59B6; color: #fff; }
   .cat-gongdan { background: #E91E8C; color: #fff; }
   .cat-lib     { background: #27AE60; color: #fff; }
+  .cat-hq      { background: #185FA5; color: #fff; }
 
   /* ── 상세 팝업 ── */
   .detail-overlay {
@@ -987,6 +1248,841 @@
     .store-item:last-child { border-bottom: none !important; }
   }
 
+
+
+  /* ── 지도 라벨형 마커: 핀 없이 색상 라벨만 표시 ── */
+  .store-badge-marker {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 7px 12px !important;
+    border-radius: 999px !important;
+    color: #fff !important;
+    border: 2px solid rgba(255,255,255,0.96) !important;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.20) !important;
+    font-family: 'Noto Sans KR', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    letter-spacing: -0.3px !important;
+    transform: translate(-50%, -50%) !important;
+    cursor: pointer !important;
+  }
+  .store-badge-marker.active {
+    box-shadow: 0 0 0 3px rgba(24,95,165,0.22), 0 5px 16px rgba(0,0,0,0.26) !important;
+    transform: translate(-50%, calc(-50% - 1px)) !important;
+  }
+  .store-badge-marker .store-marker-text {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ── 본사 마커: 사업장 라벨과 같은 구조, 색상만 별도 ── */
+  .hq-marker {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 8px 13px !important;
+    border-radius: 999px !important;
+    background: #263238 !important;
+    color: #fff !important;
+    border: 2px solid rgba(255,255,255,0.96) !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.24) !important;
+    font-family: 'Noto Sans KR', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    letter-spacing: -0.3px !important;
+    transform: translate(-50%, -50%) !important;
+    cursor: pointer !important;
+  }
+  .hq-popup-title { font-weight: 900; font-size: 14px; margin-bottom: 6px; color: var(--text); }
+  .hq-popup-addr { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  /* 필터/배지 아이콘 제거 후 pill 스타일 통일 */
+  .cat-filter-btn svg { display:none !important; }
+  .cat-filter-btn {
+    border-radius: 999px !important;
+    padding: 0 12px !important;
+  }
+  .cat-badge, .lp-cat-badge {
+    border-radius: 999px !important;
+    letter-spacing: -0.2px !important;
+  }
+
+
+  /* ── 목록 상단 카테고리 필터 ── */
+  .list-filter-wrap {
+    flex: 0 0 auto;
+    padding: 10px 12px 9px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .bottom-sheet .cat-filter {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    z-index: 3 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 38px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 7px !important;
+    overflow: visible !important;
+    border-radius: 14px !important;
+    box-shadow: none !important;
+    background: var(--surface2) !important;
+    border: 1px solid var(--border) !important;
+    backdrop-filter: none !important;
+  }
+  .bottom-sheet .filter-sep { display: none !important; }
+  .bottom-sheet .cat-filter-btn {
+    flex: 1 1 auto !important;
+    height: 31px !important;
+    min-height: 31px !important;
+    min-width: 64px !important;
+    padding: 0 10px !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    border-radius: 999px !important;
+    border: 1px solid currentColor !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05) !important;
+  }
+  /* 비활성 상태도 지도 라벨 색상과 같은 계열로 보이게 */
+  .bottom-sheet .cat-filter-btn[data-cat="전체"]    { background:#F2F2F0 !important; color:#555 !important; }
+  .bottom-sheet .cat-filter-btn[data-cat="주민센터"] { background:#FFF0EB !important; color:#F05A22 !important; }
+  .bottom-sheet .cat-filter-btn[data-cat="문화재단"] { background:#F5EEFB !important; color:#9B59B6 !important; }
+  .bottom-sheet .cat-filter-btn[data-cat="시설공단"] { background:#FDE8F4 !important; color:#E91E8C !important; }
+  .bottom-sheet .cat-filter-btn[data-cat="유관기관"] { background:#E8F8EF !important; color:#27AE60 !important; }
+
+  .bottom-sheet .cat-filter-btn.active { color: #fff !important; }
+  .bottom-sheet .cat-filter-btn[data-cat="전체"].active    { background:#555 !important;    border-color:#555 !important; }
+  .bottom-sheet .cat-filter-btn[data-cat="주민센터"].active { background:#F05A22 !important; border-color:#F05A22 !important; }
+  .bottom-sheet .cat-filter-btn[data-cat="문화재단"].active { background:#9B59B6 !important; border-color:#9B59B6 !important; }
+  .bottom-sheet .cat-filter-btn[data-cat="시설공단"].active { background:#E91E8C !important; border-color:#E91E8C !important; }
+  .bottom-sheet .cat-filter-btn[data-cat="유관기관"].active { background:#27AE60 !important; border-color:#27AE60 !important; }
+
+  @media (max-width: 767px) {
+    .list-filter-wrap { padding: 9px 12px 8px !important; }
+    .bottom-sheet .cat-filter { display: flex !important; }
+    .bottom-sheet .cat-filter-btn { min-width: 68px !important; font-size: 12px !important; }
+    .store-list { max-height: calc(min(60dvh, 500px) - 158px) !important; }
+  }
+
+  @media (min-width: 768px) {
+    .bottom-sheet .cat-filter { display: flex !important; }
+  }
+
+
+/* =========================================================
+   REALLY FINAL: 사업장 목록 상단 필터 5개 한 줄 고정
+   ========================================================= */
+#bottomSheet .list-filter-wrap{
+  padding: 7px 10px 8px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+#bottomSheet #catFilter.filter-bar.cat-filter{
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+
+  display: grid !important;
+  grid-template-columns: repeat(5, 1fr) !important;
+  gap: 3px !important;
+
+  width: 100% !important;
+  max-width: none !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 3px !important;
+  margin: 0 !important;
+
+  overflow: hidden !important;
+  white-space: nowrap !important;
+
+  background: #F7F7F5 !important;
+  border: 1px solid #E8E8E4 !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  box-sizing: border-box !important;
+}
+
+#bottomSheet #catFilter .filter-sep{
+  display: none !important;
+}
+
+#bottomSheet #catFilter .cat-filter-btn{
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  border-radius: 999px !important;
+  border: 1.4px solid currentColor !important;
+  background: #FFFFFF !important;
+
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: -1px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  box-sizing: border-box !important;
+}
+
+/* 기본: 흰 배경 + 색상 테두리/글씨 */
+#bottomSheet #catFilter .cat-filter-btn[data-cat="전체"]{ color:#555555 !important; }
+#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"]{ color:#F05A22 !important; }
+#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"]{ color:#9B59B6 !important; }
+#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"]{ color:#E91E8C !important; }
+#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"]{ color:#27AE60 !important; }
+
+/* 선택: 지도 라벨처럼 꽉 찬 색상 */
+#bottomSheet #catFilter .cat-filter-btn.active{
+  color:#FFFFFF !important;
+  border-color: transparent !important;
+}
+
+#bottomSheet #catFilter .cat-filter-btn[data-cat="전체"].active{
+  background:#555555 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"].active{
+  background:#F05A22 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"].active{
+  background:#9B59B6 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"].active{
+  background:#E91E8C !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"].active{
+  background:#27AE60 !important;
+}
+
+/* 기존 모바일 필터 숨김 규칙보다 우선 적용 */
+@media (max-width: 767px){
+  #bottomSheet #catFilter.filter-bar.cat-filter{
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 3px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    padding: 3px !important;
+  }
+
+  #bottomSheet #catFilter .cat-filter-btn{
+    height: 24px !important;
+    min-height: 24px !important;
+    font-size: 10px !important;
+    letter-spacing: -1px !important;
+  }
+}
+
+
+/* =========================================================
+   FINAL: 좌측 목록 너비 축소 + 기존 상단 로고/검색바 유지
+   ========================================================= */
+@media (min-width: 768px) {
+  :root {
+    --side-width: 300px;
+  }
+
+  .bottom-sheet {
+    width: var(--side-width) !important;
+  }
+
+  #map {
+    left: var(--side-width) !important;
+  }
+
+  .cat-filter {
+    left: calc(var(--side-width) + 15px) !important;
+  }
+
+  .status-legend {
+    left: calc(var(--side-width) + 15px) !important;
+  }
+
+  .legend-box {
+    left: calc(var(--side-width) + (100vw - var(--side-width)) / 2) !important;
+  }
+
+  .legend-box {
+    left: calc(var(--side-width) + (100vw - var(--side-width)) / 2) !important;
+  }
+
+  #map.detail-open {
+    right: 360px !important;
+  }
+}
+
+/* 목록이 좁아져도 내부 공백 덜 생기게 조정 */
+@media (min-width: 768px) {
+  .sheet-handle-area {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .store-item {
+    padding: 11px 12px !important;
+  }
+
+  .store-name {
+    font-size: 13.5px !important;
+  }
+
+  .store-address {
+    font-size: 11.5px !important;
+  }
+
+  .store-meta {
+    gap: 6px !important;
+  }
+
+  .bottom-sheet #catFilter.cat-filter {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .bottom-sheet #catFilter .cat-filter-btn {
+    font-size: 10.5px !important;
+    letter-spacing: -0.8px !important;
+  }
+}
+
+
+/* ===== 범례 제거 ===== */
+.status-legend,
+.legend-box,
+.map-legend,
+.legend-wrap{
+  display:none !important;
+}
+
+/* ===== 맵 배지 디자인 통일 ===== */
+.custom-overlay,
+.map-label,
+.place-badge{
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+.place-badge,
+.custom-badge{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:8px 16px !important;
+  border-radius:999px !important;
+  color:#fff !important;
+  font-size:14px !important;
+  font-weight:800 !important;
+  line-height:1 !important;
+  white-space:nowrap !important;
+  box-shadow:0 3px 10px rgba(0,0,0,.18) !important;
+  border:2px solid rgba(255,255,255,.92) !important;
+}
+
+/* 말풍선 꼬리 */
+.place-badge::after,
+.custom-badge::after{
+  content:'' !important;
+  position:absolute !important;
+  bottom:-7px !important;
+  left:50% !important;
+  transform:translateX(-50%) rotate(45deg) !important;
+  width:12px !important;
+  height:12px !important;
+  background:inherit !important;
+  border-right:2px solid rgba(255,255,255,.92) !important;
+  border-bottom:2px solid rgba(255,255,255,.92) !important;
+}
+
+/* 본사 z-index 최상단 */
+.place-badge.headquarters,
+.custom-badge.headquarters{
+  z-index:9999 !important;
+  position:relative !important;
+}
+
+
+/* =========================================================
+   FINAL: 맵 배지 + 필터 디자인
+   1) 맵 배지: 아이콘 제거, pill 말풍선형
+   2) 필터: 풀네임, 꽉 찬 색상이 기본값
+   ========================================================= */
+
+/* 범례 완전 제거 */
+.status-legend,
+.legend-box,
+.map-legend,
+.legend-wrap {
+  display: none !important;
+}
+
+/* Leaflet tooltip 기본 박스 제거 */
+.leaflet-tooltip.map-label,
+.map-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 기존 라벨 내부 점/아이콘 숨김 */
+.map-label .label-status-dot,
+.map-label .status-dot,
+.map-label svg,
+.map-label .badge-icon,
+.map-label .map-icon,
+.map-label .label-icon,
+.map-label-wrap .label-status-dot,
+.map-label-wrap .status-dot {
+  display: none !important;
+}
+
+/* 새 맵 배지 */
+.map-pill-label,
+.map-label-wrap,
+.place-badge,
+.custom-badge {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 7px 14px !important;
+  border-radius: 999px !important;
+  color: #fff !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.5px !important;
+  white-space: nowrap !important;
+  border: 2px solid rgba(255,255,255,.94) !important;
+  box-shadow: 0 3px 10px rgba(0,0,0,.20) !important;
+  text-shadow: none !important;
+}
+
+/* 기존 map-label-wrap 안 텍스트만 보이게 */
+.map-label-wrap {
+  gap: 0 !important;
+}
+.map-label-wrap .label-text {
+  color: #fff !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  max-width: none !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* 말풍선 꼬리 */
+.map-pill-label::after,
+.map-label-wrap::after,
+.place-badge::after,
+.custom-badge::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: -7px !important;
+  width: 11px !important;
+  height: 11px !important;
+  transform: translateX(-50%) rotate(45deg) !important;
+  background: inherit !important;
+  border-right: 2px solid rgba(255,255,255,.94) !important;
+  border-bottom: 2px solid rgba(255,255,255,.94) !important;
+  border-radius: 2px !important;
+}
+
+/* 기존 라벨 배경색을 카테고리색으로 유지하도록 클래스별 보강 */
+.map-label .cat-dong,
+.map-label-wrap.cat-dong { background:#F05A22 !important; }
+.map-label .cat-culture,
+.map-label-wrap.cat-culture { background:#9B59B6 !important; }
+.map-label .cat-gongdan,
+.map-label-wrap.cat-gongdan { background:#E91E8C !important; }
+.map-label .cat-lib,
+.map-label-wrap.cat-lib { background:#27AE60 !important; }
+.map-label .cat-gu,
+.map-label-wrap.cat-gu { background:#F4A300 !important; }
+
+/* 본사 배지: 아이콘 없이 진회색 */
+.headquarters,
+.map-pill-label.headquarters,
+.place-badge.headquarters,
+.custom-badge.headquarters {
+  background: #263238 !important;
+  color: #fff !important;
+  z-index: 9999 !important;
+}
+
+/* ===== 목록 상단 사업장 구분 필터 ===== */
+#bottomSheet .list-filter-wrap {
+  padding: 8px 12px 9px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+/* 필터 한 줄 고정 */
+#bottomSheet #catFilter.filter-bar.cat-filter {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+
+  display: grid !important;
+  grid-template-columns: .72fr 1fr 1fr 1fr 1fr !important;
+  gap: 6px !important;
+  align-items: center !important;
+
+  width: 100% !important;
+  max-width: none !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+
+#bottomSheet #catFilter .filter-sep {
+  display: none !important;
+}
+
+/* 디폴트 = 색상 채움 */
+#bottomSheet #catFilter .cat-filter-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 4px !important;
+  margin: 0 !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  border: 0 !important;
+  border-radius: 7px !important;
+
+  color: #fff !important;
+  background: #555 !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.7px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  box-shadow: none !important;
+}
+
+/* 필터 디폴트 색상 */
+#bottomSheet #catFilter .cat-filter-btn[data-cat="전체"]    { background:#555 !important; color:#fff !important; }
+#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"] { background:#F05A22 !important; color:#fff !important; }
+#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"] { background:#9B59B6 !important; color:#fff !important; }
+#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"] { background:#E91E8C !important; color:#fff !important; }
+#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"] { background:#27AE60 !important; color:#fff !important; }
+
+/* 선택된 상태 = 현재처럼 조금 더 진하고 떠 보이게 */
+#bottomSheet #catFilter .cat-filter-btn.active {
+  filter: brightness(.82) !important;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.26), 0 2px 8px rgba(0,0,0,.14) !important;
+}
+
+/* 좁은 좌측 목록 대응 */
+@media (min-width: 768px) {
+  #bottomSheet #catFilter.filter-bar.cat-filter {
+    gap: 5px !important;
+  }
+  #bottomSheet #catFilter .cat-filter-btn {
+    font-size: 11px !important;
+    letter-spacing: -0.9px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #bottomSheet #catFilter.filter-bar.cat-filter {
+    grid-template-columns: .7fr 1fr 1fr 1fr 1fr !important;
+    gap: 4px !important;
+    height: 34px !important;
+  }
+  #bottomSheet #catFilter .cat-filter-btn {
+    height: 30px !important;
+    font-size: 10.5px !important;
+    letter-spacing: -1px !important;
+  }
+}
+
+
+/* =========================================================
+   FINAL: 좌측 목록 +20px, 필터 선택 상태 outline 스타일
+   ========================================================= */
+@media (min-width: 768px) {
+  :root {
+    --side-width: 320px !important;
+  }
+
+  .bottom-sheet {
+    width: var(--side-width) !important;
+  }
+
+  #map {
+    left: var(--side-width) !important;
+  }
+
+  .cat-filter {
+    left: calc(var(--side-width) + 15px) !important;
+  }
+
+  .status-legend {
+    display: none !important;
+  }
+
+  .legend-box {
+    display: none !important;
+  }
+}
+
+/* 필터 한 줄 유지 */
+#bottomSheet #catFilter.filter-bar.cat-filter {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+
+  display: grid !important;
+  grid-template-columns: .72fr 1fr 1fr 1fr 1fr !important;
+  gap: 6px !important;
+  align-items: center !important;
+
+  width: 100% !important;
+  max-width: none !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+
+#bottomSheet #catFilter .filter-sep {
+  display: none !important;
+}
+
+#bottomSheet #catFilter .cat-filter-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 4px !important;
+  margin: 0 !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  border-radius: 999px !important;
+  border: 1.5px solid currentColor !important;
+  background: #fff !important;
+
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.7px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* 기본/선택 공통: 사진처럼 흰 배경 + 색상 테두리/글자 */
+#bottomSheet #catFilter .cat-filter-btn[data-cat="전체"] {
+  color:#555 !important;
+  background:#fff !important;
+  border-color:#555 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"] {
+  color:#F05A22 !important;
+  background:#fff !important;
+  border-color:#F05A22 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"] {
+  color:#9B59B6 !important;
+  background:#fff !important;
+  border-color:#9B59B6 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"] {
+  color:#E91E8C !important;
+  background:#fff !important;
+  border-color:#E91E8C !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"] {
+  color:#27AE60 !important;
+  background:#fff !important;
+  border-color:#27AE60 !important;
+}
+
+/* 선택 시: 사진처럼 outline 유지 + 살짝 강조 */
+#bottomSheet #catFilter .cat-filter-btn.active {
+  background:#fff !important;
+  filter:none !important;
+  box-shadow: inset 0 0 0 1px currentColor, 0 2px 7px rgba(0,0,0,.08) !important;
+}
+
+/* 전체 버튼 선택도 흰 배경 outline */
+#bottomSheet #catFilter .cat-filter-btn[data-cat="전체"].active {
+  color:#555 !important;
+  background:#fff !important;
+  border-color:#555 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"].active {
+  color:#F05A22 !important;
+  background:#fff !important;
+  border-color:#F05A22 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"].active {
+  color:#9B59B6 !important;
+  background:#fff !important;
+  border-color:#9B59B6 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"].active {
+  color:#E91E8C !important;
+  background:#fff !important;
+  border-color:#E91E8C !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"].active {
+  color:#27AE60 !important;
+  background:#fff !important;
+  border-color:#27AE60 !important;
+}
+
+@media (max-width: 767px) {
+  #bottomSheet #catFilter.filter-bar.cat-filter {
+    grid-template-columns: .72fr 1fr 1fr 1fr 1fr !important;
+    gap: 4px !important;
+    height: 34px !important;
+  }
+
+  #bottomSheet #catFilter .cat-filter-btn {
+    height: 30px !important;
+    font-size: 10.5px !important;
+    letter-spacing: -1px !important;
+  }
+}
+
+
+/* =========================================================
+   REAL FINAL: 필터 상태 정정
+   - 디폴트: 색상 채움 + 흰 글씨
+   - 선택: 흰 배경 + 색상 테두리/글씨
+   ========================================================= */
+#bottomSheet #catFilter .cat-filter-btn {
+  border-radius: 999px !important;
+  border: 1.5px solid transparent !important;
+  color: #fff !important;
+  background: #555 !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* 디폴트 = 색상 채움 */
+#bottomSheet #catFilter .cat-filter-btn[data-cat="전체"] {
+  background:#555 !important;
+  color:#fff !important;
+  border-color:#555 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"] {
+  background:#F05A22 !important;
+  color:#fff !important;
+  border-color:#F05A22 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"] {
+  background:#9B59B6 !important;
+  color:#fff !important;
+  border-color:#9B59B6 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"] {
+  background:#E91E8C !important;
+  color:#fff !important;
+  border-color:#E91E8C !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"] {
+  background:#27AE60 !important;
+  color:#fff !important;
+  border-color:#27AE60 !important;
+}
+
+/* 선택 = 흰 배경 + 색상 테두리/글씨 */
+#bottomSheet #catFilter .cat-filter-btn.active {
+  background:#fff !important;
+  filter:none !important;
+  box-shadow: inset 0 0 0 1px currentColor, 0 2px 7px rgba(0,0,0,.08) !important;
+}
+
+#bottomSheet #catFilter .cat-filter-btn[data-cat="전체"].active {
+  color:#555 !important;
+  background:#fff !important;
+  border-color:#555 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"].active {
+  color:#F05A22 !important;
+  background:#fff !important;
+  border-color:#F05A22 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"].active {
+  color:#9B59B6 !important;
+  background:#fff !important;
+  border-color:#9B59B6 !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"].active {
+  color:#E91E8C !important;
+  background:#fff !important;
+  border-color:#E91E8C !important;
+}
+#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"].active {
+  color:#27AE60 !important;
+  background:#fff !important;
+  border-color:#27AE60 !important;
+}
+
 </style>
 </head>
 <body>
@@ -1022,17 +2118,7 @@
   <span class="legend-item"><span class="legend-dot" style="background:#aaa;"></span>근무종료</span>
 </div>
 
-<div class="filter-bar cat-filter" id="catFilter">
-  <button class="cat-filter-btn active" data-cat="전체" onclick="filterCat(this)">전체</button>
-  <span class="filter-sep">|</span>
-  <button class="cat-filter-btn" data-cat="주민센터" onclick="filterCat(this)"><svg width="9" height="12" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-right:1px;"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5z" fill="#F05A22"/></svg>주민센터</button>
-  <span class="filter-sep">|</span>
-  <button class="cat-filter-btn" data-cat="문화재단" onclick="filterCat(this)"><svg width="9" height="12" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-right:1px;"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5z" fill="#9B59B6"/></svg>문화재단</button>
-  <span class="filter-sep">|</span>
-  <button class="cat-filter-btn" data-cat="시설공단" onclick="filterCat(this)"><svg width="9" height="12" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-right:1px;"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5z" fill="#E91E8C"/></svg>시설공단</button>
-  <span class="filter-sep">|</span>
-  <button class="cat-filter-btn" data-cat="유관기관" onclick="filterCat(this)"><svg width="9" height="12" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin-right:1px;"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5z" fill="#27AE60"/></svg>유관기관</button>
-</div>
+
 
 
 
@@ -1047,6 +2133,19 @@
     <div class="sheet-header">
       <span class="sheet-title">사업장 목록</span>
       <span class="sheet-count">총 <strong id="countDisplay">0</strong>개</span>
+    </div>
+  </div>
+  <div class="list-filter-wrap">
+<div class="filter-bar cat-filter" id="catFilter">
+      <button class="cat-filter-btn active" data-cat="전체" onclick="filterCat(this)">전체</button>
+      <span class="filter-sep">|</span>
+      <button class="cat-filter-btn" data-cat="주민센터" onclick="filterCat(this)">주민센터</button>
+      <span class="filter-sep">|</span>
+      <button class="cat-filter-btn" data-cat="문화재단" onclick="filterCat(this)">문화재단</button>
+      <span class="filter-sep">|</span>
+      <button class="cat-filter-btn" data-cat="시설공단" onclick="filterCat(this)">시설공단</button>
+      <span class="filter-sep">|</span>
+      <button class="cat-filter-btn" data-cat="유관기관" onclick="filterCat(this)">유관기관</button>
     </div>
   </div>
   <div class="store-list" id="storeList"></div>
@@ -1077,17 +2176,17 @@
       <span class="detail-value" id="dSchedule"></span>
     </div>
     <div class="detail-row">
-      <span class="detail-icon">👤</span>
+      <span class="detail-icon"></span>
       <span class="detail-label">담당자</span>
       <span class="detail-value" id="dManager"></span>
     </div>
     <div class="detail-row">
-      <span class="detail-icon">📍</span>
+      <span class="detail-icon"></span>
       <span class="detail-label">주소</span>
       <span class="detail-value" id="dAddress"></span>
     </div>
     <div class="detail-row">
-      <span class="detail-icon">🏷️</span>
+      <span class="detail-icon"></span>
       <span class="detail-label">구분</span>
       <span class="detail-value" id="dType"></span>
     </div>
@@ -1116,7 +2215,7 @@ const CAT = {
  *   오전/오후: [ { label:'오전', start:'09:00', end:'13:00', staff:['이름'] },
  *                { label:'오후', start:'13:00', end:'18:00', staff:['이름'] } ]
  */
-const stores = [{"id":1,"name":"동작구 자원봉사센터","branch":"동작구 자원봉사센터","address":"서울특별시 동작구 만양로3길 14","cat":"유관기관","manager":"김유정","shifts":[{"label":"오전","start":"06:00","end":"09:30","staff":[{"name":"최순연","leader":false}]}],"lat":37.5080372,"lng":126.9469689,"weekly":[{"name":"최순연","leader":false,"days":{"1":"06:00~09:30","2":"06:00~09:30","3":"06:00~09:30","4":"06:00~09:30","5":"06:00~09:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구 자원봉사센터","phone":"010-7599-9197","shift_label":"오전","shift_type":"미화"}]},{"id":2,"name":"동작구민체육센터","branch":"동작구민체육센터","address":"서울특별시 동작구 여의대방로16길 53 동작구민체육센터","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"강병옥","leader":true},{"name":"김미옥","leader":false},{"name":"김옥순","leader":false},{"name":"신정자","leader":false},{"name":"조완행","leader":false}]},{"label":"오후","start":"14:30","end":"22:30","staff":[{"name":"김성자","leader":false},{"name":"김시종","leader":false},{"name":"김정화","leader":false},{"name":"송문섭","leader":false},{"name":"이중희","leader":false},{"name":"홍란희","leader":false}]}],"lat":37.4947228,"lng":126.9167552,"weekly":[{"name":"강병옥","leader":true,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작구민체육센터","phone":"010-3389-5594","shift_label":"오전","shift_type":"미화"},{"name":"김미옥","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작구민체육센터","phone":"010-4602-6618","shift_label":"오전","shift_type":"미화"},{"name":"김옥순","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작구민체육센터","phone":"010-2389-3246","shift_label":"오전","shift_type":"미화"},{"name":"신정자","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구민체육센터","phone":"010-9992-8694","shift_label":"오전","shift_type":"미화"},{"name":"조완행","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작구민체육센터","phone":"010-6400-8436","shift_label":"오전","shift_type":"미화"},{"name":"김성자","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오후"},"source":"동작구민체육센터","phone":"010-4925-1571","shift_label":"오후","shift_type":"미화"},{"name":"김시종","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"14:30~22:30","0":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"동작구민체육센터","phone":"010-5226-0747","shift_label":"오후","shift_type":"미화"},{"name":"김정화","leader":false,"days":{"0":"14:30~22:30","1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"0":"오후","1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작구민체육센터","phone":"010-5266-3153","shift_label":"오후","shift_type":"미화"},{"name":"송문섭","leader":false,"days":{"0":"14:30~22:30","1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"0":"오후","1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작구민체육센터","phone":"010-9050-0643","shift_label":"오후","shift_type":"미화"},{"name":"이중희","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작구민체육센터","phone":"010-6325-0616","shift_label":"오후","shift_type":"미화"},{"name":"홍란희","leader":false,"days":{"0":"14:30~22:30","1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"0":"오후","1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작구민체육센터","phone":"010-2307-5619","shift_label":"오후","shift_type":"미화"}]},{"id":3,"name":"동작구시설관리공단 본부","branch":"동작구시설관리공단 본부","address":"서울 동작구 보라매로5길 35","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"09:30","staff":[{"name":"박성찬","leader":false}]}],"lat":37.4920902,"lng":126.9235082,"weekly":[{"name":"박성찬","leader":false,"days":{"1":"06:00~09:30","2":"06:00~09:30","3":"06:00~09:30","4":"06:00~09:30","5":"06:00~09:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구시설관리공단 본부","phone":"010-9913-9418","shift_label":"오전","shift_type":"미화"}]},{"id":4,"name":"동작삼일수영장","branch":"동작삼일수영장","address":"서울특별시 동작구 사당로27길 103","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"김석준","leader":false}]},{"label":"오전","start":"07:30","end":"14:00","staff":[{"name":"임지현","leader":false}]},{"label":"오전","start":"07:30","end":"15:30","staff":[{"name":"김행심","leader":true}]},{"label":"오후","start":"14:30","end":"22:30","staff":[{"name":"김만호","leader":false},{"name":"김연자","leader":false}]}],"lat":37.4873412,"lng":126.9744243,"weekly":[{"name":"김행심","leader":true,"days":{"1":"07:30~15:30","2":"07:30~15:30","3":"07:30~15:30","4":"07:30~15:30","5":"07:30~15:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작삼일수영장","phone":"010-4903-1187","shift_label":"오전","shift_type":"미화"},{"name":"김석준","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작삼일수영장","phone":"010-4917-1891","shift_label":"오전","shift_type":"미화"},{"name":"임지현","leader":false,"days":{"1":"07:30~14:00","2":"07:30~14:00","3":"07:30~14:00","4":"07:30~14:00","5":"07:30~14:00","6":"07:30~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작삼일수영장","phone":"010-5345-0985","shift_label":"오전","shift_type":"미화"},{"name":"김만호","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오후"},"source":"동작삼일수영장","phone":"010-5273-9831","shift_label":"오후","shift_type":"미화"},{"name":"김연자","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작삼일수영장","phone":"010-8757-5062","shift_label":"오후","shift_type":"미화"}]},{"id":5,"name":"사당문화회관","branch":"사당문화회관","address":"서울특별시 동작구 사당로8길 9 사당문화회관","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"김연옥","leader":false},{"name":"오순용","leader":false},{"name":"이상호","leader":false}]},{"label":"오전","start":"09:00","end":"17:00","staff":[{"name":"김재원","leader":true}]},{"label":"오후","start":"14:30","end":"22:30","staff":[{"name":"김준임","leader":false},{"name":"정정순","leader":false},{"name":"최찬수","leader":false}]}],"lat":37.4847212,"lng":126.9696162,"weekly":[{"name":"김재원","leader":true,"days":{"1":"09:00~17:00","2":"09:00~17:00","3":"09:00~17:00","4":"09:00~17:00","5":"09:00~17:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당문화회관","phone":"010-3732-0180","shift_label":"오전","shift_type":"미화"},{"name":"김연옥","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당문화회관","phone":"010-4661-7367","shift_label":"오전","shift_type":"미화"},{"name":"오순용","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당문화회관","phone":"010-8420-6992","shift_label":"오전","shift_type":"미화"},{"name":"이상호","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당문화회관","phone":"010-5380-9204","shift_label":"오전","shift_type":"미화"},{"name":"김준임","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"사당문화회관","phone":"010-4237-1714","shift_label":"오후","shift_type":"미화"},{"name":"정정순","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오후"},"source":"사당문화회관","phone":"010-3044-7875","shift_label":"오후","shift_type":"미화"},{"name":"최찬수","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오후"},"source":"사당문화회관","phone":"010-6711-3828","shift_label":"오후","shift_type":"미화"}]},{"id":6,"name":"사당솔밭도서관","branch":"사당솔밭도서관","address":"서울특별시 동작구 솔밭로 86","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"06:00","end":"15:00","staff":[{"name":"김경순","leader":false},{"name":"이명희","leader":false},{"name":"최귀자","leader":true},{"name":"황금숙","leader":false}]}],"lat":37.4840897,"lng":126.9673874,"weekly":[{"name":"최귀자","leader":true,"days":{"2":"06:00~15:00","3":"06:00~15:00","4":"06:00~15:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"사당솔밭도서관","phone":"010-4900-8161","shift_label":"오전","shift_type":"미화"},{"name":"김경순","leader":false,"days":{"2":"06:00~15:00","3":"06:00~15:00","4":"06:00~15:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"사당솔밭도서관","phone":"010-2581-2700","shift_label":"오전","shift_type":"미화"},{"name":"이명희","leader":false,"days":{"2":"06:00~15:00","3":"06:00~15:00","4":"06:00~15:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"사당솔밭도서관","phone":"010-6213-0712","shift_label":"오전","shift_type":"미화"},{"name":"황금숙","leader":false,"days":{"5":"06:00~15:00","6":"06:00~15:00","0":"06:00~15:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"사당솔밭도서관","phone":"010-5383-8195","shift_label":"오전","shift_type":"미화"}]},{"id":7,"name":"사당종합체육관","branch":"사당종합체육관","address":"서울특별시 동작구 사당로27길 232","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"곽재동","leader":false},{"name":"서충례","leader":false},{"name":"오한순","leader":false},{"name":"한강연","leader":false}]},{"label":"오전","start":"09:00","end":"17:00","staff":[{"name":"김재석","leader":true}]},{"label":"오후","start":"14:30","end":"22:30","staff":[{"name":"방경식","leader":false},{"name":"전명자","leader":false}]}],"lat":37.4928063,"lng":126.9697426,"weekly":[{"name":"김재석","leader":true,"days":{"0":"09:00~17:00","1":"09:00~17:00","2":"09:00~17:00","3":"09:00~17:00","4":"09:00~17:00","5":"09:00~17:00"},"labels":{"0":"오전","1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당종합체육관","phone":"010-3771-2672","shift_label":"오전","shift_type":"미화"},{"name":"곽재동","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"사당종합체육관","phone":"010-3711-5358","shift_label":"오전","shift_type":"미화"},{"name":"서충례","leader":false,"days":{"0":"06:00~14:00","1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"0":"오전","1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당종합체육관","phone":"010-4517-6851","shift_label":"오전","shift_type":"미화"},{"name":"오한순","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당종합체육관","phone":"010-9206-3956","shift_label":"오전","shift_type":"미화"},{"name":"한강연","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"사당종합체육관","phone":"010-5216-2017","shift_label":"오전","shift_type":"미화"},{"name":"방경식","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오후"},"source":"사당종합체육관","phone":"010-7233-9731","shift_label":"오후","shift_type":"미화"},{"name":"전명자","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"사당종합체육관","phone":"010-8630-1441","shift_label":"오후","shift_type":"미화"}]},{"id":8,"name":"상도스포츠클럽","branch":"상도스포츠클럽","address":"서울특별시 동작구 성대로2길 11 상도4동 주민센터","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"우정옥","leader":false}]},{"label":"오후","start":"14:30","end":"22:30","staff":[{"name":"김순금","leader":true}]}],"lat":37.4991276,"lng":126.9313945,"weekly":[{"name":"우정옥","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"상도스포츠클럽","phone":"010-9487-9533","shift_label":"오전","shift_type":"미화"},{"name":"김순금","leader":true,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"상도스포츠클럽","phone":"010-6517-1746","shift_label":"오후","shift_type":"미화"}]},{"id":9,"name":"신청사","branch":"신청사","address":"서울특별시 동작구 장승배기로 70","cat":"유관기관","manager":"정성현","shifts":[{"label":"오전","start":"06:00","end":"12:00","staff":[{"name":"공금선","leader":false},{"name":"김연숙","leader":false},{"name":"노연숙","leader":false},{"name":"박경심","leader":false},{"name":"박인숙","leader":false},{"name":"박정희","leader":false},{"name":"송숙자","leader":false},{"name":"송화진","leader":false},{"name":"유영애","leader":false},{"name":"이옥선","leader":false},{"name":"장재근","leader":false},{"name":"정순남","leader":false},{"name":"최진숙","leader":false},{"name":"황영숙","leader":false}]},{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"정유화","leader":true}]},{"label":"오후","start":"12:00","end":"18:00","staff":[{"name":"강경옥","leader":false},{"name":"박승자","leader":false},{"name":"이귀덕","leader":false},{"name":"이귀자","leader":false},{"name":"이상엽","leader":false},{"name":"이옥희","leader":false},{"name":"이현정","leader":false},{"name":"정계윤","leader":false},{"name":"최복수","leader":false}]},{"label":"주말","start":"08:00","end":"17:00","staff":[{"name":"양순모","leader":false},{"name":"이봉준","leader":false},{"name":"정은임","leader":false}]},{"label":"푸드코트","start":"10:30","end":"15:00","staff":[{"name":"정순희","leader":false}]},{"label":"푸드코트","start":"16:30","end":"21:00","staff":[{"name":"김옥선","leader":false}]}],"lat":37.5042528,"lng":126.9402905,"weekly":[{"name":"정유화","leader":true,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-2489-0429","shift_label":"오전","shift_type":"미화"},{"name":"공금선","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-9045-0266","shift_label":"오전","shift_type":"미화"},{"name":"김연숙","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-7543-3950","shift_label":"오전","shift_type":"미화"},{"name":"노연숙","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-7292-2070","shift_label":"오전","shift_type":"미화"},{"name":"박경심","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-5720-5606","shift_label":"오전","shift_type":"미화"},{"name":"박인숙","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-2083-0783","shift_label":"오전","shift_type":"미화"},{"name":"박정희","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-2733-0497","shift_label":"오전","shift_type":"미화"},{"name":"송숙자","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-6320-7817","shift_label":"오전","shift_type":"미화"},{"name":"송화진","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-3418-3036","shift_label":"오전","shift_type":"미화"},{"name":"유영애","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-3025-8799","shift_label":"오전","shift_type":"미화"},{"name":"이옥선","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-3994-5703","shift_label":"오전","shift_type":"미화"},{"name":"장재근","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-4309-2743","shift_label":"오전","shift_type":"미화"},{"name":"정순남","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-9800-4908","shift_label":"오전","shift_type":"미화"},{"name":"최진숙","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-3947-7050","shift_label":"오전","shift_type":"미화"},{"name":"황영숙","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-2226-2500","shift_label":"오전","shift_type":"미화"},{"name":"강경옥","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-5406-8036","shift_label":"오후","shift_type":"미화"},{"name":"박승자","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-3451-8752","shift_label":"오후","shift_type":"미화"},{"name":"이귀덕","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-9113-5966","shift_label":"오후","shift_type":"미화"},{"name":"이귀자","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-6740-7275","shift_label":"오후","shift_type":"미화"},{"name":"이상엽","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-6573-3579","shift_label":"오후","shift_type":"미화"},{"name":"이옥희","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-3123-9478","shift_label":"오후","shift_type":"미화"},{"name":"이현정","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-5294-2295","shift_label":"오후","shift_type":"미화"},{"name":"정계윤","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-5343-9648","shift_label":"오후","shift_type":"미화"},{"name":"최복수","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-3676-4252","shift_label":"오후","shift_type":"미화"},{"name":"양순모","leader":false,"days":{"6":"08:00~17:00","0":"08:00~17:00"},"labels":{"6":"주말","0":"주말"},"source":"신청사","phone":"010-5008-9021","shift_label":"주말","shift_type":"미화"},{"name":"이봉준","leader":false,"days":{"6":"08:00~17:00","0":"08:00~17:00"},"labels":{"6":"주말","0":"주말"},"source":"신청사","phone":"010-9728-1848","shift_label":"주말","shift_type":"미화"},{"name":"정은임","leader":false,"days":{"6":"08:00~17:00","0":"08:00~17:00"},"labels":{"6":"주말","0":"주말"},"source":"신청사","phone":"010-4947-5486","shift_label":"주말","shift_type":"미화"},{"name":"김옥선","leader":false,"days":{"1":"16:30~21:00","2":"16:30~21:00","3":"16:30~21:00","4":"16:30~21:00","5":"16:30~21:00","6":"16:30~21:00"},"labels":{"1":"푸드코트","2":"푸드코트","3":"푸드코트","4":"푸드코트","5":"푸드코트","6":"푸드코트"},"source":"신청사","phone":"010-3213-7376","shift_label":"푸드코트","shift_type":"푸드코트"},{"name":"정순희","leader":false,"days":{"0":"10:30~15:00","1":"10:30~15:00"},"labels":{"0":"푸드코트","1":"푸드코트"},"source":"신청사","phone":"010-7205-7805","shift_label":"푸드코트","shift_type":"푸드코트"}]},{"id":10,"name":"아동보호전문기관","branch":"아동보호전문기관","address":"서울특별시 동작구 노량진로32길 79","cat":"유관기관","manager":"김유정","shifts":[{"label":"오전","start":"06:00","end":"09:00","staff":[{"name":"박노금","leader":false}]}],"lat":37.5105545,"lng":126.9569133,"weekly":[{"name":"박노금","leader":false,"days":{"1":"06:00~09:00","2":"06:00~09:00","3":"06:00~09:00","4":"06:00~09:00","5":"06:00~09:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"아동보호전문기관","phone":"010-4267-2341","shift_label":"오전","shift_type":"미화"}]},{"id":11,"name":"흑석체육센터","branch":"흑석체육센터","address":"서울특별시 동작구 현충로 73 흑석 체육센타","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"김복자","leader":false},{"name":"백두진","leader":false},{"name":"이병석","leader":true},{"name":"임현숙","leader":false}]},{"label":"오후","start":"14:30","end":"22:30","staff":[{"name":"김영국","leader":false},{"name":"나순희","leader":false},{"name":"이명자","leader":false},{"name":"이재규","leader":false}]}],"lat":37.5100566,"lng":126.963469,"weekly":[{"name":"이병석","leader":true,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"흑석체육센터","phone":"010-5323-2498","shift_label":"오전","shift_type":"미화"},{"name":"김복자","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"흑석체육센터","phone":"010-7458-0284","shift_label":"오전","shift_type":"미화"},{"name":"백두진","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"흑석체육센터","phone":"010-6777-7308","shift_label":"오전","shift_type":"미화"},{"name":"임현숙","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"흑석체육센터","phone":"010-5160-3144","shift_label":"오전","shift_type":"미화"},{"name":"김영국","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오후"},"source":"흑석체육센터","phone":"010-9001-5735","shift_label":"오후","shift_type":"미화"},{"name":"나순희","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오후"},"source":"흑석체육센터","phone":"010-9450-5392","shift_label":"오후","shift_type":"미화"},{"name":"이명자","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오후"},"source":"흑석체육센터","phone":"010-4057-9885","shift_label":"오후","shift_type":"미화"},{"name":"이재규","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오후"},"source":"흑석체육센터","phone":"010-7310-2233","shift_label":"오후","shift_type":"미화"}]},{"id":12,"name":"노량진청사","branch":"노량진청사","address":"서울특별시 동작구 장승배기로 161","cat":"유관기관","manager":"김유정","shifts":[{"label":"오전","start":"06:30","end":"13:30","staff":[{"name":"김홍순","leader":false},{"name":"오정숙","leader":false},{"name":"윤선동","leader":false},{"name":"이순옥","leader":false},{"name":"이영숙","leader":false},{"name":"이영재","leader":true},{"name":"임영숙","leader":false},{"name":"조영님","leader":false},{"name":"조은희","leader":false}]},{"label":"오후","start":"13:00","end":"18:00","staff":[{"name":"김혜영","leader":false},{"name":"류인용","leader":false},{"name":"홍명순","leader":false}]}],"lat":37.5124129,"lng":126.9395452,"weekly":[{"name":"이영재","leader":true,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-3755-8304","shift_label":"오전","shift_type":"미화"},{"name":"김홍순","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-3181-8836","shift_label":"오전","shift_type":"미화"},{"name":"오정숙","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-9058-5410","shift_label":"오전","shift_type":"미화"},{"name":"윤선동","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-3171-3854","shift_label":"오전","shift_type":"미화"},{"name":"이순옥","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-8864-4247","shift_label":"오전","shift_type":"미화"},{"name":"이영숙","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-7682-7768","shift_label":"오전","shift_type":"미화"},{"name":"임영숙","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-5470-3838","shift_label":"오전","shift_type":"미화"},{"name":"조영님","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-5291-4121","shift_label":"오전","shift_type":"미화"},{"name":"조은희","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-2827-6134","shift_label":"오전","shift_type":"미화"},{"name":"김혜영","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"노량진청사","phone":"010-8257-3300","shift_label":"오후","shift_type":"미화"},{"name":"류인용","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"노량진청사","phone":"010-2653-7373","shift_label":"오후","shift_type":"미화"},{"name":"홍명순","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"노량진청사","phone":"010-9054-6387","shift_label":"오후","shift_type":"미화"}]},{"id":13,"name":"동작수학놀이터 및 힐링센터","branch":"동작수학놀이터 및 힐링센터","address":"서울특별시 동작구 사당로17길 4 2층","cat":"유관기관","manager":"정성현","shifts":[{"label":"오전","start":"06:30","end":"11:00","staff":[{"name":"최연숙","leader":false}]}],"lat":37.4835896,"lng":126.9746697,"weekly":[{"name":"최연숙","leader":false,"days":{"2":"06:30~11:00","3":"06:30~11:00","4":"06:30~11:00","5":"06:30~11:00","6":"06:30~11:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작수학놀이터 및 힐링센터","phone":"010-5524-8228","shift_label":"오전","shift_type":"미화"}]},{"id":14,"name":"동작아트갤러리","branch":"동작아트갤러리","address":"서울특별시 동작구 보라매로5길 28-1 동작아트갤러리","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"06:30","end":"10:30","staff":[{"name":"왕자순","leader":false}]}],"lat":37.4937925,"lng":126.9231084,"weekly":[{"name":"왕자순","leader":false,"days":{"2":"06:30~10:30","3":"06:30~10:30","4":"06:30~10:30","5":"06:30~10:30","6":"06:30~10:30"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작아트갤러리","phone":"010-9138-3027","shift_label":"오전","shift_type":"미화"}]},{"id":15,"name":"상도2동주민센터","branch":"상도2동주민센터","address":"서울특별시 동작구 상도로 211 (상도2동 25-48)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"06:30","end":"09:30","staff":[{"name":"김미순","leader":false}]}],"lat":37.505469,"lng":126.9423108,"weekly":[{"name":"김미순","leader":false,"days":{"1":"06:30~09:30","2":"06:30~09:30","3":"06:30~09:30","4":"06:30~09:30","5":"06:30~09:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"상도2동주민센터","phone":"010-3863-3534","shift_label":"오전","shift_type":"미화"}]},{"id":16,"name":"까망돌 도서관","branch":"까망돌 도서관","address":"서울특별시 동작구 서달로 129","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"16:00","staff":[{"name":"김영숙","leader":false},{"name":"여영화","leader":false},{"name":"권명숙","leader":false},{"name":"김길환","leader":true},{"name":"김옥희","leader":false},{"name":"이경순","leader":false}]},{"label":"오후","start":"16:00","end":"21:00","staff":[{"name":"윤대섭","leader":false}]}],"lat":37.5051202,"lng":126.960611,"weekly":[{"name":"김길환","leader":true,"days":{"2":"07:00~16:00","3":"07:00~16:00","4":"07:00~16:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"까망돌 도서관","phone":"010-2223-7158","shift_label":"오전","shift_type":"미화"},{"name":"권명숙","leader":false,"days":{"5":"07:00~16:00","6":"07:00~16:00","0":"07:00~16:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"까망돌 도서관","phone":"010-2548-5091","shift_label":"오전","shift_type":"미화"},{"name":"김영숙","leader":false,"days":{"2":"07:00~16:00","3":"07:00~16:00","4":"07:00~16:00","5":"07:00~16:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전"},"source":"까망돌 도서관","phone":"010-5189-0545","shift_label":"오전","shift_type":"미화"},{"name":"김옥희","leader":false,"days":{"3":"07:00~16:00","6":"07:00~16:00","0":"07:00~16:00"},"labels":{"3":"오전","6":"오전","0":"오전"},"source":"까망돌 도서관","phone":"010-5217-6176","shift_label":"오전","shift_type":"미화"},{"name":"여영화","leader":false,"days":{"5":"07:00~16:00","6":"07:00~16:00","0":"07:00~16:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"까망돌 도서관","phone":"010-7118-6322","shift_label":"오전","shift_type":"미화"},{"name":"이경순","leader":false,"days":{"2":"07:00~16:00","3":"07:00~16:00","4":"07:00~16:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"까망돌 도서관","phone":"010-8700-9077","shift_label":"오전","shift_type":"미화"},{"name":"윤대섭","leader":false,"days":{"2":"16:00~21:00","3":"16:00~21:00","4":"16:00~21:00","5":"16:00~21:00","6":"16:00~21:00","0":"16:00~21:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"까망돌 도서관","phone":"010-6455-1076","shift_label":"오후","shift_type":"미화"}]},{"id":17,"name":"다울작은도서관","branch":"다울작은도서관","address":"서울특별시 동작구 사당로20길 132","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"12:00","staff":[{"name":"손금녀","leader":false}]}],"lat":37.4788904,"lng":126.973255,"weekly":[{"name":"손금녀","leader":false,"days":{"2":"07:00~12:00","3":"07:00~12:00","4":"07:00~12:00","5":"07:00~12:00","6":"07:00~12:00","0":"07:00~12:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"다울작은도서관","phone":"010-2701-0484","shift_label":"오전","shift_type":"미화"}]},{"id":18,"name":"대방어린이도서관","branch":"대방어린이도서관","address":"서울특별시 동작구 대방동길 55","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"12:00","staff":[{"name":"송수란","leader":false}]}],"lat":37.5030271,"lng":126.9252319,"weekly":[{"name":"송수란","leader":false,"days":{"2":"07:00~12:00","3":"07:00~12:00","4":"07:00~12:00","5":"07:00~12:00","6":"07:00~12:00","0":"07:00~12:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"대방어린이도서관","phone":"010-3886-6947","shift_label":"오전","shift_type":"미화"}]},{"id":19,"name":"동작구보건소","branch":"동작구보건소","address":"서울특별시 동작구 노량진동 328 동작구 보건소 건강관리청","cat":"유관기관","manager":"김유정","shifts":[{"label":"오전","start":"07:00","end":"12:00","staff":[{"name":"박춘자","leader":false}]},{"label":"오전","start":"07:00","end":"13:00","staff":[{"name":"김양옥","leader":false},{"name":"김창열","leader":true},{"name":"임영하","leader":false}]},{"label":"오후","start":"13:00","end":"18:00","staff":[{"name":"김화진","leader":false},{"name":"이충환","leader":false}]}],"lat":37.5056892,"lng":126.9404547,"weekly":[{"name":"김창열","leader":true,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구보건소","phone":"010-5205-8351","shift_label":"오전","shift_type":"미화"},{"name":"김양옥","leader":false,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구보건소","phone":"010-5069-5278","shift_label":"오전","shift_type":"미화"},{"name":"박춘자","leader":false,"days":{"1":"07:00~12:00","2":"07:00~12:00","3":"07:00~12:00","4":"07:00~12:00","5":"07:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구보건소","phone":"010-9315-0684","shift_label":"오전","shift_type":"미화"},{"name":"임영하","leader":false,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구보건소","phone":"010-6743-3699","shift_label":"오전","shift_type":"미화"},{"name":"김화진","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작구보건소","phone":"010-7509-9890","shift_label":"오후","shift_type":"미화"},{"name":"이충환","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작구보건소","phone":"010-6788-3541","shift_label":"오후","shift_type":"미화"}]},{"id":20,"name":"동작문화복지센터","branch":"동작문화복지센터","address":"서울특별시 동작구 장승배기로 70 동작문화복지센타","cat":"유관기관","manager":"김유정","shifts":[{"label":"오전","start":"07:00","end":"13:00","staff":[{"name":"권정자","leader":false},{"name":"유제환","leader":true},{"name":"장종","leader":false},{"name":"조송희","leader":false}]},{"label":"오후","start":"13:00","end":"18:00","staff":[{"name":"강옥이","leader":false},{"name":"허찬","leader":false}]}],"lat":37.504417115156684,"lng":126.94105600444067,"weekly":[{"name":"유제환","leader":true,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작문화복지센터","phone":"010-2369-1051","shift_label":"오전","shift_type":"미화"},{"name":"권정자","leader":false,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작문화복지센터","phone":"010-8988-2669","shift_label":"오전","shift_type":"미화"},{"name":"장종","leader":false,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작문화복지센터","phone":"010-4768-3025","shift_label":"오전","shift_type":"미화"},{"name":"조송희","leader":false,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작문화복지센터","phone":"010-5495-3542","shift_label":"오전","shift_type":"미화"},{"name":"강옥이","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작문화복지센터","phone":"010-5055-7072","shift_label":"오후","shift_type":"미화"},{"name":"허찬","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작문화복지센터","phone":"010-5636-6442","shift_label":"오후","shift_type":"미화"}]},{"id":21,"name":"동작샘터도서관","branch":"동작샘터도서관","address":"서울특별시 동작구 동작대로29길 63-26","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"12:00","staff":[{"name":"고부돌","leader":false}]}],"lat":37.4883795,"lng":126.9775849,"weekly":[{"name":"고부돌","leader":false,"days":{"2":"07:00~12:00","3":"07:00~12:00","4":"07:00~12:00","5":"07:00~12:00","6":"07:00~12:00","0":"07:00~12:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"동작샘터도서관","phone":"010-6385-7566","shift_label":"오전","shift_type":"미화"}]},{"id":22,"name":"동작영어마루","branch":"동작영어마루","address":"서울특별시 동작구 장승배기로16길 98","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"16:00","staff":[{"name":"권광옥","leader":false},{"name":"임향희","leader":false}]}],"lat":37.5092029,"lng":126.9434364,"weekly":[{"name":"권광옥","leader":false,"days":{"5":"07:00~16:00","6":"07:00~16:00","0":"07:00~16:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"동작영어마루","phone":"010-9690-1180","shift_label":"오전","shift_type":"미화"},{"name":"임향희","leader":false,"days":{"2":"07:00~16:00","3":"07:00~16:00","4":"07:00~16:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"동작영어마루","phone":"010-3257-5517","shift_label":"오전","shift_type":"미화"}]},{"id":23,"name":"동작입시지원센터","branch":"동작입시지원센터","address":"서울특별시 동작구 신대방1다길 19 4층","cat":"유관기관","manager":"정성현","shifts":[{"label":"오전","start":"07:00","end":"14:00","staff":[{"name":"조순애","leader":false},{"name":"최화숙","leader":false}]}],"lat":37.4861085,"lng":126.905906,"weekly":[{"name":"조순애","leader":false,"days":{"2":"07:00~14:00","3":"07:00~14:00","4":"07:00~14:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"동작입시지원센터","phone":"010-4768-4253","shift_label":"오전","shift_type":"미화"},{"name":"최화숙","leader":false,"days":{"5":"07:00~14:00","6":"07:00~14:00","0":"07:00~14:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"동작입시지원센터","phone":"010-3100-2041","shift_label":"오전","shift_type":"미화"}]},{"id":24,"name":"사육신역사관","branch":"사육신역사관","address":"서울특별시 동작구 노량진로 191","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"12:00","staff":[{"name":"이순규","leader":false}]}],"lat":37.5142249,"lng":126.94817,"weekly":[{"name":"이순규","leader":false,"days":{"2":"07:00~12:00","3":"07:00~12:00","4":"07:00~12:00","5":"07:00~12:00","6":"07:00~12:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"사육신역사관","phone":"010-9721-9991","shift_label":"오전","shift_type":"미화"}]},{"id":25,"name":"상도1동주민센터","branch":"상도1동주민센터","address":"서울특별시 동작구 상도로53길 9(상도동 437)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:00","end":"10:00","staff":[{"name":"김춘경","leader":false}]}],"lat":37.4981099,"lng":126.9530915,"weekly":[{"name":"김춘경","leader":false,"days":{"1":"07:00~10:00","2":"07:00~10:00","3":"07:00~10:00","4":"07:00~10:00","5":"07:00~10:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"상도1동주민센터","phone":"010-3662-7107","shift_label":"오전","shift_type":"미화"}]},{"id":26,"name":"신대방2동주민센터","branch":"신대방2동주민센터","address":"서울특별시 동작구 여의대방로24길 76(신대방동 723)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:00","end":"10:00","staff":[{"name":"오금숙","leader":false},{"name":"홍은혜","leader":false}]}],"lat":37.498417,"lng":126.9245435,"weekly":[{"name":"오금숙","leader":false,"days":{"1":"07:00~10:00","2":"07:00~10:00","3":"07:00~10:00","4":"07:00~10:00","5":"07:00~10:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신대방2동주민센터","phone":"010-2718-6908","shift_label":"오전","shift_type":"미화"},{"name":"홍은혜","leader":false,"days":{"1":"07:00~10:00","2":"07:00~10:00","3":"07:00~10:00","4":"07:00~10:00","5":"07:00~10:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신대방2동주민센터","phone":"010-9147-9296","shift_label":"오전","shift_type":"미화"}]},{"id":27,"name":"신대방누리","branch":"신대방누리","address":"서울특별시 동작구 신대방1다길 19","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"16:00","staff":[{"name":"안복란","leader":false},{"name":"이혜경","leader":true}]}],"lat":37.4861085,"lng":126.905906,"weekly":[{"name":"이혜경","leader":true,"days":{"2":"07:00~16:00","3":"07:00~16:00","4":"07:00~16:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"신대방누리","phone":"010-7388-4860","shift_label":"오전","shift_type":"미화"},{"name":"안복란","leader":false,"days":{"5":"07:00~16:00","6":"07:00~16:00","0":"07:00~16:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"신대방누리","phone":"010-7158-0715","shift_label":"오전","shift_type":"미화"}]},{"id":28,"name":"약수도서관","branch":"약수도서관","address":"서울특별시 동작구 양녕로22바길 64","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"16:00","staff":[{"name":"김방실","leader":false},{"name":"유감순","leader":false}]}],"lat":37.4978813,"lng":126.9474508,"weekly":[{"name":"김방실","leader":false,"days":{"2":"07:00~16:00","3":"07:00~16:00","4":"07:00~16:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"약수도서관","phone":"010-5660-2202","shift_label":"오전","shift_type":"미화"},{"name":"유감순","leader":false,"days":{"5":"07:00~16:00","6":"07:00~16:00","0":"07:00~16:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"약수도서관","phone":"010-5412-4951","shift_label":"오전","shift_type":"미화"}]},{"id":29,"name":"흑석동주민센터","branch":"흑석동주민센터","address":"서울특별시 동작구 흑석한강로 11 (흑석동 335-2)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:00","end":"12:30","staff":[{"name":"강길정","leader":false}]}],"lat":37.5057909,"lng":126.9666428,"weekly":[{"name":"강길정","leader":false,"days":{"1":"07:00~12:30","2":"07:00~12:30","3":"07:00~12:30","4":"07:00~12:30","5":"07:00~12:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"흑석동주민센터","phone":"010-9266-3678","shift_label":"오전","shift_type":"미화"}]},{"id":30,"name":"김영삼도서관","branch":"김영삼도서관","address":"서울특별시 동작구 매봉로 2","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:30","end":"16:30","staff":[{"name":"권영순","leader":false},{"name":"김영희","leader":true},{"name":"김정순","leader":false},{"name":"박연옥","leader":false},{"name":"박하순","leader":false},{"name":"이순자","leader":false},{"name":"이재만","leader":false},{"name":"이향손","leader":false},{"name":"정명자","leader":false},{"name":"정향남","leader":false}]},{"label":"오전","start":"08:00","end":"17:00","staff":[{"name":"소재춘","leader":false},{"name":"윤우중","leader":true},{"name":"이홍범","leader":false}]},{"label":"오후","start":"13:00","end":"22:00","staff":[{"name":"조규표","leader":false}]}],"lat":37.5054078,"lng":126.9499279,"weekly":[{"name":"김영희","leader":true,"days":{"2":"07:30~16:30","3":"07:30~16:30","4":"07:30~16:30"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"김영삼도서관","phone":"010-5302-4841","shift_label":"오전","shift_type":"미화"},{"name":"윤우중","leader":true,"days":{"5":"08:00~17:00","6":"08:00~17:00","0":"08:00~17:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"김영삼도서관","phone":"010-3382-2788","shift_label":"오전","shift_type":"주차"},{"name":"권영순","leader":false,"days":{"2":"07:30~16:30","3":"07:30~16:30","4":"07:30~16:30"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"김영삼도서관","phone":"010-5126-2566","shift_label":"오전","shift_type":"미화"},{"name":"김정순","leader":false,"days":{"5":"07:30~16:30","6":"07:30~16:30","0":"07:30~16:30"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"김영삼도서관","phone":"010-4166-6207","shift_label":"오전","shift_type":"미화"},{"name":"박연옥","leader":false,"days":{"5":"07:30~16:30","6":"07:30~16:30","0":"07:30~16:30"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"김영삼도서관","phone":"010-7153-0734","shift_label":"오전","shift_type":"미화"},{"name":"박하순","leader":false,"days":{"5":"07:30~16:30","6":"07:30~16:30","0":"07:30~16:30"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"김영삼도서관","phone":"010-9144-6282","shift_label":"오전","shift_type":"미화"},{"name":"소재춘","leader":false,"days":{"5":"08:00~17:00","6":"08:00~17:00","0":"08:00~17:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"김영삼도서관","phone":"010-6268-2419","shift_label":"오전","shift_type":"주차"},{"name":"이순자","leader":false,"days":{"5":"07:30~16:30","6":"07:30~16:30","0":"07:30~16:30"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"김영삼도서관","phone":"010-3100-1740","shift_label":"오전","shift_type":"미화"},{"name":"이재만","leader":false,"days":{"2":"07:30~16:30","3":"07:30~16:30","4":"07:30~16:30"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"김영삼도서관","phone":"010-5149-8116","shift_label":"오전","shift_type":"미화"},{"name":"이향손","leader":false,"days":{"5":"07:30~16:30","6":"07:30~16:30","0":"07:30~16:30"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"김영삼도서관","phone":"010-9359-3667","shift_label":"오전","shift_type":"미화"},{"name":"이홍범","leader":false,"days":{"2":"08:00~17:00","3":"08:00~17:00","4":"08:00~17:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"김영삼도서관","phone":"010-2874-5505","shift_label":"오전","shift_type":"주차"},{"name":"정명자","leader":false,"days":{"2":"07:30~16:30","3":"07:30~16:30","4":"07:30~16:30"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"김영삼도서관","phone":"010-3179-5713","shift_label":"오전","shift_type":"미화"},{"name":"정향남","leader":false,"days":{"2":"07:30~16:30","3":"07:30~16:30","4":"07:30~16:30"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"김영삼도서관","phone":"010-7735-0311","shift_label":"오전","shift_type":"미화"},{"name":"조규표","leader":false,"days":{"2":"13:00~22:00","3":"13:00~22:00","4":"13:00~22:00"},"labels":{"2":"오후","3":"오후","4":"오후"},"source":"김영삼도서관","phone":"010-3808-0060","shift_label":"오후","shift_type":"주차"}]},{"id":31,"name":"노량진2동주민센터","branch":"노량진2동주민센터","address":"서울특별시 동작구 장승배기로19길 48 (노량진2동 302-97)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"최숙희","leader":false}]}],"lat":37.5085316,"lng":126.9373592,"weekly":[{"name":"최숙희","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진2동주민센터","phone":"010-7196-1678","shift_label":"오전","shift_type":"미화"}]},{"id":32,"name":"대방동주민센터","branch":"대방동주민센터","address":"서울특별시 동작구 여의대방로44길 20(대방동 501-2)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"장선자","leader":false}]}],"lat":37.508158,"lng":126.9263549,"weekly":[{"name":"장선자","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"대방동주민센터","phone":"010-2545-7292","shift_label":"오전","shift_type":"미화"}]},{"id":33,"name":"사당1동주민센터","branch":"사당1동주민센터","address":"서울특별시 동작구 동작대로17길 28(사당1동 1004-52)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"김홍유","leader":false},{"name":"민옥희","leader":false}]}],"lat":37.4830766,"lng":126.9787824,"weekly":[{"name":"김홍유","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당1동주민센터","phone":"010-5380-7602","shift_label":"오전","shift_type":"미화"},{"name":"민옥희","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당1동주민센터","phone":"010-5299-4352","shift_label":"오전","shift_type":"미화"}]},{"id":34,"name":"사당2동주민센터","branch":"사당2동주민센터","address":"서울특별시 동작구 동작대로29길 52(사당동)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"이강순","leader":false}]}],"lat":37.4887015,"lng":126.9792511,"weekly":[{"name":"이강순","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당2동주민센터","phone":"010-5796-0889","shift_label":"오전","shift_type":"미화"}]},{"id":35,"name":"사당3동주민센터","branch":"사당3동주민센터","address":"서울특별시 동작구 사당로17길 86","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"13:00","staff":[{"name":"김봉숙","leader":false}]}],"lat":37.4866368,"lng":126.9720915,"weekly":[{"name":"김봉숙","leader":false,"days":{"1":"07:30~13:00","2":"07:30~13:00","3":"07:30~13:00","4":"07:30~13:00","5":"07:30~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당3동주민센터","phone":"010-3321-7128","shift_label":"오전","shift_type":"미화"}]},{"id":36,"name":"사당4동주민센터","branch":"사당4동주민센터","address":"서울 동작구 사당로20나길 3","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"13:00","staff":[{"name":"박지수","leader":false}]}],"lat":37.4814855,"lng":126.9754025,"weekly":[{"name":"박지수","leader":false,"days":{"1":"07:30~13:00","2":"07:30~13:00","3":"07:30~13:00","4":"07:30~13:00","5":"07:30~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당4동주민센터","phone":"010-5419-7641","shift_label":"오전","shift_type":"미화"}]},{"id":37,"name":"상도3동주민센터","branch":"상도3동주민센터","address":"서울특별시 동작구 성대로2길 11(상도3동 315-37)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"윤경자","leader":false}]}],"lat":37.4991276,"lng":126.9313945,"weekly":[{"name":"윤경자","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"상도3동주민센터","phone":"010-8882-1054","shift_label":"오전","shift_type":"미화"}]},{"id":38,"name":"상도4동주민센터","branch":"상도4동주민센터","address":"서울특별시 동작구 양녕로27길 44(상도동 202-58)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"박순화","leader":false},{"name":"이명희","leader":false}]}],"lat":37.4993993,"lng":126.9414102,"weekly":[{"name":"박순화","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"상도4동주민센터","phone":"010-4548-6957","shift_label":"오전","shift_type":"미화"},{"name":"이명희","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"상도4동주민센터","phone":"010-6213-0712","shift_label":"오전","shift_type":"미화"}]},{"id":39,"name":"신대방1동주민센터","branch":"신대방1동주민센터","address":"서울특별시 동작구 신대방길72(신대방1동 604-8)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"안성자","leader":false}]}],"lat":37.4889584,"lng":126.9100645,"weekly":[{"name":"안성자","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신대방1동주민센터","phone":"010-3661-0770","shift_label":"오전","shift_type":"미화"}]},{"id":40,"name":"사당5동주민센터","branch":"사당5동주민센터","address":"서울특별시 동작구 사당로2가길 219(사당5동 228-11)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"08:00","end":"11:00","staff":[{"name":"박정숙","leader":false}]}],"lat":37.4846239,"lng":126.971602,"weekly":[{"name":"박정숙","leader":false,"days":{"1":"08:00~11:00","2":"08:00~11:00","3":"08:00~11:00","4":"08:00~11:00","5":"08:00~11:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당5동주민센터","phone":"010-9278-8300","shift_label":"오전","shift_type":"미화"}]},{"id":41,"name":"상도어울마당","branch":"상도어울마당","address":"서울특별시 동작구 성대로 180 지하 1층","cat":"유관기관","manager":"정성현","shifts":[{"label":"오전","start":"08:00","end":"13:00","staff":[{"name":"공순임","leader":false}]}],"lat":37.4992555,"lng":126.9403722,"weekly":[{"name":"공순임","leader":false,"days":{"2":"08:00~13:00","3":"08:00~13:00","4":"08:00~13:00","5":"08:00~13:00","6":"08:00~13:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"상도어울마당","phone":"010-6227-0138","shift_label":"오전","shift_type":"미화"}]},{"id":42,"name":"양녕청년주택","branch":"양녕청년주택","address":"서울특별시 동작구 성대로10나길 17 양녕 청년주택 복합건물","cat":"유관기관","manager":"문지연","shifts":[{"label":"오전","start":"08:00","end":"13:00","staff":[{"name":"이경희","leader":false}]},{"label":"오후","start":"13:00","end":"18:00","staff":[{"name":"이용자","leader":false}]}],"lat":37.4968536,"lng":126.9357417,"weekly":[{"name":"이경희","leader":false,"days":{"1":"08:00~13:00","2":"08:00~13:00","3":"08:00~13:00","4":"08:00~13:00","5":"08:00~13:00","6":"08:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"양녕청년주택","phone":"010-3230-2596","shift_label":"오전","shift_type":"미화"},{"name":"이용자","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00","6":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오후"},"source":"양녕청년주택","phone":"010-3136-5590","shift_label":"오후","shift_type":"미화"}]},{"id":43,"name":"신대방햇살도서관","branch":"신대방햇살도서관","address":"서울특별시 동작구 여의대방로16길 53 (신대방동) 동작구민체육센터광장앞","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"08:30","end":"11:30","staff":[{"name":"양동술","leader":false}]}],"lat":37.4947228,"lng":126.9167552,"weekly":[{"name":"양동술","leader":false,"days":{"2":"08:30~11:30","3":"08:30~11:30","4":"08:30~11:30","5":"08:30~11:30","6":"08:30~11:30","0":"08:30~11:30"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"신대방햇살도서관","phone":"010-4611-3745","shift_label":"오전","shift_type":"미화"}]},{"id":44,"name":"아이스팩재활용사업","branch":"아이스팩재활용사업","address":"서울특별시 동작구 등용로 41-5","cat":"유관기관","manager":"문지연","shifts":[{"label":"오전","start":"08:30","end":"15:30","staff":[{"name":"송재민","leader":true},{"name":"윤광섭","leader":false},{"name":"윤석란","leader":false},{"name":"지창배","leader":false},{"name":"한국희","leader":false}]}],"lat":37.5055878,"lng":126.9339338,"weekly":[{"name":"송재민","leader":true,"days":{"1":"08:30~15:30","2":"08:30~15:30","3":"08:30~15:30","4":"08:30~15:30","5":"08:30~15:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"아이스팩재활용사업","phone":"010-3253-2070","shift_label":"오전","shift_type":"미화"},{"name":"윤광섭","leader":false,"days":{"1":"08:30~15:30","2":"08:30~15:30","3":"08:30~15:30","4":"08:30~15:30","5":"08:30~15:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"아이스팩재활용사업","phone":"010-3714-9316","shift_label":"오전","shift_type":"미화"},{"name":"윤석란","leader":false,"days":{"1":"08:30~15:30","2":"08:30~15:30","3":"08:30~15:30","4":"08:30~15:30","5":"08:30~15:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"아이스팩재활용사업","phone":"010-4058-7561","shift_label":"오전","shift_type":"미화"},{"name":"지창배","leader":false,"days":{"1":"08:30~15:30","2":"08:30~15:30","3":"08:30~15:30","4":"08:30~15:30","5":"08:30~15:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"아이스팩재활용사업","phone":"010-4213-2922","shift_label":"오전","shift_type":"미화"},{"name":"한국희","leader":false,"days":{"1":"08:30~15:30","2":"08:30~15:30","3":"08:30~15:30","4":"08:30~15:30","5":"08:30~15:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"아이스팩재활용사업","phone":"010-8523-7688","shift_label":"오전","shift_type":"미화"}]},{"id":45,"name":"동작반려견공원","branch":"동작반려견공원","address":"서울특별시 동작구 노량진동 24-10","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"09:30","end":"20:30","staff":[{"name":"김경주","leader":false},{"name":"윤석우","leader":false}]}],"lat":37.5134684,"lng":126.9348257,"weekly":[{"name":"김경주","leader":false,"days":{"2":"09:30~20:30","3":"09:30~20:30","4":"09:30~20:30","5":"09:30~20:30","6":"09:30~20:30","0":"09:30~20:30"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"동작반려견공원","phone":"010-5255-4610","shift_label":"오전","shift_type":"미화"},{"name":"윤석우","leader":false,"days":{"2":"09:30~20:30","3":"09:30~20:30","4":"09:30~20:30","5":"09:30~20:30","6":"09:30~20:30","0":"09:30~20:30"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"동작반려견공원","phone":"010-7930-6298","shift_label":"오전","shift_type":"미화"}]},{"id":46,"name":"본동어울마당아트홀","branch":"본동어울마당아트홀","address":"서울특별시 동작구 노량진로32길 79 지하1층","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"11:00","end":"16:00","staff":[{"name":"진순옥","leader":false}]}],"lat":37.5105545,"lng":126.9569133,"weekly":[{"name":"진순옥","leader":false,"days":{"2":"11:00~16:00","3":"11:00~16:00","4":"11:00~16:00","5":"11:00~16:00","6":"11:00~16:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"본동어울마당아트홀","phone":"010-2338-6374","shift_label":"오전","shift_type":"미화"}]},{"id":47,"name":"노량진1동주민센터","branch":"노량진1동주민센터","address":"서울특별시 동작구 노량진로 190, 3층·4층(노량진동 333)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오후","start":"12:30","end":"15:30","staff":[{"name":"강금임","leader":false}]}],"lat":37.5129588,"lng":126.9468626,"weekly":[{"name":"강금임","leader":false,"days":{"1":"12:30~15:30","2":"12:30~15:30","3":"12:30~15:30","4":"12:30~15:30","5":"12:30~15:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"노량진1동주민센터","phone":"010-5290-2194","shift_label":"오후","shift_type":"미화"}]},{"id":48,"name":"노량진1동 청소년독서실","branch":"노량진1동 청소년독서실","address":"서울특별시 동작구 만양로3길 8","cat":"시설공단","manager":"문지연","shifts":[{"label":"오후","start":"16:00","end":"23:00","staff":[{"name":"안정옥","leader":false},{"name":"이승자","leader":false}]}],"lat":37.5078124,"lng":126.9473055,"weekly":[{"name":"안정옥","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","0":"오후"},"source":"노량진1동 청소년독서실","phone":"010-3338-1959","shift_label":"오후","shift_type":"총무"},{"name":"이승자","leader":false,"days":{"4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00"},"labels":{"4":"오후","5":"오후","6":"오후"},"source":"노량진1동 청소년독서실","phone":"010-3063-8764","shift_label":"오후","shift_type":"총무"}]},{"id":49,"name":"사당3동 청소년독서실","branch":"사당3동 청소년독서실","address":"서울특별시 동작구 사당로13길 50","cat":"시설공단","manager":"문지연","shifts":[{"label":"오후","start":"16:00","end":"23:00","staff":[{"name":"계영일","leader":false},{"name":"김명자","leader":false}]}],"lat":37.4862467,"lng":126.9716709,"weekly":[{"name":"계영일","leader":false,"days":{"4":"16:00~23:00","5":"16:00~23:00","0":"16:00~23:00"},"labels":{"4":"오후","5":"오후","0":"오후"},"source":"사당3동 청소년독서실","phone":"010-2067-5977","shift_label":"오후","shift_type":"총무"},{"name":"김명자","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","6":"16:00~23:00"},"labels":{"2":"오후","3":"오후","6":"오후"},"source":"사당3동 청소년독서실","phone":"010-2179-1119","shift_label":"오후","shift_type":"총무"}]},{"id":50,"name":"사당4동 청소년독서실","branch":"사당4동 청소년독서실","address":"서울특별시 동작구 사당로22나길 71","cat":"시설공단","manager":"문지연","shifts":[{"label":"오후","start":"16:00","end":"23:00","staff":[{"name":"노승희","leader":false},{"name":"정연희","leader":false}]}],"lat":37.4804858,"lng":126.9731027,"weekly":[{"name":"노승희","leader":false,"days":{"4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"4":"오후","5":"오후","6":"오후","0":"오후"},"source":"사당4동 청소년독서실","phone":"010-6384-4065","shift_label":"오후","shift_type":"총무"},{"name":"정연희","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00"},"labels":{"2":"오후","3":"오후"},"source":"사당4동 청소년독서실","phone":"010-3702-2536","shift_label":"오후","shift_type":"총무"}]},{"id":51,"name":"상도3동 청소년독서실","branch":"상도3동 청소년독서실","address":"서울특별시 동작구 국사봉2나길 25 구립상도3동청소년독서실","cat":"시설공단","manager":"문지연","shifts":[{"label":"오후","start":"16:00","end":"23:00","staff":[{"name":"김경일","leader":false},{"name":"함진수","leader":false}]}],"lat":37.4970089,"lng":126.9300158,"weekly":[{"name":"김경일","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","0":"오후"},"source":"상도3동 청소년독서실","phone":"010-8642-6140","shift_label":"오후","shift_type":"총무"},{"name":"함진수","leader":false,"days":{"4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00"},"labels":{"4":"오후","5":"오후","6":"오후"},"source":"상도3동 청소년독서실","phone":"010-9834-5877","shift_label":"오후","shift_type":"총무"}]},{"id":52,"name":"상도4동 청소년독서실","branch":"상도4동 청소년독서실","address":"서울특별시 동작구 성대로11길 67","cat":"시설공단","manager":"문지연","shifts":[{"label":"오후","start":"16:00","end":"23:00","staff":[{"name":"김남애","leader":false},{"name":"유용옥","leader":false}]}],"lat":37.5001846,"lng":126.9337164,"weekly":[{"name":"김남애","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00"},"labels":{"2":"오후","3":"오후"},"source":"상도4동 청소년독서실","phone":"010-6278-6567","shift_label":"오후","shift_type":"총무"},{"name":"유용옥","leader":false,"days":{"4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"4":"오후","5":"오후","6":"오후","0":"오후"},"source":"상도4동 청소년독서실","phone":"010-3250-3124","shift_label":"오후","shift_type":"총무"}]},{"id":53,"name":"흑석 청소년독서실","branch":"흑석 청소년독서실","address":"서울특별시 동작구 서달로13길 17 3층","cat":"시설공단","manager":"문지연","shifts":[{"label":"오후","start":"16:00","end":"23:00","staff":[{"name":"공용표","leader":false},{"name":"최남숙","leader":false}]}],"lat":37.5085051,"lng":126.9619383,"weekly":[{"name":"공용표","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","0":"오후"},"source":"흑석 청소년독서실","phone":"010-5923-0911","shift_label":"오후","shift_type":"총무"},{"name":"최남숙","leader":false,"days":{"4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00"},"labels":{"4":"오후","5":"오후","6":"오후"},"source":"흑석 청소년독서실","phone":"010-5891-7580","shift_label":"오후","shift_type":"총무"}]},{"id":54,"name":"현충배드민턴장","branch":"현충배드민턴장","address":"서울특별시 동작구 서달로2길 8","cat":"시설공단","manager":"문지연","shifts":[{"label":"","start":"미정","end":"미정","staff":[{"name":"오세희","leader":true},{"name":"유승희","leader":false},{"name":"전재우","leader":false}]}],"lat":37.4996094,"lng":126.9616024,"weekly":[{"name":"오세희","leader":true,"days":{"0":"미정~미정","1":"미정~미정","2":"미정~미정","3":"미정~미정","4":"미정~미정","5":"미정~미정","6":"미정~미정"},"labels":{"0":"","1":"","2":"","3":"","4":"","5":"","6":""},"source":"현충배드민턴장","phone":"010-4441-6693","shift_label":"","shift_type":"미화"},{"name":"유승희","leader":false,"days":{"0":"미정~미정","1":"미정~미정","2":"미정~미정","3":"미정~미정","4":"미정~미정","5":"미정~미정","6":"미정~미정"},"labels":{"0":"","1":"","2":"","3":"","4":"","5":"","6":""},"source":"현충배드민턴장","phone":"010-5216-1066","shift_label":"","shift_type":"미화"},{"name":"전재우","leader":false,"days":{"0":"미정~미정","1":"미정~미정","2":"미정~미정","3":"미정~미정","4":"미정~미정","5":"미정~미정","6":"미정~미정"},"labels":{"0":"","1":"","2":"","3":"","4":"","5":"","6":""},"source":"현충배드민턴장","phone":"010-8750-9505","shift_label":"","shift_type":"미화"}]}];
+const stores = [{"id":1,"name":"동작구 자원봉사센터","branch":"동작구 자원봉사센터","address":"서울특별시 동작구 만양로3길 14","cat":"유관기관","manager":"김유정","shifts":[{"label":"오전","start":"06:00","end":"09:30","staff":[{"name":"최순연","leader":false}]}],"lat":37.5080372,"lng":126.9469689,"weekly":[{"name":"최순연","leader":false,"days":{"1":"06:00~09:30","2":"06:00~09:30","3":"06:00~09:30","4":"06:00~09:30","5":"06:00~09:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구 자원봉사센터","phone":"010-7599-9197","shift_label":"오전","shift_type":"미화"}]},{"id":2,"name":"동작구민체육센터","branch":"동작구민체육센터","address":"서울특별시 동작구 여의대방로16길 53 동작구민체육센터","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"강병옥","leader":true},{"name":"김미옥","leader":false},{"name":"김시종","leader":false},{"name":"김옥순","leader":false},{"name":"신정자","leader":false},{"name":"조완행","leader":false}]},{"label":"오전","start":"08:00","end":"13:00","staff":[{"name":"김시종","leader":false},{"name":"홍란희","leader":false}]},{"label":"오전","start":"08:30","end":"18:00","staff":[{"name":"강병옥","leader":true},{"name":"김미옥","leader":false},{"name":"김성자","leader":false},{"name":"김시종","leader":false},{"name":"김옥순","leader":false},{"name":"조완행","leader":false}]},{"label":"오후","start":"13:00","end":"18:00","staff":[{"name":"김정화","leader":false},{"name":"송문섭","leader":false}]},{"label":"오후","start":"14:30","end":"22:30","staff":[{"name":"김성자","leader":false},{"name":"김정화","leader":false},{"name":"이중희","leader":false},{"name":"송문섭","leader":false},{"name":"홍란희","leader":false}]}],"lat":37.4947228,"lng":126.9167552,"weekly":[{"name":"김시종","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"08:30~18:00","0":"08:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"동작구민체육센터","phone":"010-5226-0747","shift_label":"오전","shift_type":"미화"},{"name":"홍란희","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","0":"08:00~13:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","0":"오전"},"source":"동작구민체육센터","phone":"010-2307-5619","shift_label":"오후","shift_type":"미화"},{"name":"김정화","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","0":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","0":"오후"},"source":"동작구민체육센터","phone":"010-5266-3153","shift_label":"오후","shift_type":"미화"},{"name":"송문섭","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","0":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","0":"오후"},"source":"동작구민체육센터","phone":"010-9050-0643","shift_label":"오후","shift_type":"미화"},{"name":"강병옥","leader":true,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"08:30~18:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작구민체육센터","phone":"010-3389-5594","shift_label":"오전","shift_type":"미화"},{"name":"김미옥","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"08:30~18:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작구민체육센터","phone":"010-4602-6618","shift_label":"오전","shift_type":"미화"},{"name":"김옥순","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"08:30~18:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작구민체육센터","phone":"010-2389-3246","shift_label":"오전","shift_type":"미화"},{"name":"신정자","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구민체육센터","phone":"010-9992-8694","shift_label":"오전","shift_type":"미화"},{"name":"조완행","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"08:30~18:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작구민체육센터","phone":"010-6400-8436","shift_label":"오전","shift_type":"미화"},{"name":"김성자","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"08:30~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오전"},"source":"동작구민체육센터","phone":"010-4925-1571","shift_label":"오후","shift_type":"미화"},{"name":"이중희","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작구민체육센터","phone":"010-6325-0616","shift_label":"오후","shift_type":"미화"}]},{"id":3,"name":"동작구시설관리공단 본부","branch":"동작구시설관리공단 본부","address":"서울 동작구 보라매로5길 35","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"09:30","staff":[{"name":"박성찬","leader":false}]}],"lat":37.4920902,"lng":126.9235082,"weekly":[{"name":"박성찬","leader":false,"days":{"1":"06:00~09:30","2":"06:00~09:30","3":"06:00~09:30","4":"06:00~09:30","5":"06:00~09:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구시설관리공단 본부","phone":"010-9913-9418","shift_label":"오전","shift_type":"미화"}]},{"id":4,"name":"동작삼일수영장","branch":"동작삼일수영장","address":"서울특별시 동작구 사당로27길 103","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"김석준","leader":false},{"name":"임지현","leader":false}]},{"label":"오전","start":"07:30","end":"15:30","staff":[{"name":"김행심","leader":true}]},{"label":"오전","start":"08:30","end":"17:30","staff":[{"name":"김만호","leader":false},{"name":"임지현","leader":false}]},{"label":"오후","start":"14:30","end":"22:30","staff":[{"name":"김만호","leader":false},{"name":"김연자","leader":false}]}],"lat":37.4873412,"lng":126.9744243,"weekly":[{"name":"김석준","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작삼일수영장","phone":"010-4917-1891","shift_label":"오전","shift_type":"미화"},{"name":"임지현","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"08:30~17:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작삼일수영장","phone":"010-5345-0985","shift_label":"오전","shift_type":"미화"},{"name":"김행심","leader":true,"days":{"1":"07:30~15:30","2":"07:30~15:30","3":"07:30~15:30","4":"07:30~15:30","5":"07:30~15:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작삼일수영장","phone":"010-4903-1187","shift_label":"오전","shift_type":"미화"},{"name":"김만호","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"08:30~17:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오전"},"source":"동작삼일수영장","phone":"010-5273-9831","shift_label":"오후","shift_type":"미화"},{"name":"김연자","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작삼일수영장","phone":"010-8757-5062","shift_label":"오후","shift_type":"미화"}]},{"id":5,"name":"사당문화회관","branch":"사당문화회관","address":"서울특별시 동작구 사당로8길 9 사당문화회관","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"김연옥","leader":false},{"name":"오순용","leader":false},{"name":"이상호","leader":false}]},{"label":"오전","start":"08:30","end":"17:30","staff":[{"name":"정정순","leader":false},{"name":"최찬수","leader":false}]},{"label":"오전","start":"09:00","end":"17:00","staff":[{"name":"김재원","leader":true}]},{"label":"오후","start":"14:30","end":"22:30","staff":[{"name":"김준임","leader":false},{"name":"정정순","leader":false},{"name":"최찬수","leader":false}]}],"lat":37.4847212,"lng":126.9696162,"weekly":[{"name":"김연옥","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당문화회관","phone":"010-4661-7367","shift_label":"오전","shift_type":"미화"},{"name":"오순용","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당문화회관","phone":"010-8420-6992","shift_label":"오전","shift_type":"미화"},{"name":"이상호","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당문화회관","phone":"010-5380-9204","shift_label":"오전","shift_type":"미화"},{"name":"김재원","leader":true,"days":{"1":"09:00~17:00","2":"09:00~17:00","3":"09:00~17:00","4":"09:00~17:00","5":"09:00~17:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당문화회관","phone":"010-3732-0180","shift_label":"오전","shift_type":"미화"},{"name":"김준임","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"사당문화회관","phone":"010-4237-1714","shift_label":"오후","shift_type":"미화"},{"name":"정정순","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"08:30~17:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오전"},"source":"사당문화회관","phone":"010-3044-7875","shift_label":"오후","shift_type":"미화"},{"name":"최찬수","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"08:30~17:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오전"},"source":"사당문화회관","phone":"010-6711-3828","shift_label":"오후","shift_type":"미화"}]},{"id":6,"name":"사당솔밭도서관","branch":"사당솔밭도서관","address":"서울특별시 동작구 솔밭로 86","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"06:00","end":"15:00","staff":[{"name":"김경순","leader":false},{"name":"이명희","leader":false},{"name":"최귀자","leader":true},{"name":"황금숙","leader":false}]}],"lat":37.4840897,"lng":126.9673874,"weekly":[{"name":"이명희","leader":false,"days":{"5":"06:00~15:00","6":"06:00~15:00","0":"06:00~15:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"사당솔밭도서관","phone":"010-6213-0712","shift_label":"오전","shift_type":"미화"},{"name":"황금숙","leader":false,"days":{"5":"06:00~15:00","6":"06:00~15:00","0":"06:00~15:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"사당솔밭도서관","phone":"010-5383-8195","shift_label":"오전","shift_type":"미화"},{"name":"김경순","leader":false,"days":{"2":"06:00~15:00","3":"06:00~15:00","4":"06:00~15:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"사당솔밭도서관","phone":"010-2581-2700","shift_label":"오전","shift_type":"미화"},{"name":"최귀자","leader":true,"days":{"2":"06:00~15:00","3":"06:00~15:00","4":"06:00~15:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"사당솔밭도서관","phone":"010-4900-8161","shift_label":"오전","shift_type":"미화"}]},{"id":7,"name":"사당종합체육관","branch":"사당종합체육관","address":"서울특별시 동작구 사당로27길 232","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"곽재동","leader":false},{"name":"서충례","leader":false},{"name":"오한순","leader":false}]},{"label":"오전","start":"08:30","end":"17:30","staff":[{"name":"곽재동","leader":false},{"name":"김재석","leader":true},{"name":"방경식","leader":false},{"name":"서충례","leader":false},{"name":"한강연","leader":false}]},{"label":"오전","start":"09:00","end":"17:00","staff":[{"name":"김재석","leader":true}]},{"label":"오후","start":"14:30","end":"22:30","staff":[{"name":"방경식","leader":false},{"name":"전명자","leader":false},{"name":"한강연","leader":false}]}],"lat":37.4928063,"lng":126.9697426,"weekly":[{"name":"김재석","leader":true,"days":{"1":"09:00~17:00","2":"09:00~17:00","3":"09:00~17:00","4":"09:00~17:00","5":"09:00~17:00","0":"08:30~17:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","0":"오전"},"source":"사당종합체육관","phone":"010-3771-2672","shift_label":"오전","shift_type":"미화"},{"name":"서충례","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","0":"08:30~17:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","0":"오전"},"source":"사당종합체육관","phone":"010-4517-6851","shift_label":"오전","shift_type":"미화"},{"name":"곽재동","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"08:30~17:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"사당종합체육관","phone":"010-3711-5358","shift_label":"오전","shift_type":"미화"},{"name":"오한순","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당종합체육관","phone":"010-9206-3956","shift_label":"오전","shift_type":"미화"},{"name":"방경식","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"08:30~17:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오전"},"source":"사당종합체육관","phone":"010-7233-9731","shift_label":"오후","shift_type":"미화"},{"name":"전명자","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"사당종합체육관","phone":"010-8630-1441","shift_label":"오후","shift_type":"미화"},{"name":"한강연","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"08:30~17:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오전"},"source":"사당종합체육관","phone":"010-5216-2017","shift_label":"오후","shift_type":"미화"}]},{"id":8,"name":"상도스포츠클럽","branch":"상도스포츠클럽","address":"서울특별시 동작구 성대로2길 11 상도4동 주민센터","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"우정옥","leader":false}]},{"label":"오전","start":"08:30","end":"17:30","staff":[{"name":"우정옥","leader":false}]},{"label":"오후","start":"14:30","end":"22:30","staff":[{"name":"김순금","leader":true}]}],"lat":37.4991276,"lng":126.9313945,"weekly":[{"name":"우정옥","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00","6":"08:30~17:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"상도스포츠클럽","phone":"010-9487-9533","shift_label":"오전","shift_type":"미화"},{"name":"김순금","leader":true,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"상도스포츠클럽","phone":"010-6517-1746","shift_label":"오후","shift_type":"미화"}]},{"id":9,"name":"신청사","branch":"신청사","address":"서울특별시 동작구 장승배기로 70","cat":"유관기관","manager":"정성현","shifts":[{"label":"오전","start":"06:00","end":"12:00","staff":[{"name":"공금선","leader":false},{"name":"김연숙","leader":false},{"name":"노연숙","leader":false},{"name":"박경심","leader":false},{"name":"박인숙","leader":false},{"name":"박정희","leader":false},{"name":"송숙자","leader":false},{"name":"송화진","leader":false},{"name":"유영애","leader":false},{"name":"이옥선","leader":false},{"name":"장재근","leader":false},{"name":"정순남","leader":false},{"name":"최진숙","leader":false},{"name":"황영숙","leader":false}]},{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"정유화","leader":true}]},{"label":"주말","start":"08:00","end":"17:00","staff":[{"name":"양순모","leader":false},{"name":"이봉준","leader":false},{"name":"정은임","leader":false}]},{"label":"푸드코트","start":"10:30","end":"15:00","staff":[{"name":"정순희","leader":false}]},{"label":"오후","start":"12:00","end":"18:00","staff":[{"name":"강경옥","leader":false},{"name":"박승자","leader":false},{"name":"이귀덕","leader":false},{"name":"이귀자","leader":false},{"name":"이상엽","leader":false},{"name":"이옥희","leader":false},{"name":"이현정","leader":false},{"name":"정계윤","leader":false},{"name":"최복수","leader":false}]},{"label":"푸드코트","start":"16:30","end":"21:00","staff":[{"name":"김옥선","leader":false},{"name":"정순희","leader":false}]}],"lat":37.5042528,"lng":126.9402905,"weekly":[{"name":"양순모","leader":false,"days":{"6":"08:00~17:00","0":"08:00~17:00"},"labels":{"6":"주말","0":"주말"},"source":"신청사","phone":"010-5008-9021","shift_label":"주말","shift_type":"미화"},{"name":"이봉준","leader":false,"days":{"6":"08:00~17:00","0":"08:00~17:00"},"labels":{"6":"주말","0":"주말"},"source":"신청사","phone":"010-9728-1848","shift_label":"주말","shift_type":"미화"},{"name":"정은임","leader":false,"days":{"6":"08:00~17:00","0":"08:00~17:00"},"labels":{"6":"주말","0":"주말"},"source":"신청사","phone":"010-4947-5486","shift_label":"주말","shift_type":"미화"},{"name":"정순희","leader":false,"days":{"1":"10:30~15:00","2":"10:30~15:00","3":"10:30~15:00","4":"10:30~15:00","5":"10:30~15:00","0":"16:30~21:00"},"labels":{"1":"푸드코트","2":"푸드코트","3":"푸드코트","4":"푸드코트","5":"푸드코트","0":"푸드코트"},"source":"신청사","phone":"010-7205-7805","shift_label":"푸드코트","shift_type":"미화"},{"name":"공금선","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-9045-0266","shift_label":"오전","shift_type":"미화"},{"name":"김연숙","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-7543-3950","shift_label":"오전","shift_type":"미화"},{"name":"노연숙","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-7292-2070","shift_label":"오전","shift_type":"미화"},{"name":"박경심","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-5720-5606","shift_label":"오전","shift_type":"미화"},{"name":"박인숙","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-2083-0783","shift_label":"오전","shift_type":"미화"},{"name":"박정희","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-2733-0497","shift_label":"오전","shift_type":"미화"},{"name":"송숙자","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-6320-7817","shift_label":"오전","shift_type":"미화"},{"name":"송화진","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-3418-3036","shift_label":"오전","shift_type":"미화"},{"name":"유영애","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-3025-8799","shift_label":"오전","shift_type":"미화"},{"name":"이옥선","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-3994-5703","shift_label":"오전","shift_type":"미화"},{"name":"장재근","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-4309-2743","shift_label":"오전","shift_type":"미화"},{"name":"정순남","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-9800-4908","shift_label":"오전","shift_type":"미화"},{"name":"정유화","leader":true,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-2489-0429","shift_label":"오전","shift_type":"미화"},{"name":"최진숙","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-3947-7050","shift_label":"오전","shift_type":"미화"},{"name":"황영숙","leader":false,"days":{"1":"06:00~12:00","2":"06:00~12:00","3":"06:00~12:00","4":"06:00~12:00","5":"06:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신청사","phone":"010-2226-2500","shift_label":"오전","shift_type":"미화"},{"name":"강경옥","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-5406-8036","shift_label":"오후","shift_type":"미화"},{"name":"박승자","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-3451-8752","shift_label":"오후","shift_type":"미화"},{"name":"이귀덕","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-9113-5966","shift_label":"오후","shift_type":"미화"},{"name":"이귀자","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-6740-7275","shift_label":"오후","shift_type":"미화"},{"name":"이상엽","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-6573-3579","shift_label":"오후","shift_type":"미화"},{"name":"이옥희","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-3123-9478","shift_label":"오후","shift_type":"미화"},{"name":"이현정","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-5294-2295","shift_label":"오후","shift_type":"미화"},{"name":"정계윤","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-5343-9648","shift_label":"오후","shift_type":"미화"},{"name":"최복수","leader":false,"days":{"1":"12:00~18:00","2":"12:00~18:00","3":"12:00~18:00","4":"12:00~18:00","5":"12:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"신청사","phone":"010-3676-4252","shift_label":"오후","shift_type":"미화"},{"name":"김옥선","leader":false,"days":{"1":"16:30~21:00","2":"16:30~21:00","3":"16:30~21:00","4":"16:30~21:00","5":"16:30~21:00","6":"16:30~21:00"},"labels":{"1":"푸드코트","2":"푸드코트","3":"푸드코트","4":"푸드코트","5":"푸드코트","6":"푸드코트"},"source":"신청사","phone":"010-3213-7376","shift_label":"푸드코트","shift_type":"미화"}]},{"id":10,"name":"아동보호전문기관","branch":"아동보호전문기관","address":"서울특별시 동작구 노량진로32길 79","cat":"유관기관","manager":"김유정","shifts":[{"label":"오전","start":"06:00","end":"09:00","staff":[{"name":"박노금","leader":false}]}],"lat":37.5105545,"lng":126.9569133,"weekly":[{"name":"박노금","leader":false,"days":{"1":"06:00~09:00","2":"06:00~09:00","3":"06:00~09:00","4":"06:00~09:00","5":"06:00~09:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"아동보호전문기관","phone":"010-4267-2341","shift_label":"오전","shift_type":"미화"}]},{"id":11,"name":"흑석체육센터","branch":"흑석체육센터","address":"서울특별시 동작구 현충로 73 흑석 체육센타","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"06:00","end":"14:00","staff":[{"name":"김복자","leader":false},{"name":"백두진","leader":false},{"name":"이병석","leader":true},{"name":"임현숙","leader":false}]},{"label":"오전","start":"08:30","end":"17:30","staff":[{"name":"김영국","leader":false},{"name":"나순희","leader":false},{"name":"이명자","leader":false},{"name":"이재규","leader":false}]},{"label":"오후","start":"14:30","end":"22:30","staff":[{"name":"김영국","leader":false},{"name":"나순희","leader":false},{"name":"이명자","leader":false},{"name":"이재규","leader":false}]}],"lat":37.5100566,"lng":126.963469,"weekly":[{"name":"김복자","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"흑석체육센터","phone":"010-7458-0284","shift_label":"오전","shift_type":"미화"},{"name":"백두진","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"흑석체육센터","phone":"010-6777-7308","shift_label":"오전","shift_type":"미화"},{"name":"이병석","leader":true,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"흑석체육센터","phone":"010-5323-2498","shift_label":"오전","shift_type":"미화"},{"name":"임현숙","leader":false,"days":{"1":"06:00~14:00","2":"06:00~14:00","3":"06:00~14:00","4":"06:00~14:00","5":"06:00~14:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"흑석체육센터","phone":"010-5160-3144","shift_label":"오전","shift_type":"미화"},{"name":"김영국","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"08:30~17:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오전"},"source":"흑석체육센터","phone":"010-9001-5735","shift_label":"오후","shift_type":"미화"},{"name":"나순희","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"08:30~17:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오전"},"source":"흑석체육센터","phone":"010-9450-5392","shift_label":"오후","shift_type":"미화"},{"name":"이명자","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"08:30~17:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오전"},"source":"흑석체육센터","phone":"010-4057-9885","shift_label":"오후","shift_type":"미화"},{"name":"이재규","leader":false,"days":{"1":"14:30~22:30","2":"14:30~22:30","3":"14:30~22:30","4":"14:30~22:30","5":"14:30~22:30","6":"08:30~17:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오전"},"source":"흑석체육센터","phone":"010-7310-2233","shift_label":"오후","shift_type":"미화"}]},{"id":12,"name":"노량진청사","branch":"노량진청사","address":"서울특별시 동작구 장승배기로 161","cat":"유관기관","manager":"김유정","shifts":[{"label":"오전","start":"06:30","end":"13:30","staff":[{"name":"김홍순","leader":false},{"name":"오정숙","leader":false},{"name":"윤선동","leader":false},{"name":"이순옥","leader":false},{"name":"이영숙","leader":false},{"name":"이영재","leader":true},{"name":"임영숙","leader":false},{"name":"조영님","leader":false},{"name":"조은희","leader":false}]},{"label":"오후","start":"13:00","end":"18:00","staff":[{"name":"김혜영","leader":false},{"name":"류인용","leader":false},{"name":"홍명순","leader":false}]}],"lat":37.5124129,"lng":126.9395452,"weekly":[{"name":"김홍순","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-3181-8836","shift_label":"오전","shift_type":"미화"},{"name":"오정숙","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-9058-5410","shift_label":"오전","shift_type":"미화"},{"name":"윤선동","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-3171-3854","shift_label":"오전","shift_type":"미화"},{"name":"이순옥","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-8864-4247","shift_label":"오전","shift_type":"미화"},{"name":"이영숙","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-7682-7768","shift_label":"오전","shift_type":"미화"},{"name":"이영재","leader":true,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-3755-8304","shift_label":"오전","shift_type":"미화"},{"name":"임영숙","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-5470-3838","shift_label":"오전","shift_type":"미화"},{"name":"조영님","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-5291-4121","shift_label":"오전","shift_type":"미화"},{"name":"조은희","leader":false,"days":{"1":"06:30~13:30","2":"06:30~13:30","3":"06:30~13:30","4":"06:30~13:30","5":"06:30~13:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진청사","phone":"010-2827-6134","shift_label":"오전","shift_type":"미화"},{"name":"김혜영","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"노량진청사","phone":"010-8257-3300","shift_label":"오후","shift_type":"미화"},{"name":"류인용","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"노량진청사","phone":"010-2653-7373","shift_label":"오후","shift_type":"미화"},{"name":"홍명순","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"노량진청사","phone":"010-9054-6387","shift_label":"오후","shift_type":"미화"}]},{"id":13,"name":"동작수학놀이터 및 힐링센터","branch":"동작수학놀이터 및 힐링센터","address":"서울특별시 동작구 사당로17길 4 2층","cat":"유관기관","manager":"정성현","shifts":[{"label":"오전","start":"06:30","end":"11:00","staff":[{"name":"최연숙","leader":false}]}],"lat":37.4835896,"lng":126.9746697,"weekly":[{"name":"최연숙","leader":false,"days":{"2":"06:30~11:00","3":"06:30~11:00","4":"06:30~11:00","5":"06:30~11:00","6":"06:30~11:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작수학놀이터 및 힐링센터","phone":"010-5524-8228","shift_label":"오전","shift_type":"미화"}]},{"id":14,"name":"동작아트갤러리","branch":"동작아트갤러리","address":"서울특별시 동작구 보라매로5길 28-1 동작아트갤러리","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"06:30","end":"10:30","staff":[{"name":"왕자순","leader":false}]}],"lat":37.4937925,"lng":126.9231084,"weekly":[{"name":"왕자순","leader":false,"days":{"2":"06:30~10:30","3":"06:30~10:30","4":"06:30~10:30","5":"06:30~10:30","6":"06:30~10:30"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"동작아트갤러리","phone":"010-9138-3027","shift_label":"오전","shift_type":"미화"}]},{"id":15,"name":"상도2동주민센터","branch":"상도2동주민센터","address":"서울특별시 동작구 상도로 211 (상도2동 25-48)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"06:30","end":"09:30","staff":[{"name":"김미순","leader":false}]}],"lat":37.505469,"lng":126.9423108,"weekly":[{"name":"김미순","leader":false,"days":{"1":"06:30~09:30","2":"06:30~09:30","3":"06:30~09:30","4":"06:30~09:30","5":"06:30~09:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"상도2동주민센터","phone":"010-3863-3534","shift_label":"오전","shift_type":"미화"}]},{"id":16,"name":"까망돌 도서관","branch":"까망돌 도서관","address":"서울특별시 동작구 서달로 129","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"16:00","staff":[{"name":"권명숙","leader":false},{"name":"김길환","leader":true},{"name":"김영숙","leader":false},{"name":"김옥희","leader":false},{"name":"여영화","leader":false},{"name":"이경순","leader":false}]},{"label":"오후","start":"12:00","end":"17:00","staff":[{"name":"윤대섭","leader":false}]},{"label":"오후","start":"16:00","end":"21:00","staff":[{"name":"윤대섭","leader":false}]}],"lat":37.5051202,"lng":126.960611,"weekly":[{"name":"권명숙","leader":false,"days":{"5":"07:00~16:00","6":"07:00~16:00","0":"07:00~16:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"까망돌 도서관","phone":"010-2548-5091","shift_label":"오전","shift_type":"미화"},{"name":"김옥희","leader":false,"days":{"3":"07:00~16:00","6":"07:00~16:00","0":"07:00~16:00"},"labels":{"3":"오전","6":"오전","0":"오전"},"source":"까망돌 도서관","phone":"010-5217-6176","shift_label":"오전","shift_type":"미화"},{"name":"여영화","leader":false,"days":{"5":"07:00~16:00","6":"07:00~16:00","0":"07:00~16:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"까망돌 도서관","phone":"010-7118-6322","shift_label":"오전","shift_type":"미화"},{"name":"윤대섭","leader":false,"days":{"2":"16:00~21:00","3":"16:00~21:00","4":"16:00~21:00","5":"16:00~21:00","6":"12:00~17:00","0":"12:00~17:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"까망돌 도서관","phone":"010-6455-1076","shift_label":"오후","shift_type":"미화"},{"name":"김길환","leader":true,"days":{"2":"07:00~16:00","3":"07:00~16:00","4":"07:00~16:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"까망돌 도서관","phone":"010-2223-7158","shift_label":"오전","shift_type":"미화"},{"name":"김영숙","leader":false,"days":{"2":"07:00~16:00","4":"07:00~16:00","5":"07:00~16:00"},"labels":{"2":"오전","4":"오전","5":"오전"},"source":"까망돌 도서관","phone":"010-5189-0545","shift_label":"오전","shift_type":"미화"},{"name":"이경순","leader":false,"days":{"2":"07:00~16:00","3":"07:00~16:00","4":"07:00~16:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"까망돌 도서관","phone":"010-8700-9077","shift_label":"오전","shift_type":"미화"}]},{"id":17,"name":"다울작은도서관","branch":"다울작은도서관","address":"서울특별시 동작구 사당로20길 132","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"12:00","staff":[{"name":"손금녀","leader":false}]}],"lat":37.4788904,"lng":126.973255,"weekly":[{"name":"손금녀","leader":false,"days":{"2":"07:00~12:00","3":"07:00~12:00","4":"07:00~12:00","5":"07:00~12:00","6":"07:00~12:00","0":"07:00~12:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"다울작은도서관","phone":"010-2701-0484","shift_label":"오전","shift_type":"미화"}]},{"id":18,"name":"대방어린이도서관","branch":"대방어린이도서관","address":"서울특별시 동작구 대방동길 55","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"12:00","staff":[{"name":"송수란","leader":false}]}],"lat":37.5030271,"lng":126.9252319,"weekly":[{"name":"송수란","leader":false,"days":{"2":"07:00~12:00","3":"07:00~12:00","4":"07:00~12:00","5":"07:00~12:00","6":"07:00~12:00","0":"07:00~12:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"대방어린이도서관","phone":"010-3886-6947","shift_label":"오전","shift_type":"미화"}]},{"id":19,"name":"동작구보건소","branch":"동작구보건소","address":"서울특별시 동작구 노량진동 328 동작구 보건소 건강관리청","cat":"유관기관","manager":"김유정","shifts":[{"label":"오전","start":"07:00","end":"13:00","staff":[{"name":"김양옥","leader":false},{"name":"김창열","leader":true},{"name":"임영하","leader":false}]},{"label":"오전","start":"07:00","end":"12:00","staff":[{"name":"박춘자","leader":false}]},{"label":"오후","start":"13:00","end":"18:00","staff":[{"name":"김화진","leader":false},{"name":"이충환","leader":false}]}],"lat":37.5056892,"lng":126.9404547,"weekly":[{"name":"김양옥","leader":false,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구보건소","phone":"010-5069-5278","shift_label":"오전","shift_type":"미화"},{"name":"김창열","leader":true,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구보건소","phone":"010-5205-8351","shift_label":"오전","shift_type":"미화"},{"name":"박춘자","leader":false,"days":{"1":"07:00~12:00","2":"07:00~12:00","3":"07:00~12:00","4":"07:00~12:00","5":"07:00~12:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구보건소","phone":"010-9315-0684","shift_label":"오전","shift_type":"미화"},{"name":"임영하","leader":false,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작구보건소","phone":"010-6743-3699","shift_label":"오전","shift_type":"미화"},{"name":"김화진","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작구보건소","phone":"010-7509-9890","shift_label":"오후","shift_type":"미화"},{"name":"이충환","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작구보건소","phone":"010-6788-3541","shift_label":"오후","shift_type":"미화"}]},{"id":20,"name":"동작문화복지센터","branch":"동작문화복지센터","address":"서울특별시 동작구 장승배기로 70 동작문화복지센타","cat":"유관기관","manager":"김유정","shifts":[{"label":"오전","start":"07:00","end":"13:00","staff":[{"name":"권정자","leader":false},{"name":"유제환","leader":true},{"name":"장종","leader":false},{"name":"조송희","leader":false}]},{"label":"오후","start":"13:00","end":"18:00","staff":[{"name":"강옥이","leader":false},{"name":"허찬","leader":false}]}],"lat":37.504417115156684,"lng":126.94105600444067,"weekly":[{"name":"권정자","leader":false,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작문화복지센터","phone":"010-8988-2669","shift_label":"오전","shift_type":"미화"},{"name":"유제환","leader":true,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작문화복지센터","phone":"010-2369-1051","shift_label":"오전","shift_type":"미화"},{"name":"장종","leader":false,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작문화복지센터","phone":"010-4768-3025","shift_label":"오전","shift_type":"미화"},{"name":"조송희","leader":false,"days":{"1":"07:00~13:00","2":"07:00~13:00","3":"07:00~13:00","4":"07:00~13:00","5":"07:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"동작문화복지센터","phone":"010-5495-3542","shift_label":"오전","shift_type":"미화"},{"name":"강옥이","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작문화복지센터","phone":"010-5055-7072","shift_label":"오후","shift_type":"미화"},{"name":"허찬","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"동작문화복지센터","phone":"010-5636-6442","shift_label":"오후","shift_type":"미화"}]},{"id":21,"name":"동작샘터도서관","branch":"동작샘터도서관","address":"서울특별시 동작구 동작대로29길 63-26","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"12:00","staff":[{"name":"고부돌","leader":false}]}],"lat":37.4883795,"lng":126.9775849,"weekly":[{"name":"고부돌","leader":false,"days":{"2":"07:00~12:00","3":"07:00~12:00","4":"07:00~12:00","5":"07:00~12:00","6":"07:00~12:00","0":"07:00~12:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"동작샘터도서관","phone":"010-6385-7566","shift_label":"오전","shift_type":"미화"}]},{"id":22,"name":"동작영어마루","branch":"동작영어마루","address":"서울특별시 동작구 장승배기로16길 98","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"16:00","staff":[{"name":"권광옥","leader":false},{"name":"임향희","leader":false}]}],"lat":37.5092029,"lng":126.9434364,"weekly":[{"name":"권광옥","leader":false,"days":{"5":"07:00~16:00","6":"07:00~16:00","0":"07:00~16:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"동작영어마루","phone":"010-9690-1180","shift_label":"오전","shift_type":"미화"},{"name":"임향희","leader":false,"days":{"2":"07:00~16:00","3":"07:00~16:00","4":"07:00~16:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"동작영어마루","phone":"010-3257-5517","shift_label":"오전","shift_type":"미화"}]},{"id":23,"name":"동작입시지원센터","branch":"동작입시지원센터","address":"서울특별시 동작구 신대방1다길 19 4층","cat":"유관기관","manager":"정성현","shifts":[{"label":"오전","start":"07:00","end":"14:00","staff":[{"name":"조순애","leader":false},{"name":"최화숙","leader":false}]}],"lat":37.4861085,"lng":126.905906,"weekly":[{"name":"최화숙","leader":false,"days":{"5":"07:00~14:00","6":"07:00~14:00","0":"07:00~14:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"동작입시지원센터","phone":"010-3100-2041","shift_label":"오전","shift_type":"미화"},{"name":"조순애","leader":false,"days":{"2":"07:00~14:00","3":"07:00~14:00","4":"07:00~14:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"동작입시지원센터","phone":"010-4768-4253","shift_label":"오전","shift_type":"미화"}]},{"id":24,"name":"사육신역사관","branch":"사육신역사관","address":"서울특별시 동작구 노량진로 191","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"12:00","staff":[{"name":"이순규","leader":false}]}],"lat":37.5142249,"lng":126.94817,"weekly":[{"name":"이순규","leader":false,"days":{"2":"07:00~12:00","3":"07:00~12:00","4":"07:00~12:00","5":"07:00~12:00","6":"07:00~12:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"사육신역사관","phone":"010-9721-9991","shift_label":"오전","shift_type":"미화"}]},{"id":25,"name":"상도1동주민센터","branch":"상도1동주민센터","address":"서울특별시 동작구 상도로53길 9(상도동 437)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:00","end":"10:00","staff":[{"name":"김춘경","leader":false}]}],"lat":37.4981099,"lng":126.9530915,"weekly":[{"name":"김춘경","leader":false,"days":{"1":"07:00~10:00","2":"07:00~10:00","3":"07:00~10:00","4":"07:00~10:00","5":"07:00~10:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"상도1동주민센터","phone":"010-3662-7107","shift_label":"오전","shift_type":"미화"}]},{"id":26,"name":"신대방2동주민센터","branch":"신대방2동주민센터","address":"서울특별시 동작구 여의대방로24길 76(신대방동 723)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:00","end":"10:00","staff":[{"name":"오금숙","leader":false},{"name":"홍은혜","leader":false}]}],"lat":37.498417,"lng":126.9245435,"weekly":[{"name":"오금숙","leader":false,"days":{"1":"07:00~10:00","2":"07:00~10:00","3":"07:00~10:00","4":"07:00~10:00","5":"07:00~10:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신대방2동주민센터","phone":"010-2718-6908","shift_label":"오전","shift_type":"미화"},{"name":"홍은혜","leader":false,"days":{"1":"07:00~10:00","2":"07:00~10:00","3":"07:00~10:00","4":"07:00~10:00","5":"07:00~10:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신대방2동주민센터","phone":"010-9147-9296","shift_label":"오전","shift_type":"미화"}]},{"id":27,"name":"신대방누리","branch":"신대방누리","address":"서울특별시 동작구 신대방1다길 19","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"16:00","staff":[{"name":"안복란","leader":false},{"name":"이혜경","leader":true}]}],"lat":37.4861085,"lng":126.905906,"weekly":[{"name":"안복란","leader":false,"days":{"5":"07:00~16:00","6":"07:00~16:00","0":"07:00~16:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"신대방누리","phone":"010-7158-0715","shift_label":"오전","shift_type":"미화"},{"name":"이혜경","leader":true,"days":{"2":"07:00~16:00","3":"07:00~16:00","4":"07:00~16:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"신대방누리","phone":"010-7388-4860","shift_label":"오전","shift_type":"미화"}]},{"id":28,"name":"약수도서관","branch":"약수도서관","address":"서울특별시 동작구 양녕로22바길 64","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"07:00","end":"16:00","staff":[{"name":"김방실","leader":false},{"name":"유감순","leader":false}]}],"lat":37.4978813,"lng":126.9474508,"weekly":[{"name":"유감순","leader":false,"days":{"5":"07:00~16:00","6":"07:00~16:00","0":"07:00~16:00"},"labels":{"5":"오전","6":"오전","0":"오전"},"source":"약수도서관","phone":"010-5412-4951","shift_label":"오전","shift_type":"미화"},{"name":"김방실","leader":false,"days":{"2":"07:00~16:00","3":"07:00~16:00","4":"07:00~16:00"},"labels":{"2":"오전","3":"오전","4":"오전"},"source":"약수도서관","phone":"010-5660-2202","shift_label":"오전","shift_type":"미화"}]},{"id":29,"name":"흑석동주민센터","branch":"흑석동주민센터","address":"서울특별시 동작구 흑석한강로 11 (흑석동 335-2)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:00","end":"12:30","staff":[{"name":"강길정","leader":false}]}],"lat":37.5057909,"lng":126.9666428,"weekly":[{"name":"강길정","leader":false,"days":{"1":"07:00~12:30","2":"07:00~12:30","3":"07:00~12:30","4":"07:00~12:30","5":"07:00~12:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"흑석동주민센터","phone":"010-9266-3678","shift_label":"오전","shift_type":"미화"}]},{"id":30,"name":"김영삼도서관","branch":"김영삼도서관","address":"서울특별시 동작구 매봉로 2","cat":"문화재단","manager":"김상재","shifts":[{"label":"미화","start":"07:30","end":"16:30","staff":[{"name":"권영순","leader":false},{"name":"김영희","leader":true},{"name":"김정순","leader":false},{"name":"박연옥","leader":false},{"name":"박하순","leader":false},{"name":"이순자","leader":false},{"name":"이재만","leader":false},{"name":"이향손","leader":false},{"name":"정명자","leader":false},{"name":"정향남","leader":false}]},{"label":"주차","start":"08:00","end":"17:00","staff":[{"name":"소재춘","leader":false},{"name":"윤우중","leader":true},{"name":"이홍범","leader":false}]},{"label":"주차","start":"13:00","end":"22:00","staff":[{"name":"조규표","leader":false}]}],"lat":37.5054078,"lng":126.9499279,"weekly":[{"name":"김정순","leader":false,"days":{"5":"07:30~16:30","6":"07:30~16:30","0":"07:30~16:30"},"labels":{"5":"미화","6":"미화","0":"미화"},"source":"김영삼도서관","phone":"010-4166-6207","shift_label":"미화","shift_type":"미화"},{"name":"박연옥","leader":false,"days":{"5":"07:30~16:30","6":"07:30~16:30","0":"07:30~16:30"},"labels":{"5":"미화","6":"미화","0":"미화"},"source":"김영삼도서관","phone":"010-7153-0734","shift_label":"미화","shift_type":"미화"},{"name":"박하순","leader":false,"days":{"5":"07:30~16:30","6":"07:30~16:30","0":"07:30~16:30"},"labels":{"5":"미화","6":"미화","0":"미화"},"source":"김영삼도서관","phone":"010-9144-6282","shift_label":"미화","shift_type":"미화"},{"name":"이순자","leader":false,"days":{"5":"07:30~16:30","6":"07:30~16:30","0":"07:30~16:30"},"labels":{"5":"미화","6":"미화","0":"미화"},"source":"김영삼도서관","phone":"010-3100-1740","shift_label":"미화","shift_type":"미화"},{"name":"이향손","leader":false,"days":{"5":"07:30~16:30","6":"07:30~16:30","0":"07:30~16:30"},"labels":{"5":"미화","6":"미화","0":"미화"},"source":"김영삼도서관","phone":"010-9359-3667","shift_label":"미화","shift_type":"미화"},{"name":"소재춘","leader":false,"days":{"5":"08:00~17:00","6":"08:00~17:00","0":"08:00~17:00"},"labels":{"5":"주차","6":"주차","0":"주차"},"source":"김영삼도서관","phone":"010-6268-2419","shift_label":"주차","shift_type":"주차"},{"name":"윤우중","leader":true,"days":{"5":"08:00~17:00","6":"08:00~17:00","0":"08:00~17:00"},"labels":{"5":"주차","6":"주차","0":"주차"},"source":"김영삼도서관","phone":"010-3382-2788","shift_label":"주차","shift_type":"주차"},{"name":"권영순","leader":false,"days":{"2":"07:30~16:30","3":"07:30~16:30","4":"07:30~16:30"},"labels":{"2":"미화","3":"미화","4":"미화"},"source":"김영삼도서관","phone":"010-5126-2566","shift_label":"미화","shift_type":"미화"},{"name":"김영희","leader":true,"days":{"2":"07:30~16:30","3":"07:30~16:30","4":"07:30~16:30"},"labels":{"2":"미화","3":"미화","4":"미화"},"source":"김영삼도서관","phone":"010-5302-4841","shift_label":"미화","shift_type":"미화"},{"name":"이재만","leader":false,"days":{"2":"07:30~16:30","3":"07:30~16:30","4":"07:30~16:30"},"labels":{"2":"미화","3":"미화","4":"미화"},"source":"김영삼도서관","phone":"010-5149-8116","shift_label":"미화","shift_type":"미화"},{"name":"정명자","leader":false,"days":{"2":"07:30~16:30","3":"07:30~16:30","4":"07:30~16:30"},"labels":{"2":"미화","3":"미화","4":"미화"},"source":"김영삼도서관","phone":"010-3179-5713","shift_label":"미화","shift_type":"미화"},{"name":"정향남","leader":false,"days":{"2":"07:30~16:30","3":"07:30~16:30","4":"07:30~16:30"},"labels":{"2":"미화","3":"미화","4":"미화"},"source":"김영삼도서관","phone":"010-7735-0311","shift_label":"미화","shift_type":"미화"},{"name":"이홍범","leader":false,"days":{"2":"08:00~17:00","3":"08:00~17:00","4":"08:00~17:00"},"labels":{"2":"주차","3":"주차","4":"주차"},"source":"김영삼도서관","phone":"010-2874-5505","shift_label":"주차","shift_type":"주차"},{"name":"조규표","leader":false,"days":{"2":"13:00~22:00","3":"13:00~22:00","4":"13:00~22:00"},"labels":{"2":"주차","3":"주차","4":"주차"},"source":"김영삼도서관","phone":"010-3808-0060","shift_label":"주차","shift_type":"주차"}]},{"id":31,"name":"노량진2동주민센터","branch":"노량진2동주민센터","address":"서울특별시 동작구 장승배기로19길 48 (노량진2동 302-97)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"최숙희","leader":false}]}],"lat":37.5085316,"lng":126.9373592,"weekly":[{"name":"최숙희","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"노량진2동주민센터","phone":"010-7196-1678","shift_label":"오전","shift_type":"미화"}]},{"id":32,"name":"대방동주민센터","branch":"대방동주민센터","address":"서울특별시 동작구 여의대방로44길 20(대방동 501-2)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"장선자","leader":false}]}],"lat":37.508158,"lng":126.9263549,"weekly":[{"name":"장선자","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"대방동주민센터","phone":"010-2545-7292","shift_label":"오전","shift_type":"미화"}]},{"id":33,"name":"사당1동주민센터","branch":"사당1동주민센터","address":"서울특별시 동작구 동작대로17길 28(사당1동 1004-52)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"김홍유","leader":false},{"name":"민옥희","leader":false}]}],"lat":37.4830766,"lng":126.9787824,"weekly":[{"name":"김홍유","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당1동주민센터","phone":"010-5380-7602","shift_label":"오전","shift_type":"미화"},{"name":"민옥희","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당1동주민센터","phone":"010-5299-4352","shift_label":"오전","shift_type":"미화"}]},{"id":34,"name":"사당2동주민센터","branch":"사당2동주민센터","address":"서울특별시 동작구 동작대로29길 52(사당동)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"이강순","leader":false}]}],"lat":37.4887015,"lng":126.9792511,"weekly":[{"name":"이강순","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당2동주민센터","phone":"010-5796-0889","shift_label":"오전","shift_type":"미화"}]},{"id":35,"name":"사당3동주민센터","branch":"사당3동주민센터","address":"서울특별시 동작구 사당로17길 86","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"13:00","staff":[{"name":"김봉숙","leader":false}]}],"lat":37.4866368,"lng":126.9720915,"weekly":[{"name":"김봉숙","leader":false,"days":{"1":"07:30~13:00","2":"07:30~13:00","3":"07:30~13:00","4":"07:30~13:00","5":"07:30~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당3동주민센터","phone":"010-3321-7128","shift_label":"오전","shift_type":"미화"}]},{"id":36,"name":"사당4동주민센터","branch":"사당4동주민센터","address":"서울 동작구 사당로20나길 3","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"13:00","staff":[{"name":"박지수","leader":false}]}],"lat":37.4814855,"lng":126.9754025,"weekly":[{"name":"박지수","leader":false,"days":{"1":"07:30~13:00","2":"07:30~13:00","3":"07:30~13:00","4":"07:30~13:00","5":"07:30~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당4동주민센터","phone":"010-5419-7641","shift_label":"오전","shift_type":"미화"}]},{"id":37,"name":"상도3동주민센터","branch":"상도3동주민센터","address":"서울특별시 동작구 성대로2길 11(상도3동 315-37)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"윤경자","leader":false}]}],"lat":37.4991276,"lng":126.9313945,"weekly":[{"name":"윤경자","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"상도3동주민센터","phone":"010-8882-1054","shift_label":"오전","shift_type":"미화"}]},{"id":38,"name":"상도4동주민센터","branch":"상도4동주민센터","address":"서울특별시 동작구 양녕로27길 44(상도동 202-58)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"박순화","leader":false}]}],"lat":37.4993993,"lng":126.9414102,"weekly":[{"name":"박순화","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"상도4동주민센터","phone":"010-4548-6957","shift_label":"오전","shift_type":"미화"}]},{"id":39,"name":"신대방1동주민센터","branch":"신대방1동주민센터","address":"서울특별시 동작구 신대방길72(신대방1동 604-8)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"07:30","end":"10:30","staff":[{"name":"안성자","leader":false}]}],"lat":37.4889584,"lng":126.9100645,"weekly":[{"name":"안성자","leader":false,"days":{"1":"07:30~10:30","2":"07:30~10:30","3":"07:30~10:30","4":"07:30~10:30","5":"07:30~10:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"신대방1동주민센터","phone":"010-3661-0770","shift_label":"오전","shift_type":"미화"}]},{"id":40,"name":"사당5동주민센터","branch":"사당5동주민센터","address":"서울특별시 동작구 사당로2가길 219(사당5동 228-11)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오전","start":"08:00","end":"11:00","staff":[{"name":"박정숙","leader":false}]}],"lat":37.4846239,"lng":126.971602,"weekly":[{"name":"박정숙","leader":false,"days":{"1":"08:00~11:00","2":"08:00~11:00","3":"08:00~11:00","4":"08:00~11:00","5":"08:00~11:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"사당5동주민센터","phone":"010-9278-8300","shift_label":"오전","shift_type":"미화"}]},{"id":41,"name":"상도어울마당","branch":"상도어울마당","address":"서울특별시 동작구 성대로 180 지하 1층","cat":"유관기관","manager":"정성현","shifts":[{"label":"오전","start":"08:00","end":"13:00","staff":[{"name":"공순임","leader":false}]}],"lat":37.4992555,"lng":126.9403722,"weekly":[{"name":"공순임","leader":false,"days":{"2":"08:00~13:00","3":"08:00~13:00","4":"08:00~13:00","5":"08:00~13:00","6":"08:00~13:00"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"상도어울마당","phone":"010-6227-0138","shift_label":"오전","shift_type":"미화"}]},{"id":42,"name":"양녕청년주택","branch":"양녕청년주택","address":"서울특별시 동작구 성대로10나길 17 양녕 청년주택 복합건물","cat":"유관기관","manager":"문지연","shifts":[{"label":"오전","start":"08:00","end":"13:00","staff":[{"name":"이경희","leader":false}]},{"label":"오후","start":"13:00","end":"18:00","staff":[{"name":"이용자","leader":false}]}],"lat":37.4968536,"lng":126.9357417,"weekly":[{"name":"이경희","leader":false,"days":{"1":"08:00~13:00","2":"08:00~13:00","3":"08:00~13:00","4":"08:00~13:00","5":"08:00~13:00","6":"08:00~13:00"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전","6":"오전"},"source":"양녕청년주택","phone":"010-3230-2596","shift_label":"오전","shift_type":"미화"},{"name":"이용자","leader":false,"days":{"1":"13:00~18:00","2":"13:00~18:00","3":"13:00~18:00","4":"13:00~18:00","5":"13:00~18:00","6":"13:00~18:00"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후","6":"오후"},"source":"양녕청년주택","phone":"010-3136-5590","shift_label":"오후","shift_type":"미화"}]},{"id":43,"name":"신대방햇살도서관","branch":"신대방햇살도서관","address":"서울특별시 동작구 여의대방로16길 53 (신대방동) 동작구민체육센터광장앞","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"08:30","end":"11:30","staff":[{"name":"양동술","leader":false}]}],"lat":37.4947228,"lng":126.9167552,"weekly":[{"name":"양동술","leader":false,"days":{"2":"08:30~11:30","3":"08:30~11:30","4":"08:30~11:30","5":"08:30~11:30","6":"08:30~11:30","0":"08:30~11:30"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"신대방햇살도서관","phone":"010-4611-3745","shift_label":"오전","shift_type":"미화"}]},{"id":44,"name":"아이스팩재활용사업","branch":"아이스팩재활용사업","address":"서울특별시 동작구 등용로 41-5","cat":"유관기관","manager":"문지연","shifts":[{"label":"오전","start":"08:30","end":"15:30","staff":[{"name":"송재민","leader":true},{"name":"윤광섭","leader":false},{"name":"윤석란","leader":false},{"name":"지창배","leader":false},{"name":"한국희","leader":false}]}],"lat":37.5055878,"lng":126.9339338,"weekly":[{"name":"송재민","leader":true,"days":{"1":"08:30~15:30","2":"08:30~15:30","3":"08:30~15:30","4":"08:30~15:30","5":"08:30~15:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"아이스팩재활용사업","phone":"010-3253-2070","shift_label":"오전","shift_type":"미화"},{"name":"윤광섭","leader":false,"days":{"1":"08:30~15:30","2":"08:30~15:30","3":"08:30~15:30","4":"08:30~15:30","5":"08:30~15:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"아이스팩재활용사업","phone":"010-3714-9316","shift_label":"오전","shift_type":"미화"},{"name":"윤석란","leader":false,"days":{"1":"08:30~15:30","2":"08:30~15:30","3":"08:30~15:30","4":"08:30~15:30","5":"08:30~15:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"아이스팩재활용사업","phone":"010-4058-7561","shift_label":"오전","shift_type":"미화"},{"name":"지창배","leader":false,"days":{"1":"08:30~15:30","2":"08:30~15:30","3":"08:30~15:30","4":"08:30~15:30","5":"08:30~15:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"아이스팩재활용사업","phone":"010-4213-2922","shift_label":"오전","shift_type":"미화"},{"name":"한국희","leader":false,"days":{"1":"08:30~15:30","2":"08:30~15:30","3":"08:30~15:30","4":"08:30~15:30","5":"08:30~15:30"},"labels":{"1":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"아이스팩재활용사업","phone":"010-8523-7688","shift_label":"오전","shift_type":"미화"}]},{"id":45,"name":"동작반려견공원","branch":"동작반려견공원","address":"서울특별시 동작구 노량진동 24-10","cat":"시설공단","manager":"문지연","shifts":[{"label":"오전","start":"09:30","end":"20:30","staff":[{"name":"김경주","leader":false},{"name":"윤석우","leader":false}]}],"lat":37.5134684,"lng":126.9348257,"weekly":[{"name":"김경주","leader":false,"days":{"2":"09:30~20:30","3":"09:30~20:30","4":"09:30~20:30","5":"09:30~20:30","6":"09:30~20:30","0":"09:30~20:30"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"동작반려견공원","phone":"010-5255-4610","shift_label":"오전","shift_type":"미화"},{"name":"윤석우","leader":false,"days":{"2":"09:30~20:30","3":"09:30~20:30","4":"09:30~20:30","5":"09:30~20:30","6":"09:30~20:30","0":"09:30~20:30"},"labels":{"2":"오전","3":"오전","4":"오전","5":"오전","6":"오전","0":"오전"},"source":"동작반려견공원","phone":"010-7930-6298","shift_label":"오전","shift_type":"미화"}]},{"id":46,"name":"본동어울마당아트홀","branch":"본동어울마당아트홀","address":"서울특별시 동작구 노량진로32길 79 지하1층","cat":"문화재단","manager":"김상재","shifts":[{"label":"오전","start":"08:00","end":"13:00","staff":[{"name":"진순옥","leader":false}]},{"label":"오전","start":"11:00","end":"16:00","staff":[{"name":"진순옥","leader":false}]}],"lat":37.5105545,"lng":126.9569133,"weekly":[{"name":"진순옥","leader":false,"days":{"6":"08:00~13:00","2":"11:00~16:00","3":"11:00~16:00","4":"11:00~16:00","5":"11:00~16:00"},"labels":{"6":"오전","2":"오전","3":"오전","4":"오전","5":"오전"},"source":"본동어울마당아트홀","phone":"010-2338-6374","shift_label":"오전","shift_type":"미화"}]},{"id":47,"name":"노량진1동주민센터","branch":"노량진1동주민센터","address":"서울특별시 동작구 노량진로 190, 3층·4층(노량진동 333)","cat":"주민센터","manager":"김유정","shifts":[{"label":"오후","start":"12:30","end":"15:30","staff":[{"name":"강금임","leader":false}]}],"lat":37.5129588,"lng":126.9468626,"weekly":[{"name":"강금임","leader":false,"days":{"1":"12:30~15:30","2":"12:30~15:30","3":"12:30~15:30","4":"12:30~15:30","5":"12:30~15:30"},"labels":{"1":"오후","2":"오후","3":"오후","4":"오후","5":"오후"},"source":"노량진1동주민센터","phone":"010-5290-2194","shift_label":"오후","shift_type":"미화"}]},{"id":48,"name":"노량진1동 청소년독서실","branch":"노량진1동 청소년독서실","address":"서울특별시 동작구 만양로3길 8","cat":"시설공단","manager":"문지연","shifts":[{"label":"오후","start":"16:00","end":"23:00","staff":[{"name":"안정옥","leader":false},{"name":"이승자","leader":false}]}],"lat":37.5078124,"lng":126.9473055,"weekly":[{"name":"안정옥","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"노량진1동 청소년독서실","phone":"010-3338-1959","shift_label":"오후","shift_type":"총무"},{"name":"이승자","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"노량진1동 청소년독서실","phone":"010-3063-8764","shift_label":"오후","shift_type":"총무"}]},{"id":49,"name":"사당3동 청소년독서실","branch":"사당3동 청소년독서실","address":"서울특별시 동작구 사당로13길 50","cat":"시설공단","manager":"문지연","shifts":[{"label":"오후","start":"16:00","end":"23:00","staff":[{"name":"계영일","leader":false},{"name":"김명자","leader":false}]}],"lat":37.4862467,"lng":126.9716709,"weekly":[{"name":"계영일","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"사당3동 청소년독서실","phone":"010-2067-5977","shift_label":"오후","shift_type":"총무"},{"name":"김명자","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"사당3동 청소년독서실","phone":"010-2179-1119","shift_label":"오후","shift_type":"총무"}]},{"id":50,"name":"사당4동 청소년독서실","branch":"사당4동 청소년독서실","address":"서울특별시 동작구 사당로22나길 71","cat":"시설공단","manager":"문지연","shifts":[{"label":"오후","start":"16:00","end":"23:00","staff":[{"name":"노승희","leader":false},{"name":"정연희","leader":false}]}],"lat":37.4804858,"lng":126.9731027,"weekly":[{"name":"노승희","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"사당4동 청소년독서실","phone":"010-6384-4065","shift_label":"오후","shift_type":"총무"},{"name":"정연희","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"사당4동 청소년독서실","phone":"010-3702-2536","shift_label":"오후","shift_type":"총무"}]},{"id":51,"name":"상도3동 청소년독서실","branch":"상도3동 청소년독서실","address":"서울특별시 동작구 국사봉2나길 25 구립상도3동청소년독서실","cat":"시설공단","manager":"문지연","shifts":[{"label":"오후","start":"16:00","end":"23:00","staff":[{"name":"김경일","leader":false},{"name":"함진수","leader":false}]}],"lat":37.4970089,"lng":126.9300158,"weekly":[{"name":"김경일","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"상도3동 청소년독서실","phone":"010-8642-6140","shift_label":"오후","shift_type":"총무"},{"name":"함진수","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"상도3동 청소년독서실","phone":"010-9834-5877","shift_label":"오후","shift_type":"총무"}]},{"id":52,"name":"상도4동 청소년독서실","branch":"상도4동 청소년독서실","address":"서울특별시 동작구 성대로11길 67","cat":"시설공단","manager":"문지연","shifts":[{"label":"오후","start":"16:00","end":"23:00","staff":[{"name":"김남애","leader":false},{"name":"유용옥","leader":false}]}],"lat":37.5001846,"lng":126.9337164,"weekly":[{"name":"김남애","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"상도4동 청소년독서실","phone":"010-6278-6567","shift_label":"오후","shift_type":"총무"},{"name":"유용옥","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"상도4동 청소년독서실","phone":"010-3250-3124","shift_label":"오후","shift_type":"총무"}]},{"id":53,"name":"흑석 청소년독서실","branch":"흑석 청소년독서실","address":"서울특별시 동작구 서달로13길 17 3층","cat":"시설공단","manager":"문지연","shifts":[{"label":"오후","start":"16:00","end":"23:00","staff":[{"name":"공용표","leader":false},{"name":"최남숙","leader":false}]}],"lat":37.5085051,"lng":126.9619383,"weekly":[{"name":"공용표","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"흑석 청소년독서실","phone":"010-5923-0911","shift_label":"오후","shift_type":"총무"},{"name":"최남숙","leader":false,"days":{"2":"16:00~23:00","3":"16:00~23:00","4":"16:00~23:00","5":"16:00~23:00","6":"16:00~23:00","0":"16:00~23:00"},"labels":{"2":"오후","3":"오후","4":"오후","5":"오후","6":"오후","0":"오후"},"source":"흑석 청소년독서실","phone":"010-5891-7580","shift_label":"오후","shift_type":"총무"}]},{"id":54,"name":"현충배드민턴장","branch":"현충배드민턴장","address":"서울특별시 동작구 서달로2길 8","cat":"시설공단","manager":"문지연","shifts":[{"label":"저녁","start":"미정","end":"미정","staff":[{"name":"오세희","leader":true},{"name":"유승희","leader":false},{"name":"전재우","leader":false}]}],"lat":37.4996094,"lng":126.9616024,"weekly":[{"name":"오세희","leader":true,"days":{},"labels":{},"source":"현충배드민턴장","phone":"010-4441-6693","shift_label":"저녁","shift_type":"미화"},{"name":"유승희","leader":false,"days":{},"labels":{},"source":"현충배드민턴장","phone":"010-5216-1066","shift_label":"저녁","shift_type":"미화"},{"name":"전재우","leader":false,"days":{},"labels":{},"source":"현충배드민턴장","phone":"010-8750-9505","shift_label":"저녁","shift_type":"미화"}]}];
 
 /* ── 현재 시간 기준 근무 상태 계산 ── */
 function timeToMin(t) {
@@ -1224,8 +2323,8 @@ function getScheduleGroups(store) {
         if (!time) return;
         const { start, end } = splitTime(time);
         const label = (person.labels && person.labels[day]) || '전일';
-        // 김영삼도서관은 미화/주차 원본 유지, 그 외는 시간대로 오전/오후 변환
-        const displayLabel = (store.name === '김영삼도서관')
+        // 김영삼도서관은 미화/주차, 신청사는 오전/오후/주말/푸드코트 원본 라벨 유지
+        const displayLabel = (store.name === '김영삼도서관' || store.name === '신청사')
           ? label
           : (() => {
               const sh = timeToMin(start);
@@ -1241,8 +2340,16 @@ function getScheduleGroups(store) {
     return Object.values(groups)
       .map(g => ({ ...g, dayText: formatDayList([...g.days]) }))
       .sort((a, b) => {
-        const da = Math.min(...a.days), db = Math.min(...b.days);
-        return da === db ? timeToMin(a.start) - timeToMin(b.start) : da - db;
+        if (store.name === '신청사') {
+          const order = { '오전': 1, '오후': 2, '주말': 3, '푸드코트': 4 };
+          const oa = order[a.label] || 99;
+          const ob = order[b.label] || 99;
+          if (oa !== ob) return oa - ob;
+        }
+        const ORDER = [1,2,3,4,5,6,0];
+        const firstA = Math.min(...[...a.days].map(d => ORDER.indexOf(d)));
+        const firstB = Math.min(...[...b.days].map(d => ORDER.indexOf(d)));
+        return firstA === firstB ? timeToMin(a.start) - timeToMin(b.start) : firstA - firstB;
       });
   }
   return (store.shifts || []).map(sh => ({ label: sh.label, start: sh.start, end: sh.end, dayText: '상시' }));
@@ -1266,12 +2373,11 @@ function getStoreStatus(store) {
 function getMapLabelHtml(group) {
   const visible = getVisibleGroup(group);
   const base = visible[0];
-  const status = getStoreStatus(base);
   const name = visible.length === 1
     ? (base.branch || base.name)
     : `${base.branch || base.name} 외 ${visible.length - 1}개`;
-  const dotClass = status.key === 'working' ? 'label-status-working' : status.key === 'upcoming' ? 'label-status-upcoming' : status.key === 'off' ? 'label-status-off' : 'label-status-ended';
-  return `<div class="map-label-wrap"><span class="label-status-dot ${dotClass}" aria-hidden="true"></span><span class="label-text">${name}</span></div>`;
+  const color = catColor(base.cat);
+  return `<div class="map-pill-label" style="background:${color};">${escapeHtml(name)}</div>`;
 }
 
 let filteredStores = [...stores];
@@ -1283,6 +2389,14 @@ let sheetState = 'peek';
 const map = L.map('map', { zoomControl: false, attributionControl: false }).setView([37.4970, 126.9390], 13);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
 L.control.zoom({ position: 'topright' }).addTo(map);
+
+const HEADQUARTERS = {
+  name: '본사',
+  lat: 37.512175601007414,
+  lng: 126.9394685792119,
+  address: '서울특별시 동작구 장승배기로 161 인근'
+};
+
 
 function applyMapTop() {
   const h = document.querySelector('header').offsetHeight;
@@ -1297,8 +2411,8 @@ setTimeout(() => {
   applyMapTop();
   // 전체 사업장이 보이도록 자동 fit
   if (stores.length > 0) {
-    const lats = stores.map(s => s.lat);
-    const lngs = stores.map(s => s.lng);
+    const lats = [...stores.map(s => s.lat), HEADQUARTERS.lat];
+    const lngs = [...stores.map(s => s.lng), HEADQUARTERS.lng];
     const bounds = [[Math.min(...lats)-0.005, Math.min(...lngs)-0.005],
                     [Math.max(...lats)+0.005, Math.max(...lngs)+0.005]];
     map.fitBounds(bounds, { padding: [30, 30] });
@@ -1311,28 +2425,52 @@ function catColor(cat) {
   return '#27AE60'; // 기본 매핑 없는 경우도 색상 표시
 }
 
-function createIcon(store, isActive = false) {
-  // 핀 색상은 근무상태와 무관하게 사업지 구분 색상으로 고정
-  const color = catColor(store.cat);
-  const size = isActive ? 31 : 25;
-  const border = 'white';
+function getCatShortLabel(cat) {
+  if (cat === '주민센터') return '주민센터';
+  if (cat === '문화재단') return '문화재단';
+  if (cat === '시설공단') return '시설공단';
+  if (cat === '유관기관') return '유관기관';
+  if (cat === '구청') return '구청';
+  return cat || '사업장';
+}
+
+function getMarkerLabelText(group) {
+  const visible = getVisibleGroup(group || []);
+  if (!visible.length) return '사업장';
+  const baseName = visible[0].branch || visible[0].name;
+  return visible.length === 1 ? baseName : `${baseName} 외 ${visible.length - 1}개`;
+}
+
+function createIcon(storeOrGroup, isActive = false) {
+  // 핀 없이 사업장명 라벨만 표시. 색상은 사업장 구분 색상 유지
+  const group = Array.isArray(storeOrGroup) ? storeOrGroup : [storeOrGroup];
+  const visible = getVisibleGroup(group);
+  const base = visible[0] || group[0];
+  const color = catColor(base.cat);
+  const text = getMarkerLabelText(group);
   return L.divIcon({
-    html: `<div style="width:${size}px;height:${size}px;background:${color};border:3px solid ${border};border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 8px rgba(0,0,0,0.25);${isActive?'outline:3px solid rgba(26,26,26,0.18);':''}" ></div>`,
-    className: '', iconSize: [size, size], iconAnchor: [size/2, size], popupAnchor: [0, -size - 4]
+    html: `<div class="store-badge-marker ${isActive ? 'active' : ''}" style="background:${color};"><span class="store-marker-text">${text}</span></div>`,
+    className: '',
+    iconSize: [1, 1],
+    iconAnchor: [0, 0],
+    popupAnchor: [0, -18]
   });
 }
 
 function createMixedIcon(group, isActive = false) {
-  // 같은 위치에 서로 다른 사업지 구분이 섞여 있으면 핀을 반반/조각 색상으로 표시
+  // 같은 위치에 서로 다른 구분이 섞인 경우 라벨 배경을 그라데이션으로 표시
   const colors = [...new Set((group || []).map(s => catColor(s.cat)))];
-  if (colors.length <= 1) return createIcon(group[0], isActive);
-  const size = isActive ? 31 : 25;
+  if (colors.length <= 1) return createIcon(group, isActive);
   const gradient = colors.length === 2
     ? `linear-gradient(135deg, ${colors[0]} 0 50%, ${colors[1]} 50% 100%)`
     : `conic-gradient(${colors.map((c, i) => `${c} ${(i / colors.length) * 100}% ${((i + 1) / colors.length) * 100}%`).join(', ')})`;
+  const text = getMarkerLabelText(group);
   return L.divIcon({
-    html: `<div style="width:${size}px;height:${size}px;background:${gradient};border:3px solid white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 8px rgba(0,0,0,0.25);${isActive?'outline:3px solid rgba(26,26,26,0.18);':''}" ></div>`,
-    className: '', iconSize: [size, size], iconAnchor: [size/2, size], popupAnchor: [0, -size - 4]
+    html: `<div class="store-badge-marker ${isActive ? 'active' : ''}" style="background:${gradient};"><span class="store-marker-text">${text}</span></div>`,
+    className: '',
+    iconSize: [1, 1],
+    iconAnchor: [0, 0],
+    popupAnchor: [0, -18]
   });
 }
 
@@ -1340,7 +2478,7 @@ function getMarkerIconForGroup(group, isActive = false) {
   const visible = getVisibleGroup(group || []);
   const target = visible.length ? visible : (group || []);
   const cats = [...new Set(target.map(s => s.cat))];
-  return cats.length > 1 ? createMixedIcon(target, isActive) : createIcon(target[0], isActive);
+  return cats.length > 1 ? createMixedIcon(target, isActive) : createIcon(target, isActive);
 }
 
 
@@ -1447,7 +2585,7 @@ function buildSinglePopup(store) {
     <div class="lp-addr" style="margin-bottom:7px;">${store.address}</div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:nowrap;">
       ${statusBadge}
-      <span class="lp-shift-text" title="${getShortShiftText(store)}">🕐 ${getShortShiftText(store)}</span>
+      <span class="lp-shift-text" title="${getShortShiftText(store)}"> ${getShortShiftText(store)}</span>
     </div>
     <button class="lp-btn" onclick="selectStoreFromPopup(${store.id})">상세 정보 보기</button>
   `;
@@ -1456,7 +2594,7 @@ function buildGroupPopup(group) {
   const visible = getVisibleGroup(group);
   if (visible.length === 1) return buildSinglePopup(visible[0]);
   return `
-    <div class="group-popup-title">📍 같은 위치 사업장 ${visible.length}개</div>
+    <div class="group-popup-title"> 같은 위치 사업장 ${visible.length}개</div>
     <div class="group-popup-sub">상세 정보를 볼 사업장을 선택해주세요.</div>
     ${visible.map(s => {
       const status = getStoreStatus(s);
@@ -1469,7 +2607,7 @@ function buildGroupPopup(group) {
             <span class="group-store-name">${s.branch || s.name}</span>
             <span class="group-status ${working ? 'on' : 'off'}">${statusText}</span>
           </div>
-          <div class="group-store-meta">👤 ${s.manager || '-'} · 🕐 ${getShortShiftText(s)}</div>
+          <div class="group-store-meta"> ${s.manager || '-'} ·  ${getShortShiftText(s)}</div>
         </button>
       `;
     }).join('')}
@@ -1493,12 +2631,6 @@ function buildMarkers() {
     const marker = L.marker(getMarkerLatLng(base), { icon: getMarkerIconForGroup(group) }).addTo(map);
     marker.storeGroup = group;
     marker.bindPopup(() => buildGroupPopup(group), { maxWidth: 300 });
-    marker.bindTooltip(getMapLabelHtml(group), {
-      permanent: true,
-      direction: 'top',
-      offset: [0, -28],
-      className: 'map-label'
-    });
     marker.on('click', () => {
       // 같은 위치는 상세를 바로 열지 않고 팝업에서 선택하게 둠
       const visible = getVisibleGroup(group);
@@ -1509,7 +2641,32 @@ function buildMarkers() {
   });
 }
 
+
+function createHeadquartersIcon() {
+  return L.divIcon({
+    html: `<div class="hq-marker"><span class="hq-text">본사</span></div>`,
+    className: '',
+    iconSize: [1, 1],
+    iconAnchor: [0, 0],
+    popupAnchor: [0, -18]
+  });
+}
+
+let headquartersMarker = null;
+function buildHeadquartersMarker() {
+  if (headquartersMarker) headquartersMarker.remove();
+  headquartersMarker = L.marker([HEADQUARTERS.lat, HEADQUARTERS.lng], {
+    icon: createHeadquartersIcon(),
+    zIndexOffset: 1000
+  }).addTo(map);
+  headquartersMarker.bindPopup(`
+    <div class="hq-popup-title"> ${HEADQUARTERS.name}</div>
+    <div class="hq-popup-addr">${HEADQUARTERS.address}</div>
+  `, { maxWidth: 240 });
+}
+
 buildMarkers();
+buildHeadquartersMarker();
 
 function getBadgeHtml(cat) {
   const c = CAT[cat];
@@ -1552,7 +2709,7 @@ function renderList() {
       <div class="store-address">${s.address}</div>
       <div class="store-meta" style="display:flex;align-items:center;gap:7px;margin-top:4px;">
         <span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:0 8px;height:20px;border-radius:20px;background:${(window.statusColors||{working:{bg:"#E8F8EF",color:"#059142",dot:"#27AE60"},upcoming:{bg:"#FFF8E6",color:"#B77900",dot:"#F4A300"},ended:{bg:"#F2F2F0",color:"#888",dot:"#aaa"},off:{bg:"#F2F2F0",color:"#888",dot:"#aaa"}})[status.key].bg};color:${(window.statusColors||{working:{bg:"#E8F8EF",color:"#059142",dot:"#27AE60"},upcoming:{bg:"#FFF8E6",color:"#B77900",dot:"#F4A300"},ended:{bg:"#F2F2F0",color:"#888",dot:"#aaa"},off:{bg:"#F2F2F0",color:"#888",dot:"#aaa"}})[status.key].color};flex-shrink:0;"><span style="width:6px;height:6px;border-radius:50%;background:${(window.statusColors||{working:{bg:"#E8F8EF",color:"#059142",dot:"#27AE60"},upcoming:{bg:"#FFF8E6",color:"#B77900",dot:"#F4A300"},ended:{bg:"#F2F2F0",color:"#888",dot:"#aaa"},off:{bg:"#F2F2F0",color:"#888",dot:"#aaa"}})[status.key].dot};display:inline-block;"></span>${statusText}</span>
-        <span style="font-size:11px;color:var(--text-muted);">🕐 ${getHoursText(s)}</span>
+        <span style="font-size:11px;color:var(--text-muted);"> ${getHoursText(s)}</span>
       </div>
     </div>`;
   }).join('');
@@ -1653,7 +2810,6 @@ function updateMarkers() {
     if (shouldShow) {
       marker.addTo(map);
       marker.setIcon(getMarkerIconForGroup(group, group.some(s => s.id === activeId)));
-      if (marker.setTooltipContent) marker.setTooltipContent(getMapLabelHtml(group));
     } else {
       marker.remove();
     }
