@@ -1604,18 +1604,31 @@ map.on('click', () => { if (sheetState === 'expanded') setSheetState('peek'); })
 
 
 /* ── 필터 ── */
-let activeCat = '전체';
+const activeCats = new Set(); // 비어 있으면 전체 표시, 값이 있으면 선택된 구분만 표시
+
+function refreshCatButtons() {
+  document.querySelectorAll('.cat-filter-btn').forEach(b => {
+    const cat = b.dataset.cat;
+    const isActive = cat === '전체' ? activeCats.size === 0 : activeCats.has(cat);
+    b.classList.toggle('active', isActive);
+  });
+}
 
 function filterCat(btn) {
-  activeCat = btn.dataset.cat;
-  document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  const cat = btn.dataset.cat;
+  if (cat === '전체') {
+    activeCats.clear();
+  } else {
+    if (activeCats.has(cat)) activeCats.delete(cat);
+    else activeCats.add(cat);
+  }
+  refreshCatButtons();
   applyFilters();
 }
 function applyFilters() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   filteredStores = stores.filter(s => {
-    const matchCat = activeCat === '전체' || s.cat === activeCat;
+    const matchCat = activeCats.size === 0 || activeCats.has(s.cat);
     const matchSearch = !q || s.branch.includes(q) || s.name.includes(q) ||
       s.address.includes(q) || s.cat.includes(q) || s.manager.includes(q) ||
       getStoreShifts(s).some(sh => sh.staff.some(st => (typeof st === 'string' ? st : st.name).includes(q))) ||
@@ -1750,8 +1763,10 @@ function openDetail(id) {
     const groupSections = groupOrder.filter(k => groupMap[k]).map(groupKey => {
       const gc = groupColors[groupKey] || groupColors['기타'];
       const memberCards = groupMap[groupKey].map((person, pi) => {
-      const cardId = `wcard_${id}_${pi}`;
-      const tipId  = `wtip_${id}_${pi}`;
+      // 그룹마다 pi가 0부터 다시 시작해서 오전/오후 구성원의 tooltip id가 중복되던 문제 수정
+      const safeGroupKey = String(groupKey || 'group').replace(/[^가-힣a-zA-Z0-9_-]/g, '_');
+      const cardId = `wcard_${id}_${safeGroupKey}_${pi}`;
+      const tipId  = `wtip_${id}_${safeGroupKey}_${pi}`;
       // 근무 요일 set
       const workDays = Object.keys(person.days).map(Number);
       const isWorkingNow = workDays.includes(todayDay) && (() => {
@@ -1783,13 +1798,13 @@ function openDetail(id) {
         let bg, color, border, fw;
         if (hasWork) {
           bg = '#F05A22'; color = '#fff'; fw = '700';
-          border = isToday ? '2.5px solid #38BDF8' : '2px solid transparent';
+          border = isToday ? '2.5px solid #185FA5' : '2px solid transparent';
         } else {
           bg = '#F2F2F0'; color = '#bbb'; fw = isToday ? '700' : '400';
-          border = isToday ? '2.5px solid #38BDF8' : '2px solid transparent';
+          border = isToday ? '2.5px solid #185FA5' : '2px solid transparent';
         }
         const todayAccent = isToday
-          ? 'box-shadow:0 0 0 2px rgba(56,189,248,.28), 0 2px 6px rgba(56,189,248,.32); transform:translateY(-1px);'
+          ? 'box-shadow:0 0 0 2px rgba(24,95,165,.25), 0 2px 6px rgba(24,95,165,.35); transform:translateY(-1px);'
           : '';
         const onclick = timeForDay
           ? `onclick="(function(){var t=document.getElementById('${tipId}');t.textContent='${dl}: '+decodeURIComponent('${encodeURIComponent(timeForDay)}');t.style.opacity='1';setTimeout(function(){t.style.opacity='0'},2000);})()"` : '';
