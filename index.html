@@ -2010,6 +2010,235 @@
 
 
 /* =========================================================
+   현장순회 기능 스타일
+   ========================================================= */
+
+/* 순회 연필 컨트롤 (leaflet-bar 스타일 통일) */
+.patrol-pencil-control a {
+  color: #333 !important;
+  background: white !important;
+  transition: background 0.15s, color 0.15s;
+}
+.patrol-pencil-control a:hover {
+  background: #f4f4f4 !important;
+  color: #F05A22 !important;
+}
+.patrol-pencil-control a.patrol-active {
+  background: #F05A22 !important;
+  color: white !important;
+}
+
+/* 순회 편집 하단 바 */
+.patrol-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 450;
+  background: white;
+  border-top: 1px solid #E8E8E4;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.13);
+  padding-bottom: var(--safe-bottom);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+}
+.patrol-bar.show { transform: translateY(0); }
+
+.patrol-bar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 16px 7px;
+}
+.patrol-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1; min-width: 0;
+}
+.patrol-icon { font-size: 18px; flex-shrink: 0; }
+.patrol-title { font-size: 13px; font-weight: 700; color: #1A1A1A; }
+.patrol-btns { display: flex; gap: 8px; flex-shrink: 0; }
+.patrol-btn-reset {
+  padding: 8px 13px; border-radius: 10px;
+  border: 1px solid #E8E8E4; background: #F7F7F5;
+  font-size: 12px; font-weight: 700; color: #555;
+  cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
+}
+.patrol-btn-confirm {
+  padding: 8px 16px; border-radius: 10px;
+  border: none; background: #F05A22;
+  font-size: 12px; font-weight: 700; color: white;
+  cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
+}
+.patrol-btn-confirm:active { opacity: 0.85; }
+.patrol-btn-reset:active { background: #EDEDEA; }
+
+/* 배지 스크롤 영역 - 편집/결과 공통 */
+.patrol-badge-scroll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px 11px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+  min-height: 34px;
+}
+.patrol-badge-scroll::-webkit-scrollbar { display: none; }
+
+.patrol-empty-hint {
+  font-size: 12px;
+  color: #aaa;
+  white-space: nowrap;
+}
+
+/* 배지 스크롤 내 개별 배지 */
+.patrol-scroll-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1;
+  cursor: default;
+}
+.patrol-scroll-badge .patrol-scroll-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px; height: 17px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  font-size: 10px;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+.patrol-scroll-arrow {
+  font-size: 13px;
+  color: #bbb;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* 결과 바 */
+.patrol-result-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 450;
+  background: white;
+  border-top: 2px solid #F05A22;
+  box-shadow: 0 -4px 20px rgba(240,90,34,0.15);
+  padding-bottom: var(--safe-bottom);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+}
+.patrol-result-bar.show { transform: translateY(0); }
+.patrol-result-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 16px 7px;
+}
+.patrol-result-edit {
+  padding: 7px 12px; border-radius: 10px;
+  border: 1px solid #F05A22; background: #FFF0EB;
+  font-size: 12px; font-weight: 700; color: #F05A22;
+  cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
+  white-space: nowrap;
+}
+.patrol-result-close {
+  padding: 7px 12px; border-radius: 10px;
+  border: 1px solid #E8E8E4; background: #F7F7F5;
+  font-size: 12px; font-weight: 700; color: #555;
+  cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
+  white-space: nowrap;
+}
+
+/* 순회 선택된 배지 강조 */
+.store-badge-marker.patrol-selected {
+  box-shadow: 0 0 0 3px #185FA5, 0 5px 16px rgba(0,0,0,0.26) !important;
+}
+
+/* 순회 모드에서 선택 안 된 배지 희미하게 */
+.patrol-mode-active .store-badge-marker:not(.patrol-selected) {
+  opacity: 0.38;
+}
+
+/* 순서 번호 배지 - 사업장 배지 우상단에 딱 붙게 */
+.patrol-order-badge {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: #185FA5;
+  color: white;
+  font-size: 10px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  pointer-events: none;
+  z-index: 10;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.patrol-scroll-badge .patrol-badge-name {
+  white-space: nowrap;
+}
+
+/* X 취소 버튼 */
+.patrol-badge-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  border: none;
+  color: white;
+  font-size: 9px;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 3px;
+  flex-shrink: 0;
+  line-height: 1;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: background 0.12s;
+}
+.patrol-badge-x:hover { background: rgba(255,255,255,0.55); }
+.patrol-badge-x:active { background: rgba(0,0,0,0.18); }
+
+/* 드래그 중 배지 커서 + 드롭 대상 강조 */
+.patrol-scroll-badge[draggable="true"] { cursor: grab; }
+.patrol-scroll-badge[draggable="true"]:active { cursor: grabbing; }
+.patrol-scroll-badge.patrol-badge-dragover {
+  outline: 2.5px dashed rgba(255,255,255,0.85);
+  outline-offset: 2px;
+  transform: scale(1.06);
+  transition: transform 0.1s;
+}
+
+/* 데스크탑 */
+@media (min-width: 768px) {
+  .patrol-bar, .patrol-result-bar {
+    left: var(--side-width, 320px);
+  }
+}
+
+/* =========================================================
    REAL FINAL: 필터 상태 정정
    - 디폴트: 색상 채움 + 흰 글씨
    - 선택: 흰 배경 + 색상 테두리/글씨
@@ -2126,6 +2355,38 @@
 <button class="fab-list" id="fabBtn" onclick="toggleSheet()">
   📋 목록 <span class="count-badge" id="fabCount">0</span>
 </button>
+
+<!-- 현장순회 하단 바 (편집 모드용) -->
+<div class="patrol-bar" id="patrolBar">
+  <div class="patrol-bar-top">
+    <div class="patrol-info">
+      <span class="patrol-icon">🗺️</span>
+      <div class="patrol-title">현장순회 경로 설정</div>
+    </div>
+    <div class="patrol-btns">
+      <button class="patrol-btn-reset" onclick="resetPatrol()">초기화</button>
+      <button class="patrol-btn-confirm" onclick="confirmPatrol()">확인</button>
+    </div>
+  </div>
+  <div class="patrol-badge-scroll" id="patrolBadgeScroll">
+    <span class="patrol-empty-hint" id="patrolEmptyHint">방문할 사업지를 순서대로 클릭하세요</span>
+  </div>
+</div>
+
+<!-- 현장순회 결과 바 (확인 후) -->
+<div class="patrol-result-bar" id="patrolResultBar">
+  <div class="patrol-result-top">
+    <div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">
+      <span style="font-size:17px;">🗺️</span>
+      <span style="font-size:13px;font-weight:700;color:#1A1A1A;">현장순회 경로</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-shrink:0;">
+      <button class="patrol-result-edit" onclick="editPatrol()">✏️ 편집</button>
+      <button class="patrol-result-close" onclick="clearPatrol()">✕ 닫기</button>
+    </div>
+  </div>
+  <div class="patrol-badge-scroll" id="patrolResultBadgeScroll"></div>
+</div>
 
 <div class="bottom-sheet" id="bottomSheet">
   <div class="sheet-handle-area" id="sheetHandle" onclick="toggleSheet()">
@@ -2390,6 +2651,24 @@ const map = L.map('map', { zoomControl: false, attributionControl: false }).setV
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
+/* ── 현장순회 연필 컨트롤 (줌 버튼 바로 아래) ── */
+const PatrolControl = L.Control.extend({
+  options: { position: 'topright' },
+  onAdd: function() {
+    const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control patrol-pencil-control');
+    div.innerHTML = `<a id="fabPatrol" href="#" title="현장순회 경로 설정" role="button" aria-label="현장순회 경로 설정" style="display:flex;align-items:center;justify-content:center;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+    </a>`;
+    L.DomEvent.on(div.querySelector('a'), 'click', function(e) {
+      L.DomEvent.preventDefault(e);
+      togglePatrolMode();
+    });
+    L.DomEvent.disableClickPropagation(div);
+    return div;
+  }
+});
+new PatrolControl().addTo(map);
+
 const HEADQUARTERS = {
   name: '본사',
   lat: 37.512175601007414,
@@ -2632,6 +2911,13 @@ function buildMarkers() {
     marker.storeGroup = group;
     marker.bindPopup(() => buildGroupPopup(group), { maxWidth: 300 });
     marker.on('click', () => {
+      // 순회 편집 모드에서는 배지 선택 처리
+      if (patrolMode) {
+        const visible = getVisibleGroup(group);
+        const rep = visible[0];
+        if (rep) handlePatrolMarkerClick(rep.id, marker, group);
+        return;
+      }
       // 같은 위치는 상세를 바로 열지 않고 팝업에서 선택하게 둠
       const visible = getVisibleGroup(group);
       if (visible.length === 1) activeId = visible[0].id;
@@ -3061,6 +3347,359 @@ function closeDetail() {
   }
 }
 window.openDetail = openDetail;
+
+/* =========================================================
+   현장순회 기능
+   ========================================================= */
+let patrolMode = false;            // 편집 모드 여부
+let patrolOrder = [];              // 선택된 storeId 배열 (순서)
+let patrolActive = false;          // 순회 결과 표시 중 여부
+let patrolMarkerDivs = {};         // markerId -> div element (아이콘 내부 div)
+
+// 순회 선택 시 아이콘 재생성 (번호 배지 포함)
+function getPatrolIcon(group, orderNum, isSelected) {
+  const visible = getVisibleGroup(group || []);
+  const base = (visible.length ? visible : group)[0];
+  const color = catColor(base.cat);
+  const text = getMarkerLabelText(group);
+  const selectedClass = isSelected ? 'patrol-selected' : '';
+  const badge = orderNum
+    ? `<div class="patrol-order-badge">${orderNum}</div>`
+    : '';
+  return L.divIcon({
+    html: `<div class="store-badge-marker ${selectedClass}" style="background:${color};position:relative;transform:translate(-50%,-50%);">
+        <span class="store-marker-text">${text}</span>${badge}
+      </div>`,
+    className: '',
+    iconSize: [1, 1],
+    iconAnchor: [0, 0],
+    popupAnchor: [0, -18]
+  });
+}
+
+function handlePatrolMarkerClick(storeId, marker, group) {
+  const existingIdx = patrolOrder.indexOf(storeId);
+  if (existingIdx !== -1) {
+    // 이미 선택된 경우 → 선택 해제
+    patrolOrder.splice(existingIdx, 1);
+  } else {
+    // 새로 선택
+    patrolOrder.push(storeId);
+  }
+  refreshPatrolMarkers();
+  updatePatrolSubText();
+}
+
+function refreshPatrolMarkers() {
+  const processed = new Set();
+  Object.entries(markers).forEach(([id, marker]) => {
+    if (processed.has(marker)) return;
+    processed.add(marker);
+    const group = marker.storeGroup || [];
+    // 이 그룹에서 선택된 첫 번째 storeId의 순번 구하기
+    const selectedInGroup = group
+      .map(s => ({ id: s.id, idx: patrolOrder.indexOf(s.id) }))
+      .filter(x => x.idx !== -1)
+      .sort((a, b) => a.idx - b.idx);
+    const orderNum = selectedInGroup.length ? selectedInGroup[0].idx + 1 : null;
+    const isSelected = selectedInGroup.length > 0;
+    marker.setIcon(getPatrolIcon(group, orderNum, isSelected));
+  });
+}
+
+/* ── 드래그앤드롭 상태 ── */
+let dragSrcIdx = null;
+
+function renderPatrolBadges(containerId, showEmpty) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  if (patrolOrder.length === 0) {
+    container.innerHTML = showEmpty
+      ? '<span class="patrol-empty-hint">방문할 사업지를 순서대로 클릭하세요</span>'
+      : '';
+    return;
+  }
+
+  const isEdit = (containerId === 'patrolBadgeScroll');
+
+  container.innerHTML = patrolOrder.map((id, i) => {
+    const s = stores.find(x => x.id === id);
+    if (!s) return '';
+    const color = catColor(s.cat);
+    const name = s.branch || s.name;
+    const arrow = i < patrolOrder.length - 1
+      ? '<span class="patrol-scroll-arrow">›</span>'
+      : '';
+    const xBtn = isEdit
+      ? `<button class="patrol-badge-x" onclick="removePatrolItem(${i})" title="제거">✕</button>`
+      : '';
+    const draggable = isEdit ? 'draggable="true"' : '';
+    return `<span class="patrol-scroll-badge" data-idx="${i}" ${draggable} style="background:${color};">
+        <span class="patrol-scroll-num">${i + 1}</span>
+        <span class="patrol-badge-name">${name}</span>
+        ${xBtn}
+      </span>${arrow}`;
+  }).join('');
+
+  // 드래그앤드롭 이벤트 (편집 바에서만)
+  if (isEdit) {
+    container.querySelectorAll('.patrol-scroll-badge').forEach(el => {
+      el.addEventListener('dragstart', onBadgeDragStart);
+      el.addEventListener('dragover',  onBadgeDragOver);
+      el.addEventListener('drop',      onBadgeDrop);
+      el.addEventListener('dragend',   onBadgeDragEnd);
+      // 터치 드래그 지원
+      el.addEventListener('touchstart', onBadgeTouchStart, { passive: true });
+      el.addEventListener('touchmove',  onBadgeTouchMove,  { passive: false });
+      el.addEventListener('touchend',   onBadgeTouchEnd,   { passive: true });
+    });
+  }
+}
+
+function removePatrolItem(idx) {
+  patrolOrder.splice(idx, 1);
+  refreshPatrolMarkers();
+  updatePatrolSubText();
+}
+
+/* ── 마우스 드래그 ── */
+function onBadgeDragStart(e) {
+  dragSrcIdx = parseInt(e.currentTarget.dataset.idx);
+  e.currentTarget.style.opacity = '0.45';
+  e.dataTransfer.effectAllowed = 'move';
+}
+function onBadgeDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('#patrolBadgeScroll .patrol-scroll-badge').forEach(el => {
+    el.classList.toggle('patrol-badge-dragover', el.dataset.idx == parseInt(e.currentTarget.dataset.idx) && parseInt(e.currentTarget.dataset.idx) !== dragSrcIdx);
+  });
+}
+function onBadgeDrop(e) {
+  e.preventDefault();
+  const targetIdx = parseInt(e.currentTarget.dataset.idx);
+  if (dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+  const moved = patrolOrder.splice(dragSrcIdx, 1)[0];
+  patrolOrder.splice(targetIdx, 0, moved);
+  dragSrcIdx = null;
+  refreshPatrolMarkers();
+  updatePatrolSubText();
+}
+function onBadgeDragEnd(e) {
+  e.currentTarget.style.opacity = '';
+  document.querySelectorAll('#patrolBadgeScroll .patrol-scroll-badge').forEach(el => el.classList.remove('patrol-badge-dragover'));
+  dragSrcIdx = null;
+}
+
+/* ── 터치 드래그 ── */
+let touchDragIdx = null, touchClone = null, touchScrollRef = null;
+function onBadgeTouchStart(e) {
+  touchDragIdx = parseInt(e.currentTarget.dataset.idx);
+  touchScrollRef = document.getElementById('patrolBadgeScroll');
+  const rect = e.currentTarget.getBoundingClientRect();
+  touchClone = e.currentTarget.cloneNode(true);
+  touchClone.style.cssText = `position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;opacity:0.75;pointer-events:none;z-index:9999;transition:none;`;
+  document.body.appendChild(touchClone);
+  e.currentTarget.style.opacity = '0.35';
+}
+function onBadgeTouchMove(e) {
+  if (touchClone === null) return;
+  e.preventDefault();
+  const t = e.touches[0];
+  touchClone.style.left = (t.clientX - 30) + 'px';
+  touchClone.style.top  = (t.clientY - 18) + 'px';
+  // 드롭 대상 계산
+  const badges = touchScrollRef.querySelectorAll('.patrol-scroll-badge');
+  badges.forEach(el => el.classList.remove('patrol-badge-dragover'));
+  badges.forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (t.clientX >= r.left && t.clientX <= r.right && t.clientY >= r.top && t.clientY <= r.bottom) {
+      const tIdx = parseInt(el.dataset.idx);
+      if (tIdx !== touchDragIdx) el.classList.add('patrol-badge-dragover');
+    }
+  });
+}
+function onBadgeTouchEnd(e) {
+  if (touchClone) { touchClone.remove(); touchClone = null; }
+  if (touchDragIdx === null) return;
+  const t = e.changedTouches[0];
+  const badges = touchScrollRef ? touchScrollRef.querySelectorAll('.patrol-scroll-badge') : [];
+  let targetIdx = null;
+  badges.forEach(el => {
+    el.style.opacity = '';
+    el.classList.remove('patrol-badge-dragover');
+    const r = el.getBoundingClientRect();
+    if (t.clientX >= r.left && t.clientX <= r.right && t.clientY >= r.top && t.clientY <= r.bottom) {
+      targetIdx = parseInt(el.dataset.idx);
+    }
+  });
+  if (targetIdx !== null && targetIdx !== touchDragIdx) {
+    const moved = patrolOrder.splice(touchDragIdx, 1)[0];
+    patrolOrder.splice(targetIdx, 0, moved);
+    refreshPatrolMarkers();
+    updatePatrolSubText();
+  }
+  touchDragIdx = null; touchScrollRef = null;
+}
+
+function updatePatrolSubText() {
+  renderPatrolBadges('patrolBadgeScroll', true);
+}
+
+function togglePatrolMode() {
+  if (patrolActive) {
+    // 결과 표시 중이면 편집 모드로 전환
+    editPatrol();
+    return;
+  }
+  patrolMode = !patrolMode;
+  const btn = document.getElementById('fabPatrol');
+  const bar = document.getElementById('patrolBar');
+
+  if (patrolMode) {
+    btn.classList.add('patrol-active');
+    bar.classList.add('show');
+    // 하단 시트 닫기
+    setSheetState('collapsed');
+    // 지도 div에 patrol-mode-active 클래스 추가 (비선택 배지 희미하게)
+    document.getElementById('map').classList.add('patrol-mode-active');
+    updatePatrolSubText();
+    // 모든 팝업 닫기
+    map.closePopup();
+  } else {
+    exitPatrolMode();
+  }
+}
+
+function exitPatrolMode() {
+  patrolMode = false;
+  document.getElementById('fabPatrol').classList.remove('patrol-active');
+  document.getElementById('patrolBar').classList.remove('show');
+  document.getElementById('map').classList.remove('patrol-mode-active');
+  // 마커 원상복구
+  refreshNormalMarkers();
+}
+
+function refreshNormalMarkers() {
+  const processed = new Set();
+  Object.values(markers).forEach(marker => {
+    if (processed.has(marker)) return;
+    processed.add(marker);
+    const group = marker.storeGroup || [];
+    marker.setIcon(getMarkerIconForGroup(group, group.some(s => s.id === activeId)));
+  });
+}
+
+function resetPatrol() {
+  patrolOrder = [];
+  refreshPatrolMarkers();
+  updatePatrolSubText();
+}
+
+function confirmPatrol() {
+  if (patrolOrder.length === 0) {
+    // 아무것도 선택 안 했으면 그냥 닫기
+    exitPatrolMode();
+    return;
+  }
+
+  // 순회 결과 표시 모드
+  patrolMode = false;
+  patrolActive = true;
+
+  document.getElementById('fabPatrol').classList.add('patrol-active');
+  document.getElementById('patrolBar').classList.remove('show');
+  document.getElementById('map').classList.remove('patrol-mode-active');
+
+  // 선택된 사업장만 맵에 표시
+  applyPatrolFilter();
+
+  // 결과 바 표시
+  renderPatrolBadges('patrolResultBadgeScroll', false);
+  document.getElementById('patrolResultBar').classList.add('show');
+
+  // 지도를 선택된 사업장에 맞게 fit
+  fitMapToPatrol();
+}
+
+function applyPatrolFilter() {
+  const patrolSet = new Set(patrolOrder);
+  const processed = new Set();
+
+  Object.entries(markers).forEach(([id, marker]) => {
+    if (processed.has(marker)) return;
+    processed.add(marker);
+    const group = marker.storeGroup || [];
+
+    // 이 그룹에서 순회에 포함된 sores만 확인
+    const inPatrol = group.filter(s => patrolSet.has(s.id));
+    if (inPatrol.length > 0) {
+      marker.addTo(map);
+      // 번호 배지 포함 아이콘
+      const firstSelected = inPatrol
+        .map(s => ({ id: s.id, idx: patrolOrder.indexOf(s.id) }))
+        .sort((a, b) => a.idx - b.idx)[0];
+      const orderNum = firstSelected.idx + 1;
+      marker.setIcon(getPatrolIcon(group, orderNum, true));
+    } else {
+      marker.remove();
+    }
+  });
+}
+
+function fitMapToPatrol() {
+  const patrolStores = patrolOrder.map(id => stores.find(s => s.id === id)).filter(Boolean);
+  if (patrolStores.length === 0) return;
+  if (patrolStores.length === 1) {
+    map.setView([patrolStores[0].lat, patrolStores[0].lng], 15, { animate: true });
+    return;
+  }
+  const lats = patrolStores.map(s => s.lat);
+  const lngs = patrolStores.map(s => s.lng);
+  const bounds = [
+    [Math.min(...lats) - 0.003, Math.min(...lngs) - 0.003],
+    [Math.max(...lats) + 0.003, Math.max(...lngs) + 0.003]
+  ];
+  map.fitBounds(bounds, { padding: [40, 40], animate: true });
+}
+
+function editPatrol() {
+  // 결과 표시 → 다시 편집 모드
+  patrolActive = false;
+  document.getElementById('patrolResultBar').classList.remove('show');
+
+  // 마커 복구 후 편집 모드 재진입
+  refreshNormalMarkers();
+  patrolMode = true;
+  document.getElementById('fabPatrol').classList.add('patrol-active');
+  document.getElementById('patrolBar').classList.add('show');
+  document.getElementById('map').classList.add('patrol-mode-active');
+  refreshPatrolMarkers();
+  updatePatrolSubText();
+
+  // 전체 마커 다시 표시
+  const visibleIds = new Set(filteredStores.map(s => s.id));
+  const processed = new Set();
+  Object.values(markers).forEach(marker => {
+    if (processed.has(marker)) return;
+    processed.add(marker);
+    const group = marker.storeGroup || [];
+    if (group.some(s => visibleIds.has(s.id))) marker.addTo(map);
+  });
+  refreshPatrolMarkers();
+  map.closePopup();
+}
+
+function clearPatrol() {
+  patrolActive = false;
+  patrolOrder = [];
+  document.getElementById('fabPatrol').classList.remove('patrol-active');
+  document.getElementById('patrolResultBar').classList.remove('show');
+  // 마커 전부 복구
+  updateMarkers();
+  refreshNormalMarkers();
+}
 </script>
 </body>
 </html>
