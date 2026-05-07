@@ -1715,10 +1715,12 @@ function openDetail(id) {
       const personLabel = person.shift_label || '';
       let groupKey;
       if (isKimyoungsam) {
-        // 김영삼도서관: shift_type(미화/주차)-shift_label(오전/오후) 조합
+        // 김영삼도서관: 미화/주차 + 오전/오후 조합으로 그룹 표시
         const firstDay = Object.keys(person.days || {})[0];
         const rawLabel = firstDay && person.labels ? person.labels[firstDay] : '';
-        groupKey = rawLabel || personLabel || '기타';
+        const typeLabel = person.shift_type || '';
+        const timeLabel = rawLabel || personLabel || '';
+        groupKey = (typeLabel && timeLabel) ? `${typeLabel}-${timeLabel}` : (typeLabel || timeLabel || '기타');
       } else if (personLabel) {
         // 신청사는 오전/오후/주말/푸드코트 4개 그룹으로 표시
         groupKey = (s.name === '신청사') ? personLabel : (personLabel + '팀');
@@ -1752,6 +1754,10 @@ function openDetail(id) {
       '오전팀':  { hdr: '#FFF0EB', hdrText: '#C94415', dot: '#F05A22' },
       '오후팀':  { hdr: '#E6F1FB', hdrText: '#0C447C', dot: '#185FA5' },
       '저녁팀':  { hdr: '#F5EEFB', hdrText: '#4A1880', dot: '#9B59B6' },
+      '미화-오전': { hdr: '#FFF0EB', hdrText: '#C94415', dot: '#F05A22' },
+      '미화-오후': { hdr: '#FFE8F1', hdrText: '#B0185B', dot: '#E91E8C' },
+      '주차-오전': { hdr: '#E6F1FB', hdrText: '#0C447C', dot: '#185FA5' },
+      '주차-오후': { hdr: '#F5EEFB', hdrText: '#4A1880', dot: '#9B59B6' },
       '미화':    { hdr: '#FFF0EB', hdrText: '#C94415', dot: '#F05A22' },
       '주차':    { hdr: '#E6F1FB', hdrText: '#0C447C', dot: '#185FA5' },
       '오전':    { hdr: '#FFF0EB', hdrText: '#C94415', dot: '#F05A22' },
