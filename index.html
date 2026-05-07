@@ -293,8 +293,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<style>
-  :root {
+<style>:root {
     --primary: #F05A22;
     --primary-light: #FF7A45;
     --primary-dark: #C94415;
@@ -321,8 +320,10 @@
     --cat-lib: #27AE60;
     --cat-lib-bg: #E8F8EF;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body {
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
     font-family: 'Noto Sans KR', sans-serif;
     background: var(--bg);
     color: var(--text);
@@ -330,7 +331,7 @@
     overflow: hidden; position: fixed;
   }
 
-  /* ── 헤더 ── */
+/* ── 헤더 ── */
   header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 300;
     padding-top: var(--safe-top);
@@ -338,43 +339,51 @@
     border-bottom: 1px solid var(--border);
     box-shadow: 0 1px 8px rgba(0,0,0,0.06);
   }
-  .header-inner {
+
+.header-inner {
     display: flex; align-items: center; gap: 12px; padding: 11px 16px;
   }
 
-  /* ── 로고 ── */
+/* ── 로고 ── */
   .logo-wrap {
     display: flex; align-items: center; gap: 8px; flex-shrink: 0; text-decoration: none;
   }
-  .logo-icon {
+
+.logo-icon {
     width: 32px; height: 32px; flex-shrink: 0;
   }
-  .logo-text {
+
+.logo-text {
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 700; font-size: 16px; color: var(--text);
     white-space: nowrap; letter-spacing: -0.3px; line-height: 1;
   }
-  .logo-text span { color: inherit; }
 
-  .search-bar { flex: 1; position: relative; }
-  .search-bar input {
+.logo-text span { color: inherit; }
+
+.search-bar { flex: 1; position: relative; }
+
+.search-bar input {
     width: 100%; background: var(--surface2);
     border: 1px solid var(--border); border-radius: 10px;
     padding: 9px 40px 9px 14px; color: var(--text);
     font-family: 'Noto Sans KR', sans-serif; font-size: 14px;
     outline: none; transition: border-color 0.2s; -webkit-appearance: none;
   }
-  .search-bar input:focus { border-color: var(--primary); background: var(--surface); }
-  .search-bar input::placeholder { color: var(--text-muted); }
-  .search-icon {
+
+.search-bar input:focus { border-color: var(--primary); background: var(--surface); }
+
+.search-bar input::placeholder { color: var(--text-muted); }
+
+.search-icon {
     position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
     color: var(--text-muted); font-size: 15px; pointer-events: none;
   }
 
-  /* ── 지도 ── */
+/* ── 지도 ── */
   #map { position: fixed; inset: 0; z-index: 1; }
 
-  /* ── FAB ── */
+/* ── FAB ── */
   .fab-list {
     position: fixed; right: 16px; z-index: 200;
     background: var(--surface); border: 1px solid var(--border);
@@ -384,13 +393,15 @@
     display: flex; align-items: center; gap: 6px;
     bottom: calc(175px + var(--safe-bottom));
   }
-  .fab-list:active { background: var(--surface2); }
-  .count-badge {
+
+.fab-list:active { background: var(--surface2); }
+
+.count-badge {
     background: var(--primary); color: white;
     font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 20px;
   }
 
-  /* ── 하단 시트 ── */
+/* ── 하단 시트 ── */
   .bottom-sheet {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 400;
     background: var(--surface); border-radius: 20px 20px 0 0;
@@ -401,71 +412,99 @@
     padding-bottom: var(--safe-bottom);
     border-top: 1px solid var(--border);
   }
-  .bottom-sheet.expanded { transform: translateY(0); }
-  .bottom-sheet.collapsed { transform: translateY(calc(100% - 56px - var(--safe-bottom))); }
 
-  .sheet-handle-area {
+.bottom-sheet.expanded { transform: translateY(0); }
+
+.bottom-sheet.collapsed { transform: translateY(calc(100% - 56px - var(--safe-bottom))); }
+
+.sheet-handle-area {
     padding: 12px 16px 0; display: flex; flex-direction: column;
     align-items: center; gap: 10px; flex-shrink: 0;
     cursor: pointer; user-select: none;
   }
-  .sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; }
-  .sheet-header {
+
+.sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; }
+
+.sheet-header {
     width: 100%; display: flex; justify-content: space-between;
     align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border);
   }
-  .sheet-title { font-size: 15px; font-weight: 700; color: var(--text); }
-  .sheet-count { font-size: 12px; color: var(--text-muted); }
-  .sheet-count strong { color: var(--primary); }
 
-  .store-list {
+.sheet-title { font-size: 15px; font-weight: 700; color: var(--text); }
+
+.sheet-count { font-size: 12px; color: var(--text-muted); }
+
+.sheet-count strong { color: var(--primary); }
+
+.store-list {
     flex: 1; overflow-y: auto; padding: 0;
     -webkit-overflow-scrolling: touch;
   }
-  .store-list::-webkit-scrollbar { display: none; }
 
-  .store-item {
+.store-list::-webkit-scrollbar { display: none; }
+
+.store-item {
     padding: 12px 16px;
     cursor: pointer;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
     transition: background 0.1s;
   }
-  .store-item:last-child { border-bottom: none; }
-  .store-item:active { background: var(--surface2); }
-  .store-item.active { background: #FFF3EE; }
-  .store-item-header {
+
+.store-item:last-child { border-bottom: none; }
+
+.store-item:active { background: var(--surface2); }
+
+.store-item.active { background: #FFF3EE; }
+
+.store-item-header {
     display: flex; align-items: center; gap: 7px; margin-bottom: 4px;
   }
-  .store-name { font-weight: 700; font-size: 14px; color: var(--text); }
-  .store-address { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 4px; }
-  .store-meta { display: flex; gap: 10px; font-size: 11px; color: var(--text-muted); }
-  .store-meta span { display: flex; align-items: center; gap: 3px; }
-  .dot-open { color: #27AE60; }
-  .dot-closed { color: #E74C3C; }
-  .no-results { text-align: center; padding: 40px 24px; color: var(--text-muted); font-size: 14px; }
-  .no-results .emoji { font-size: 32px; display: block; margin-bottom: 12px; }
 
-  /* ── 카테고리 배지 ── */
+.store-name { font-weight: 700; font-size: 14px; color: var(--text); }
+
+.store-address { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 4px; }
+
+.store-meta { display: flex; gap: 10px; font-size: 11px; color: var(--text-muted); }
+
+.store-meta span { display: flex; align-items: center; gap: 3px; }
+
+.dot-open { color: #27AE60; }
+
+.dot-closed { color: #E74C3C; }
+
+.no-results { text-align: center; padding: 40px 24px; color: var(--text-muted); font-size: 14px; }
+
+.no-results .emoji { font-size: 32px; display: block; margin-bottom: 12px; }
+
+/* ── 카테고리 배지 ── */
   .cat-badge {
     font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px;
     white-space: nowrap; flex-shrink: 0;
   }
-  .cat-gu      { background: #F4A300; color: #fff; }
-  .cat-dong    { background: #F05A22; color: #fff; }
-  .cat-culture { background: #9B59B6; color: #fff; }
-  .cat-gongdan { background: #E91E8C; color: #fff; }
-  .cat-lib     { background: #27AE60; color: #fff; }
-  .cat-hq      { background: #185FA5; color: #fff; }
 
-  /* ── 상세 팝업 ── */
+.cat-gu      { background: #F4A300; color: #fff; }
+
+.cat-dong    { background: #F05A22; color: #fff; }
+
+.cat-culture { background: #9B59B6; color: #fff; }
+
+.cat-gongdan { background: #E91E8C; color: #fff; }
+
+.cat-lib     { background: #27AE60; color: #fff; }
+
+.cat-hq      { background: #185FA5; color: #fff; }
+
+/* ── 상세 팝업 ── */
   .detail-overlay {
     display: none; position: fixed; inset: 0;
     background: rgba(0,0,0,0.35); z-index: 500;
     backdrop-filter: blur(2px);
   }
-  .detail-overlay.show { display: block; }
-  .detail-sheet {
+
+.detail-overlay.show { display: block; }
+
+.detail-sheet {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 600;
     background: var(--surface); border-radius: 24px 24px 0 0;
     box-shadow: 0 -4px 32px rgba(0,0,0,0.12);
@@ -475,93 +514,122 @@
     max-height: 90vh; overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-  .detail-sheet.show { transform: translateY(0); }
-  .detail-handle { display: flex; justify-content: center; padding: 8px 0 0; }
-  .detail-handle div { width: 36px; height: 4px; background: var(--border); border-radius: 2px; }
 
-  .detail-header {
+.detail-sheet.show { transform: translateY(0); }
+
+.detail-handle { display: flex; justify-content: center; padding: 8px 0 0; }
+
+.detail-handle div { width: 36px; height: 4px; background: var(--border); border-radius: 2px; }
+
+.detail-header {
     margin: 0; border-radius: 0; padding: 0 16px; position: relative;
     display: flex; align-items: center; gap: 10px;
     min-height: 64px;
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   }
-  .detail-close {
+
+.detail-close {
     margin-left: auto; flex-shrink: 0;
     background: rgba(255,255,255,0.25); border: none; color: white;
     width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
     font-size: 13px; display: flex; align-items: center; justify-content: center;
   }
-  .detail-store-name { font-weight: 700; font-size: 18px; color: white; line-height: 1.2; }
-  .detail-branch { font-size: 13px; color: rgba(255,255,255,0.8); }
-  .detail-cat-badge {
+
+.detail-store-name { font-weight: 700; font-size: 18px; color: white; line-height: 1.2; }
+
+.detail-branch { font-size: 13px; color: rgba(255,255,255,0.8); }
+
+.detail-cat-badge {
     display: inline-flex; align-items: center; flex-shrink: 0;
     font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px;
     background: rgba(255,255,255,0.25); color: white; white-space: nowrap;
   }
 
-  .detail-body { padding: 8px 12px 4px; box-sizing: border-box; width: 100%; }
-  .detail-row {
+.detail-body { padding: 8px 12px 4px; box-sizing: border-box; width: 100%; }
+
+.detail-row {
     display: flex; gap: 12px; align-items: flex-start;
     padding: 13px 0; border-bottom: 1px solid var(--border); font-size: 14px;
   }
-  .detail-row:last-child { border-bottom: none; }
-  .detail-icon { font-size: 16px; width: 22px; flex-shrink: 0; }
-  .detail-label { color: var(--text-muted); font-size: 12px; width: 60px; flex-shrink: 0; padding-top: 1px; }
-  .detail-value { color: var(--text); flex: 1; line-height: 1.6; }
-  .status-open { color: #27AE60; font-weight: 600; }
-  .status-closed { color: #666; font-weight: 600; }
-  .status-upcoming-text { color: #B77900; font-weight: 600; }
 
-  /* 직원명단 태그들 */
+.detail-row:last-child { border-bottom: none; }
+
+.detail-icon { font-size: 16px; width: 22px; flex-shrink: 0; }
+
+.detail-label { color: var(--text-muted); font-size: 12px; width: 60px; flex-shrink: 0; padding-top: 1px; }
+
+.detail-value { color: var(--text); flex: 1; line-height: 1.6; }
+
+.status-open { color: #27AE60; font-weight: 600; }
+
+.status-closed { color: #666; font-weight: 600; }
+
+.status-upcoming-text { color: #B77900; font-weight: 600; }
+
+/* 직원명단 태그들 */
   .staff-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; max-width: 100%; }
-  .staff-tag {
+
+.staff-tag {
     background: var(--surface2); border: 1px solid var(--border);
     border-radius: 20px; padding: 3px 10px;
     font-size: 12px; color: var(--text);
     display: inline-flex; align-items: center; gap: 3px;
   }
-  a.staff-tag { text-decoration: none; cursor: pointer; }
-  a.staff-tag:active { background: #E8E8E4; }
-  .staff-call-hint { font-size: 10px; opacity: 0.7; margin-left: 2px; }
-  .staff-tag.leader-tag {
+
+a.staff-tag { text-decoration: none; cursor: pointer; }
+
+a.staff-tag:active { background: #E8E8E4; }
+
+.staff-call-hint { font-size: 10px; opacity: 0.7; margin-left: 2px; }
+
+.staff-tag.leader-tag {
     background: #FFF0F0;
     border-color: #FFB8B8;
     color: #C9302C;
     font-weight: 700;
   }
-  .staff-tag.leader-tag .person-icon {
+
+.staff-tag.leader-tag .person-icon {
     color: #E74C3C;
     font-weight: 900;
   }
-  .staff-tag .leader-svg { display:inline-flex; align-items:center; justify-content:center; width:13px; height:13px; vertical-align:-2px; }
-  .staff-tag .leader-svg svg { width:13px; height:13px; display:block; }
-  
 
-  .detail-actions { display: flex; gap: 10px; padding: 4px 16px 16px; }
-  .btn {
+.staff-tag .leader-svg { display:inline-flex; align-items:center; justify-content:center; width:13px; height:13px; vertical-align:-2px; }
+
+.staff-tag .leader-svg svg { width:13px; height:13px; display:block; }
+
+.detail-actions { display: flex; gap: 10px; padding: 4px 16px 16px; }
+
+.btn {
     flex: 1; padding: 14px; border-radius: 12px;
     font-family: 'Noto Sans KR', sans-serif; font-size: 14px; font-weight: 700;
     cursor: pointer; border: none;
     display: flex; align-items: center; justify-content: center; gap: 6px;
   }
-  .btn:active { opacity: 0.8; }
-  .btn-primary { background: #FDDDD5; color: #000; }
-  .btn-naver { background: #C8F5DC; color: #000; }
-  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
 
-  /* ── 지도 팝업 ── */
+.btn:active { opacity: 0.8; }
+
+.btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+
+/* ── 지도 팝업 ── */
   .leaflet-popup-content-wrapper {
     background: var(--surface) !important; border: 1px solid var(--border) !important;
     border-radius: 14px !important; color: var(--text) !important;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
     font-family: 'Noto Sans KR', sans-serif !important;
   }
-  .leaflet-popup-tip { background: var(--surface) !important; }
-  .leaflet-popup-content { margin: 14px 16px !important; font-size: 13px !important; }
-  .lp-name { font-weight: 700; font-size: 14px; color: var(--text); }
-  .lp-cat-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; color: white; white-space: nowrap; flex-shrink: 0; }
-  .lp-addr { color: var(--text-muted); font-size: 12px; margin-bottom: 10px; line-height: 1.5; }
-  .lp-shift-text {
+
+.leaflet-popup-tip { background: var(--surface) !important; }
+
+.leaflet-popup-content { margin: 14px 16px !important; font-size: 13px !important; }
+
+.lp-name { font-weight: 700; font-size: 14px; color: var(--text); }
+
+.lp-cat-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; color: white; white-space: nowrap; flex-shrink: 0; }
+
+.lp-addr { color: var(--text-muted); font-size: 12px; margin-bottom: 10px; line-height: 1.5; }
+
+.lp-shift-text {
     font-size: 11px;
     color: #888;
     display: inline-block;
@@ -571,41 +639,51 @@
     text-overflow: ellipsis;
     max-width: 178px;
   }
-  @media (max-width: 767px) {
+
+@media (max-width: 767px) {
     .lp-shift-text { max-width: 145px; }
   }
-  .lp-btn {
+
+.lp-btn {
     background: var(--primary); color: white; border: none; border-radius: 8px;
     padding: 9px 14px; font-size: 13px; font-weight: 700; cursor: pointer; width: 100%;
     font-family: 'Noto Sans KR', sans-serif;
   }
 
-
-  /* ── 같은 위치 사업장 선택 팝업 ── */
+/* ── 같은 위치 사업장 선택 팝업 ── */
   .group-popup-title {
     font-weight: 800; font-size: 14px; color: var(--text); margin-bottom: 10px;
     display: flex; align-items: center; gap: 6px;
   }
-  .group-popup-sub {
+
+.group-popup-sub {
     font-size: 11px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.4;
   }
-  .group-store-card {
+
+.group-store-card {
     width: 100%; text-align: left; cursor: pointer;
     background: #fff; border: 1px solid var(--border); border-radius: 10px;
     padding: 10px 11px; margin-bottom: 8px; font-family: 'Noto Sans KR', sans-serif;
     transition: background 0.12s, border-color 0.12s, transform 0.12s;
   }
-  .group-store-card:active { transform: scale(0.99); background: var(--surface2); }
-  .group-store-card.working { border-color: #BDE8CF; background: #F7FEFA; }
-  .group-store-head { display:flex; align-items:center; gap:6px; margin-bottom:5px; }
-  .group-store-name { font-size:13px; font-weight:800; color:var(--text); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .group-store-meta { font-size:11px; color:var(--text-muted); line-height:1.45; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .group-status { font-size:10px; font-weight:800; padding:2px 7px; border-radius:999px; white-space:nowrap; }
-  .group-status.on { background:#E8F8EF; color:#059142; }
-  .group-status.off { background:#F2F2F0; color:#999; }
 
+.group-store-card:active { transform: scale(0.99); background: var(--surface2); }
 
-  /* ── 필터 공통 ── */
+.group-store-card.working { border-color: #BDE8CF; background: #F7FEFA; }
+
+.group-store-head { display:flex; align-items:center; gap:6px; margin-bottom:5px; }
+
+.group-store-name { font-size:13px; font-weight:800; color:var(--text); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+.group-store-meta { font-size:11px; color:var(--text-muted); line-height:1.45; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.group-status { font-size:10px; font-weight:800; padding:2px 7px; border-radius:999px; white-space:nowrap; }
+
+.group-status.on { background:#E8F8EF; color:#059142; }
+
+.group-status.off { background:#F2F2F0; color:#999; }
+
+/* ── 필터 공통 ── */
   .filter-bar {
     position: fixed;
     z-index: 200;
@@ -619,7 +697,8 @@
     backdrop-filter: blur(8px);
     white-space: nowrap;
   }
-  /* ── 상태 범례 ── */
+
+/* ── 상태 범례 ── */
 
 
   /* 필터 + 범례: 좌측 정렬, 위아래 배치 */
@@ -629,7 +708,8 @@
     left: calc(365px + 15px);
     transform: none;
   }
-  /* 범례: 구분필터 아래 15pt */
+
+/* 범례: 구분필터 아래 15pt */
   .status-legend {
     position: fixed;
     top: calc(var(--safe-top) + 122px);
@@ -651,36 +731,35 @@
     pointer-events: none;
   }
 
-  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: var(--text-muted); }
-  /* 모바일 */
+/* 모바일 */
   @media (max-width: 767px) {
     .cat-filter     { left: 8px; top: calc(var(--safe-top) + 79px); transform: none; bottom: auto; }
     .status-legend  { left: 8px; top: calc(var(--safe-top) + 122px); transform: none; bottom: auto; }
   }
-  .cat-filter-btn {
-    display: flex; align-items: center; gap: 4px;
-    height: 24px; padding: 0 9px; border-radius: 6px;
-    border: 1.5px solid transparent;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 12px; font-weight: 700;
-    cursor: pointer; background: transparent;
-    color: var(--text-muted); font-weight: 700; transition: all 0.15s; white-space: nowrap;
-  }
-  .cat-filter-btn:active { opacity: 0.7; }
-  .cat-filter-btn.active { color: white; }
-  .filter-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-  .filter-sep { color: var(--text-muted); opacity:0.35; font-size: 13px; padding: 0 2px; user-select: none; pointer-events: none; flex-shrink: 0; }
-  .filter-sep-label { font-size: 12px; font-weight: 700; color: var(--text-muted); padding: 0 2px; user-select: none; pointer-events: none; flex-shrink: 0; }
-  .legend-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 
+.cat-filter-btn:active { opacity: 0.7; }
 
-  .cat-filter-btn[data-cat="전체"].active    { background:#555;    border-color:#555; }
-  .cat-filter-btn[data-cat="주민센터"].active { background:#F05A22; border-color:#F05A22; }
-  .cat-filter-btn[data-cat="문화재단"].active { background:#9B59B6; border-color:#9B59B6; }
-  .cat-filter-btn[data-cat="시설공단"].active { background:#E91E8C; border-color:#E91E8C; }
-  .cat-filter-btn[data-cat="유관기관"].active { background:#27AE60; border-color:#27AE60; }
+.cat-filter-btn.active { color: white; }
 
-  /* ── 지도 핀 라벨 ── */
+.filter-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+.filter-sep { color: var(--text-muted); opacity:0.35; font-size: 13px; padding: 0 2px; user-select: none; pointer-events: none; flex-shrink: 0; }
+
+.filter-sep-label { font-size: 12px; font-weight: 700; color: var(--text-muted); padding: 0 2px; user-select: none; pointer-events: none; flex-shrink: 0; }
+
+.legend-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
+.cat-filter-btn[data-cat="전체"].active    { background:#555;    border-color:#555; }
+
+.cat-filter-btn[data-cat="주민센터"].active { background:#F05A22; border-color:#F05A22; }
+
+.cat-filter-btn[data-cat="문화재단"].active { background:#9B59B6; border-color:#9B59B6; }
+
+.cat-filter-btn[data-cat="시설공단"].active { background:#E91E8C; border-color:#E91E8C; }
+
+.cat-filter-btn[data-cat="유관기관"].active { background:#27AE60; border-color:#27AE60; }
+
+/* ── 지도 핀 라벨 ── */
   .map-label {
     background: transparent !important;
     display: flex !important; align-items: center !important;
@@ -701,9 +780,10 @@
                  0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff !important;
     pointer-events: none !important;
   }
-   .map-label::before { display: none !important; }
 
-  .map-label-wrap {
+.map-label::before { display: none !important; }
+
+.map-label-wrap {
     display: inline-flex;
     align-items: center;
     gap: 0;
@@ -713,7 +793,8 @@
     border: 1px solid rgba(232,232,228,0.9);
     box-shadow: 0 1px 5px rgba(0,0,0,0.08);
   }
-  .status-dot {
+
+.status-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
@@ -721,25 +802,31 @@
     border: 1px solid rgba(255,255,255,0.95);
     box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
   }
-  /* 지도 라벨의 상태 아이콘은 한눈에 보이도록 크게 표시 */
+
+/* 지도 라벨의 상태 아이콘은 한눈에 보이도록 크게 표시 */
   .map-label-wrap .status-dot {
     width: 15px;
     height: 15px;
     border-width: 2px;
     box-shadow: 0 0 0 1px rgba(0,0,0,0.16), 0 1px 4px rgba(0,0,0,0.16);
   }
-  .status-working-dot { background:#27AE60; }
-  .status-upcoming-dot { background:#F4C542; }
-  .status-ended-dot { background:#666; }
-  .status-off-dot { background:#E74C3C; }
-  .label-text {
+
+.status-working-dot { background:#27AE60; }
+
+.status-upcoming-dot { background:#F4C542; }
+
+.status-ended-dot { background:#666; }
+
+.status-off-dot { background:#E74C3C; }
+
+.label-text {
     font-size: 13px;
     font-weight: 800;
     color: #1A1A1A;
     white-space: nowrap;
   }
 
-  .legend-box { z-index: 199;
+.legend-box { z-index: 199;
     position: fixed;
     left: 50%;
     top: calc(var(--safe-top) + 72px);
@@ -759,10 +846,14 @@
     backdrop-filter: blur(8px);
     white-space: nowrap;
   }
-  .legend-title { font-weight: 800; color: var(--text); margin-right: 2px; }
-  .legend-item { display:flex; align-items:center; gap:5px; color:var(--text-muted); font-weight:700; white-space:nowrap; }
-  .legend-item .status-dot { width: 10px; height: 10px; flex-shrink: 0; }
-  @media (max-width: 767px) {
+
+.legend-title { font-weight: 800; color: var(--text); margin-right: 2px; }
+
+.legend-item { display:flex; align-items:center; gap:5px; color:var(--text-muted); font-weight:700; white-space:nowrap; }
+
+.legend-item .status-dot { width: 10px; height: 10px; flex-shrink: 0; }
+
+@media (max-width: 767px) {
     .legend-box {
       top: calc(var(--safe-top) + 72px);
       bottom: auto;
@@ -772,7 +863,8 @@
     }
     .cat-filter     { max-width: calc(100vw - 16px); overflow-x:auto; }
   }
-  /* ── 데스크탑 ── */
+
+/* ── 데스크탑 ── */
   @media (min-width: 768px) {
     .legend-box { left: calc(365px + (100vw - 365px) / 2); top: calc(var(--safe-top) + 72px); bottom: auto; }
     .fab-list { display: none; }
@@ -805,8 +897,7 @@
     #map.detail-open { right: 360px; }
   }
 
-
-  /* ─────────────────────────────
+/* ─────────────────────────────
      모바일 최적화 추가
      - 터치 영역 확대
      - 하단 시트/상세 팝업 가독성 개선
@@ -940,9 +1031,7 @@
     .group-store-meta { font-size: 12px; }
   }
 
-
-
-  /* ─────────────────────────────
+/* ─────────────────────────────
      모바일 전용 클린 버전
      - 모바일에서는 범례/필터 숨김
      - 지도 라벨 상태점 숨김
@@ -1021,8 +1110,7 @@
     }
   }
 
-
-  /* ─────────────────────────────
+/* ─────────────────────────────
      모바일 상세팝업 스크롤/하단 여백 수정 v3
      - 팝업 전체는 화면 안에 고정
      - 내용만 세로 스크롤
@@ -1102,8 +1190,7 @@
     }
   }
 
-
-  /* ─────────────────────────────
+/* ─────────────────────────────
      모바일 목록 하단 빈공간 제거 v4
      - 검색 결과가 적을 때 하단시트가 화면을 크게 덮지 않도록 자동 높이
      - 결과가 많을 때만 목록 영역 내부 스크롤
@@ -1161,9 +1248,7 @@
     }
   }
 
-
-
-  /* ─────────────────────────────
+/* ─────────────────────────────
      모바일 최종 보정 v6
      - 범례/필터는 숨기고 핀 라벨에만 상태점 표시
      - 하단 목록은 내용 높이만큼만 표시, 결과 많을 때만 스크롤
@@ -1248,9 +1333,7 @@
     .store-item:last-child { border-bottom: none !important; }
   }
 
-
-
-  /* ── 지도 라벨형 마커: 핀 없이 색상 라벨만 표시 ── */
+/* ── 지도 라벨형 마커: 핀 없이 색상 라벨만 표시 ── */
   .store-badge-marker {
     display: inline-flex !important;
     align-items: center !important;
@@ -1269,18 +1352,20 @@
     transform: translate(-50%, -50%) !important;
     cursor: pointer !important;
   }
-  .store-badge-marker.active {
+
+.store-badge-marker.active {
     box-shadow: 0 0 0 3px rgba(24,95,165,0.22), 0 5px 16px rgba(0,0,0,0.26) !important;
     transform: translate(-50%, calc(-50% - 1px)) !important;
   }
-  .store-badge-marker .store-marker-text {
+
+.store-badge-marker .store-marker-text {
     max-width: 150px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  /* ── 본사 마커: 사업장 라벨과 같은 구조, 색상만 별도 ── */
+/* ── 본사 마커: 사업장 라벨과 같은 구조, 색상만 별도 ── */
   .hq-marker {
     display: inline-flex !important;
     align-items: center !important;
@@ -1300,29 +1385,33 @@
     transform: translate(-50%, -50%) !important;
     cursor: pointer !important;
   }
-  .hq-popup-title { font-weight: 900; font-size: 14px; margin-bottom: 6px; color: var(--text); }
-  .hq-popup-addr { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
 
-  /* 필터/배지 아이콘 제거 후 pill 스타일 통일 */
+.hq-popup-title { font-weight: 900; font-size: 14px; margin-bottom: 6px; color: var(--text); }
+
+.hq-popup-addr { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+/* 필터/배지 아이콘 제거 후 pill 스타일 통일 */
   .cat-filter-btn svg { display:none !important; }
-  .cat-filter-btn {
+
+.cat-filter-btn {
     border-radius: 999px !important;
     padding: 0 12px !important;
   }
-  .cat-badge, .lp-cat-badge {
+
+.cat-badge, .lp-cat-badge {
     border-radius: 999px !important;
     letter-spacing: -0.2px !important;
   }
 
-
-  /* ── 목록 상단 카테고리 필터 ── */
+/* ── 목록 상단 카테고리 필터 ── */
   .list-filter-wrap {
     flex: 0 0 auto;
     padding: 10px 12px 9px;
     background: var(--surface);
     border-bottom: 1px solid var(--border);
   }
-  .bottom-sheet .cat-filter {
+
+.bottom-sheet .cat-filter {
     position: relative !important;
     top: auto !important;
     left: auto !important;
@@ -1347,8 +1436,10 @@
     border: 1px solid var(--border) !important;
     backdrop-filter: none !important;
   }
-  .bottom-sheet .filter-sep { display: none !important; }
-  .bottom-sheet .cat-filter-btn {
+
+.bottom-sheet .filter-sep { display: none !important; }
+
+.bottom-sheet .cat-filter-btn {
     flex: 1 1 auto !important;
     height: 31px !important;
     min-height: 31px !important;
@@ -1360,31 +1451,40 @@
     border: 1px solid currentColor !important;
     box-shadow: 0 1px 4px rgba(0,0,0,0.05) !important;
   }
-  /* 비활성 상태도 지도 라벨 색상과 같은 계열로 보이게 */
+
+/* 비활성 상태도 지도 라벨 색상과 같은 계열로 보이게 */
   .bottom-sheet .cat-filter-btn[data-cat="전체"]    { background:#F2F2F0 !important; color:#555 !important; }
-  .bottom-sheet .cat-filter-btn[data-cat="주민센터"] { background:#FFF0EB !important; color:#F05A22 !important; }
-  .bottom-sheet .cat-filter-btn[data-cat="문화재단"] { background:#F5EEFB !important; color:#9B59B6 !important; }
-  .bottom-sheet .cat-filter-btn[data-cat="시설공단"] { background:#FDE8F4 !important; color:#E91E8C !important; }
-  .bottom-sheet .cat-filter-btn[data-cat="유관기관"] { background:#E8F8EF !important; color:#27AE60 !important; }
 
-  .bottom-sheet .cat-filter-btn.active { color: #fff !important; }
-  .bottom-sheet .cat-filter-btn[data-cat="전체"].active    { background:#555 !important;    border-color:#555 !important; }
-  .bottom-sheet .cat-filter-btn[data-cat="주민센터"].active { background:#F05A22 !important; border-color:#F05A22 !important; }
-  .bottom-sheet .cat-filter-btn[data-cat="문화재단"].active { background:#9B59B6 !important; border-color:#9B59B6 !important; }
-  .bottom-sheet .cat-filter-btn[data-cat="시설공단"].active { background:#E91E8C !important; border-color:#E91E8C !important; }
-  .bottom-sheet .cat-filter-btn[data-cat="유관기관"].active { background:#27AE60 !important; border-color:#27AE60 !important; }
+.bottom-sheet .cat-filter-btn[data-cat="주민센터"] { background:#FFF0EB !important; color:#F05A22 !important; }
 
-  @media (max-width: 767px) {
+.bottom-sheet .cat-filter-btn[data-cat="문화재단"] { background:#F5EEFB !important; color:#9B59B6 !important; }
+
+.bottom-sheet .cat-filter-btn[data-cat="시설공단"] { background:#FDE8F4 !important; color:#E91E8C !important; }
+
+.bottom-sheet .cat-filter-btn[data-cat="유관기관"] { background:#E8F8EF !important; color:#27AE60 !important; }
+
+.bottom-sheet .cat-filter-btn.active { color: #fff !important; }
+
+.bottom-sheet .cat-filter-btn[data-cat="전체"].active    { background:#555 !important;    border-color:#555 !important; }
+
+.bottom-sheet .cat-filter-btn[data-cat="주민센터"].active { background:#F05A22 !important; border-color:#F05A22 !important; }
+
+.bottom-sheet .cat-filter-btn[data-cat="문화재단"].active { background:#9B59B6 !important; border-color:#9B59B6 !important; }
+
+.bottom-sheet .cat-filter-btn[data-cat="시설공단"].active { background:#E91E8C !important; border-color:#E91E8C !important; }
+
+.bottom-sheet .cat-filter-btn[data-cat="유관기관"].active { background:#27AE60 !important; border-color:#27AE60 !important; }
+
+@media (max-width: 767px) {
     .list-filter-wrap { padding: 9px 12px 8px !important; }
     .bottom-sheet .cat-filter { display: flex !important; }
     .bottom-sheet .cat-filter-btn { min-width: 68px !important; font-size: 12px !important; }
     .store-list { max-height: calc(min(60dvh, 500px) - 158px) !important; }
   }
 
-  @media (min-width: 768px) {
+@media (min-width: 768px) {
     .bottom-sheet .cat-filter { display: flex !important; }
   }
-
 
 /* =========================================================
    REALLY FINAL: 사업장 목록 상단 필터 5개 한 줄 고정
@@ -1423,65 +1523,13 @@
   box-sizing: border-box !important;
 }
 
-#bottomSheet #catFilter .filter-sep{
-  display: none !important;
-}
-
-#bottomSheet #catFilter .cat-filter-btn{
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-
-  height: 24px !important;
-  min-height: 24px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  border-radius: 999px !important;
-  border: 1.4px solid currentColor !important;
-  background: #FFFFFF !important;
-
-  font-size: 10px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: -1px !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: clip !important;
-  box-sizing: border-box !important;
-}
-
 /* 기본: 흰 배경 + 색상 테두리/글씨 */
 #bottomSheet #catFilter .cat-filter-btn[data-cat="전체"]{ color:#555555 !important; }
-#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"]{ color:#F05A22 !important; }
-#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"]{ color:#9B59B6 !important; }
-#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"]{ color:#E91E8C !important; }
-#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"]{ color:#27AE60 !important; }
 
 /* 선택: 지도 라벨처럼 꽉 찬 색상 */
 #bottomSheet #catFilter .cat-filter-btn.active{
   color:#FFFFFF !important;
   border-color: transparent !important;
-}
-
-#bottomSheet #catFilter .cat-filter-btn[data-cat="전체"].active{
-  background:#555555 !important;
-}
-#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"].active{
-  background:#F05A22 !important;
-}
-#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"].active{
-  background:#9B59B6 !important;
-}
-#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"].active{
-  background:#E91E8C !important;
-}
-#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"].active{
-  background:#27AE60 !important;
 }
 
 /* 기존 모바일 필터 숨김 규칙보다 우선 적용 */
@@ -1502,7 +1550,6 @@
     letter-spacing: -1px !important;
   }
 }
-
 
 /* =========================================================
    FINAL: 좌측 목록 너비 축소 + 기존 상단 로고/검색바 유지
@@ -1575,7 +1622,6 @@
   }
 }
 
-
 /* ===== 범례 제거 ===== */
 .status-legend,
 .legend-box,
@@ -1630,7 +1676,6 @@
   z-index:9999 !important;
   position:relative !important;
 }
-
 
 /* =========================================================
    FINAL: 맵 배지 + 필터 디자인
@@ -1694,6 +1739,7 @@
 .map-label-wrap {
   gap: 0 !important;
 }
+
 .map-label-wrap .label-text {
   color: #fff !important;
   font-size: 13px !important;
@@ -1724,12 +1770,16 @@
 /* 기존 라벨 배경색을 카테고리색으로 유지하도록 클래스별 보강 */
 .map-label .cat-dong,
 .map-label-wrap.cat-dong { background:#F05A22 !important; }
+
 .map-label .cat-culture,
 .map-label-wrap.cat-culture { background:#9B59B6 !important; }
+
 .map-label .cat-gongdan,
 .map-label-wrap.cat-gongdan { background:#E91E8C !important; }
+
 .map-label .cat-lib,
 .map-label-wrap.cat-lib { background:#27AE60 !important; }
+
 .map-label .cat-gu,
 .map-label-wrap.cat-gu { background:#F4A300 !important; }
 
@@ -1777,10 +1827,6 @@
   white-space: nowrap !important;
 }
 
-#bottomSheet #catFilter .filter-sep {
-  display: none !important;
-}
-
 /* 디폴트 = 색상 채움 */
 #bottomSheet #catFilter .cat-filter-btn {
   width: 100% !important;
@@ -1811,10 +1857,6 @@
 
 /* 필터 디폴트 색상 */
 #bottomSheet #catFilter .cat-filter-btn[data-cat="전체"]    { background:#555 !important; color:#fff !important; }
-#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"] { background:#F05A22 !important; color:#fff !important; }
-#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"] { background:#9B59B6 !important; color:#fff !important; }
-#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"] { background:#E91E8C !important; color:#fff !important; }
-#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"] { background:#27AE60 !important; color:#fff !important; }
 
 /* 선택된 상태 = 현재처럼 조금 더 진하고 떠 보이게 */
 #bottomSheet #catFilter .cat-filter-btn.active {
@@ -1845,7 +1887,6 @@
     letter-spacing: -1px !important;
   }
 }
-
 
 /* =========================================================
    FINAL: 좌측 목록 +20px, 필터 선택 상태 outline 스타일
@@ -1939,26 +1980,6 @@
   background:#fff !important;
   border-color:#555 !important;
 }
-#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"] {
-  color:#F05A22 !important;
-  background:#fff !important;
-  border-color:#F05A22 !important;
-}
-#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"] {
-  color:#9B59B6 !important;
-  background:#fff !important;
-  border-color:#9B59B6 !important;
-}
-#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"] {
-  color:#E91E8C !important;
-  background:#fff !important;
-  border-color:#E91E8C !important;
-}
-#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"] {
-  color:#27AE60 !important;
-  background:#fff !important;
-  border-color:#27AE60 !important;
-}
 
 /* 선택 시: 사진처럼 outline 유지 + 살짝 강조 */
 #bottomSheet #catFilter .cat-filter-btn.active {
@@ -1972,26 +1993,6 @@
   color:#555 !important;
   background:#fff !important;
   border-color:#555 !important;
-}
-#bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"].active {
-  color:#F05A22 !important;
-  background:#fff !important;
-  border-color:#F05A22 !important;
-}
-#bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"].active {
-  color:#9B59B6 !important;
-  background:#fff !important;
-  border-color:#9B59B6 !important;
-}
-#bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"].active {
-  color:#E91E8C !important;
-  background:#fff !important;
-  border-color:#E91E8C !important;
-}
-#bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"].active {
-  color:#27AE60 !important;
-  background:#fff !important;
-  border-color:#27AE60 !important;
 }
 
 @media (max-width: 767px) {
@@ -2008,7 +2009,6 @@
   }
 }
 
-
 /* =========================================================
    현장순회 기능 스타일
    ========================================================= */
@@ -2019,10 +2019,12 @@
   background: white !important;
   transition: background 0.15s, color 0.15s;
 }
+
 .patrol-pencil-control a:hover {
   background: #f4f4f4 !important;
   color: #F05A22 !important;
 }
+
 .patrol-pencil-control a.patrol-active {
   background: #F05A22 !important;
   color: white !important;
@@ -2040,6 +2042,7 @@
   transform: translateY(100%);
   transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
 }
+
 .patrol-bar.show { transform: translateY(0); }
 
 .patrol-bar-top {
@@ -2049,28 +2052,36 @@
   gap: 12px;
   padding: 11px 16px 7px;
 }
+
 .patrol-info {
   display: flex;
   align-items: center;
   gap: 8px;
   flex: 1; min-width: 0;
 }
+
 .patrol-icon { font-size: 18px; flex-shrink: 0; }
+
 .patrol-title { font-size: 13px; font-weight: 700; color: #1A1A1A; }
+
 .patrol-btns { display: flex; gap: 8px; flex-shrink: 0; }
+
 .patrol-btn-reset {
   padding: 8px 13px; border-radius: 10px;
   border: 1px solid #E8E8E4; background: #F7F7F5;
   font-size: 12px; font-weight: 700; color: #555;
   cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
 }
+
 .patrol-btn-confirm {
   padding: 8px 16px; border-radius: 10px;
   border: none; background: #F05A22;
   font-size: 12px; font-weight: 700; color: white;
   cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
 }
+
 .patrol-btn-confirm:active { opacity: 0.85; }
+
 .patrol-btn-reset:active { background: #EDEDEA; }
 
 /* 배지 스크롤 영역 - 편집/결과 공통 */
@@ -2086,6 +2097,7 @@
   white-space: nowrap;
   min-height: 34px;
 }
+
 .patrol-badge-scroll::-webkit-scrollbar { display: none; }
 
 .patrol-empty-hint {
@@ -2109,6 +2121,7 @@
   line-height: 1;
   cursor: default;
 }
+
 .patrol-scroll-badge .patrol-scroll-num {
   display: inline-flex;
   align-items: center;
@@ -2120,6 +2133,7 @@
   font-weight: 900;
   flex-shrink: 0;
 }
+
 .patrol-scroll-arrow {
   font-size: 13px;
   color: #bbb;
@@ -2139,7 +2153,9 @@
   transform: translateY(100%);
   transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
 }
+
 .patrol-result-bar.show { transform: translateY(0); }
+
 .patrol-result-top {
   display: flex;
   align-items: center;
@@ -2147,6 +2163,7 @@
   gap: 12px;
   padding: 11px 16px 7px;
 }
+
 .patrol-result-edit {
   padding: 7px 12px; border-radius: 10px;
   border: 1px solid #F05A22; background: #FFF0EB;
@@ -2154,6 +2171,7 @@
   cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
   white-space: nowrap;
 }
+
 .patrol-result-close {
   padding: 7px 12px; border-radius: 10px;
   border: 1px solid #E8E8E4; background: #F7F7F5;
@@ -2218,12 +2236,16 @@
   font-family: 'Noto Sans KR', sans-serif;
   transition: background 0.12s;
 }
+
 .patrol-badge-x:hover { background: rgba(255,255,255,0.55); }
+
 .patrol-badge-x:active { background: rgba(0,0,0,0.18); }
 
 /* 드래그 중 배지 커서 + 드롭 대상 강조 */
 .patrol-scroll-badge[draggable="true"] { cursor: grab; }
+
 .patrol-scroll-badge[draggable="true"]:active { cursor: grabbing; }
+
 .patrol-scroll-badge.patrol-badge-dragover {
   outline: 2.5px dashed rgba(255,255,255,0.85);
   outline-offset: 2px;
@@ -2258,21 +2280,25 @@
   color:#fff !important;
   border-color:#555 !important;
 }
+
 #bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"] {
   background:#F05A22 !important;
   color:#fff !important;
   border-color:#F05A22 !important;
 }
+
 #bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"] {
   background:#9B59B6 !important;
   color:#fff !important;
   border-color:#9B59B6 !important;
 }
+
 #bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"] {
   background:#E91E8C !important;
   color:#fff !important;
   border-color:#E91E8C !important;
 }
+
 #bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"] {
   background:#27AE60 !important;
   color:#fff !important;
@@ -2291,28 +2317,30 @@
   background:#fff !important;
   border-color:#555 !important;
 }
+
 #bottomSheet #catFilter .cat-filter-btn[data-cat="주민센터"].active {
   color:#F05A22 !important;
   background:#fff !important;
   border-color:#F05A22 !important;
 }
+
 #bottomSheet #catFilter .cat-filter-btn[data-cat="문화재단"].active {
   color:#9B59B6 !important;
   background:#fff !important;
   border-color:#9B59B6 !important;
 }
+
 #bottomSheet #catFilter .cat-filter-btn[data-cat="시설공단"].active {
   color:#E91E8C !important;
   background:#fff !important;
   border-color:#E91E8C !important;
 }
+
 #bottomSheet #catFilter .cat-filter-btn[data-cat="유관기관"].active {
   color:#27AE60 !important;
   background:#fff !important;
   border-color:#27AE60 !important;
-}
-
-</style>
+}</style>
 </head>
 <body>
 
@@ -2452,10 +2480,7 @@
       <span class="detail-value" id="dType"></span>
     </div>
   </div>
-  <div class="detail-actions">
-    <button class="btn btn-primary" id="dTmapBtn">🗺️ T맵</button>
-    <button class="btn btn-naver" id="dNaverBtn">🗺️ 네이버지도</button>
-  </div>
+
 </div>
 
 <script>
@@ -2647,8 +2672,27 @@ let activeId = null;
 let sheetState = 'peek';
 
 /* ── 지도 ── */
-const map = L.map('map', { zoomControl: false, attributionControl: false }).setView([37.4970, 126.9390], 13);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+// 동작구 중심 + 범위 제한
+const DONGJAK_BOUNDS = L.latLngBounds(
+  [37.463, 126.895],  // 남서
+  [37.525, 126.995]   // 북동
+);
+const map = L.map('map', {
+  zoomControl: false,
+  attributionControl: false,
+  minZoom: 12,
+  maxZoom: 18,
+  maxBounds: DONGJAK_BOUNDS.pad(0.15),
+  maxBoundsViscosity: 0.85,
+}).setView([37.4970, 126.9390], 13);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  maxZoom: 18,
+  minZoom: 12,
+  bounds: DONGJAK_BOUNDS.pad(0.2),
+  updateWhenIdle: true,
+  keepBuffer: 1,
+}).addTo(map);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
 /* ── 현장순회 연필 컨트롤 (줌 버튼 바로 아래) ── */
@@ -2774,21 +2818,6 @@ const DONGJAK_POLY = [
 const outerRing = [[85,-180],[85,180],[-85,180],[-85,-180]];
 L.polygon([outerRing, DONGJAK_POLY], {
   color: 'none', fillColor: '#777777', fillOpacity: 0.50, interactive: false
-}).addTo(map);
-L.polygon(DONGJAK_POLY, {
-  color: '#7C3AED', weight: 2.5, fillOpacity: 0, interactive: false
-}).addTo(map);
-L.polygon(DONGJAK_POLY, {
-  color: '#7C3AED', weight: 2.5, fillOpacity: 0, interactive: false
-}).addTo(map);
-L.polygon(DONGJAK_POLY, {
-  color: '#7C3AED', weight: 2.5, fillOpacity: 0, interactive: false
-}).addTo(map);
-L.polygon(DONGJAK_POLY, {
-  color: '#7C3AED', weight: 2.5, fillOpacity: 0, interactive: false
-}).addTo(map);
-L.polygon(DONGJAK_POLY, {
-  color: '#7C3AED', weight: 2.5, fillOpacity: 0, interactive: false
 }).addTo(map);
 L.polygon(DONGJAK_POLY, {
   color: '#7C3AED', weight: 2.5, fillOpacity: 0, interactive: false
@@ -2994,7 +3023,7 @@ function renderList() {
       </div>
       <div class="store-address">${s.address}</div>
       <div class="store-meta" style="display:flex;align-items:center;gap:7px;margin-top:4px;">
-        <span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:0 8px;height:20px;border-radius:20px;background:${(window.statusColors||{working:{bg:"#E8F8EF",color:"#059142",dot:"#27AE60"},upcoming:{bg:"#FFF8E6",color:"#B77900",dot:"#F4A300"},ended:{bg:"#F2F2F0",color:"#888",dot:"#aaa"},off:{bg:"#F2F2F0",color:"#888",dot:"#aaa"}})[status.key].bg};color:${(window.statusColors||{working:{bg:"#E8F8EF",color:"#059142",dot:"#27AE60"},upcoming:{bg:"#FFF8E6",color:"#B77900",dot:"#F4A300"},ended:{bg:"#F2F2F0",color:"#888",dot:"#aaa"},off:{bg:"#F2F2F0",color:"#888",dot:"#aaa"}})[status.key].color};flex-shrink:0;"><span style="width:6px;height:6px;border-radius:50%;background:${(window.statusColors||{working:{bg:"#E8F8EF",color:"#059142",dot:"#27AE60"},upcoming:{bg:"#FFF8E6",color:"#B77900",dot:"#F4A300"},ended:{bg:"#F2F2F0",color:"#888",dot:"#aaa"},off:{bg:"#F2F2F0",color:"#888",dot:"#aaa"}})[status.key].dot};display:inline-block;"></span>${statusText}</span>
+        <span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:0 8px;height:20px;border-radius:20px;background:${window.statusColors[status.key].bg};color:${window.statusColors[status.key].color};flex-shrink:0;"><span style="width:6px;height:6px;border-radius:50%;background:${window.statusColors[status.key].dot};display:inline-block;"></span>${statusText}</span>
         <span style="font-size:11px;color:var(--text-muted);"> ${getHoursText(s)}</span>
       </div>
     </div>`;
@@ -3007,6 +3036,11 @@ function setActive(id) {
     const prevMarker = markers[activeId];
     prevMarker.setIcon(getMarkerIconForGroup(prevMarker.storeGroup || [stores.find(s => s.id === activeId)], false));
   }
+  // 이전 active 아이템 클래스 제거
+  if (activeId !== null) {
+    const prevEl = document.getElementById(`item-${activeId}`);
+    if (prevEl) prevEl.classList.remove('active');
+  }
   activeId = id;
   const store = stores.find(s => s.id === id);
   if (markers[id]) {
@@ -3015,11 +3049,12 @@ function setActive(id) {
     if (window.innerWidth < 768) marker.openPopup();
     map.setView([store.lat, store.lng], 14, { animate: true });
   }
-  renderList();
-  setTimeout(() => {
-    const el = document.getElementById(`item-${id}`);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, 50);
+  // 새 active 아이템 클래스 추가 (renderList 전체 재호출 불필요)
+  const newEl = document.getElementById(`item-${id}`);
+  if (newEl) {
+    newEl.classList.add('active');
+    setTimeout(() => newEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
   // 데스크탑: 목록 클릭 시 바로 상세 열기
   if (window.innerWidth >= 768) openDetail(id);
 }
@@ -3102,9 +3137,14 @@ function updateMarkers() {
   });
 }
 /* ── 검색 ── */
+/* ── 검색 debounce ── */
+let _searchTimer = null;
 document.getElementById('searchInput').addEventListener('input', e => {
-  applyFilters();
-  if (e.target.value.trim()) setSheetState('expanded');
+  if (_searchTimer) clearTimeout(_searchTimer);
+  _searchTimer = setTimeout(() => {
+    applyFilters();
+    if (e.target.value.trim()) setSheetState('expanded');
+  }, 120);
 });
 
 /* ── 상세 팝업 ── */
@@ -3323,31 +3363,6 @@ function openDetail(id) {
   }).join('') : '<span style="color:var(--text-muted);font-size:13px;">등록된 근무스케줄이 없습니다.</span>';
   document.getElementById('dSchedule').innerHTML = scheduleHtml;
 
-  // 길찾기 버튼
-  document.getElementById('dTmapBtn').onclick = () => {
-    const appUrl = `tmap://route?goalname=${encodeURIComponent(s.branch)}&goaly=${s.lat}&goalx=${s.lng}`;
-    const webUrl = `https://tmap.life/route?goalname=${encodeURIComponent(s.branch)}&goaly=${s.lat}&goalx=${s.lng}`;
-    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    const isAndroid = /Android/i.test(navigator.userAgent);
-    if (isIOS || isAndroid) {
-      window.location.href = appUrl;
-      setTimeout(() => window.open(webUrl, '_blank'), 1500);
-    } else {
-      window.open(webUrl, '_blank');
-    }
-  };
-  document.getElementById('dNaverBtn').onclick = () => {
-    const appUrl = `nmap://route/car?dlat=${s.lat}&dlng=${s.lng}&dname=${encodeURIComponent(s.branch)}&appname=saeupjangmap`;
-    const webUrl = `https://map.naver.com/v5/directions/-/-/-/car?c=${s.lng},${s.lat},15,0,0,0,dh&destination=${encodeURIComponent(s.branch)}`;
-    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    const isAndroid = /Android/i.test(navigator.userAgent);
-    if (isIOS || isAndroid) {
-      window.location.href = appUrl;
-      setTimeout(() => window.open(webUrl, '_blank'), 1500);
-    } else {
-      window.open(webUrl, '_blank');
-    }
-  };
   const isDesktop = window.innerWidth >= 768;
   if (isDesktop) {
     document.getElementById('detailSheet').classList.add('desktop-active');
