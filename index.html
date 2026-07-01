@@ -632,8 +632,9 @@ a.staff-tag:active { background: #E8E8E4; }
   font-size: 13px;
   color: var(--text);
   font-family: 'Noto Sans KR', sans-serif;
-  min-width: 180px;
-  max-width: 280px;
+  width: 260px;
+  max-height: 400px;
+  overflow-y: auto;
   margin-bottom: 8px;
 }
 
@@ -908,7 +909,8 @@ a.staff-tag:active { background: #E8E8E4; }
     }
     .detail-overlay { display: none !important; }
     .detail-handle { display: none; }
-    #map.detail-open { right: 360px; }
+    #map.detail-open { right: 360px; transition: right 0.3s ease; }
+    #map { transition: right 0.3s ease; }
   }
 
 /* ─────────────────────────────
@@ -1363,8 +1365,8 @@ a.staff-tag:active { background: #E8E8E4; }
     white-space: nowrap !important;
     line-height: 1 !important;
     letter-spacing: -0.3px !important;
-    transform: translate(-50%, -50%) !important;
     cursor: pointer !important;
+    pointer-events: auto !important;
   }
 
 .store-badge-marker.active {
@@ -2640,22 +2642,22 @@ function buildGroupPopup(group) {
   if (visible.length === 1) return buildSinglePopup(visible[0]);
   return `
     <div class="group-popup-title"> 같은 위치 사업장 ${visible.length}개</div>
-    <div class="group-popup-sub">상세 정보를 볼 사업장을 선택해주세요.</div>
-    ${visible.map(s => {
-      const status = getStoreStatus(s);
-      const working = status.key === 'working';
-      const statusText = status.label;
-      return `
-        <button class="group-store-card ${working ? 'working' : ''}" onclick="selectStoreFromPopup(${s.id})">
-          <div class="group-store-head">
-            <span class="lp-cat-badge" style="background:${catColor(s.cat)}">${s.cat}</span>
-            <span class="group-store-name">${s.branch || s.name}</span>
-            <span class="group-status ${working ? 'on' : 'off'}">${statusText}</span>
-          </div>
-          <div class="group-store-meta"> ${s.manager || '-'} ·  ${getShortShiftText(s)}</div>
-        </button>
-      `;
-    }).join('')}
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      ${visible.map(s => {
+        const status = getStoreStatus(s);
+        const working = status.key === 'working';
+        return `
+          <button class="group-store-card ${working ? 'working' : ''}" onclick="selectStoreFromPopup(${s.id})">
+            <div class="group-store-head">
+              <span class="lp-cat-badge" style="background:${catColor(s.cat)}">${s.cat}</span>
+              <span class="group-store-name">${s.branch || s.name}</span>
+              <span class="group-status ${working ? 'on' : 'off'}">${status.label}</span>
+            </div>
+            <div class="group-store-meta"> ${s.manager || '-'} · ${getShortShiftText(s)}</div>
+          </button>
+        `;
+      }).join('')}
+    </div>
   `;
 }
 function selectStoreFromPopup(id) {
@@ -2677,9 +2679,11 @@ function buildMarkers() {
     const latlng = getMarkerLatLng(base);
     const pos = new kakao.maps.LatLng(latlng[0], latlng[1]);
     const el = document.createElement('div');
+    el.style.pointerEvents = 'none';
     el.innerHTML = getMarkerIconHtml(group, false);
     const btn = el.firstElementChild || el;
     btn.style.cursor = 'pointer';
+    btn.style.pointerEvents = 'auto';
     const overlay = new kakao.maps.CustomOverlay({position:pos,content:btn,yAnchor:1,xAnchor:0,zIndex:1});
     overlay.setMap(map);
     const obj = {_overlay:overlay,_el:btn,_pos:pos,storeGroup:group};
@@ -2688,10 +2692,14 @@ function buildMarkers() {
       const visible = getVisibleGroup(group);
       if(visible.length===1){activeId=visible[0].id;renderList();}
       if(_activeInfoWindow){_activeInfoWindow.setMap(null);_activeInfoWindow=null;}
+      const popWrap=document.createElement('div');
+      popWrap.style.pointerEvents='none';
       const pw=document.createElement('div');
       pw.className='kakao-popup-wrap';
+      pw.style.pointerEvents='auto';
       pw.innerHTML=buildGroupPopup(group);
-      const iw=new kakao.maps.CustomOverlay({position:pos,content:pw,yAnchor:1.3,xAnchor:0.5,zIndex:1000});
+      popWrap.appendChild(pw);
+      const iw=new kakao.maps.CustomOverlay({position:pos,content:popWrap,yAnchor:1.3,xAnchor:0.5,zIndex:1000});
       iw.setMap(map);
       _activeInfoWindow=iw;
     };
@@ -2712,10 +2720,14 @@ function buildHeadquartersMarker() {
   el.onclick=function(e){
     e.stopPropagation();
     if(_activeInfoWindow){_activeInfoWindow.setMap(null);_activeInfoWindow=null;}
+    const hqWrap=document.createElement('div');
+    hqWrap.style.pointerEvents='none';
     const pw=document.createElement('div');
     pw.className='kakao-popup-wrap';
+    pw.style.pointerEvents='auto';
     pw.innerHTML='<div class="hq-popup-title">'+HEADQUARTERS.name+'</div><div class="hq-popup-addr">'+HEADQUARTERS.address+'</div>';
-    const iw=new kakao.maps.CustomOverlay({position:pos,content:pw,yAnchor:1.3,xAnchor:0.5,zIndex:1000});
+    hqWrap.appendChild(pw);
+    const iw=new kakao.maps.CustomOverlay({position:hqWrap.parentElement?pos:pos,content:hqWrap,yAnchor:1.3,xAnchor:0.5,zIndex:1000});
     iw.setMap(map);
     _activeInfoWindow=iw;
   };
@@ -3121,7 +3133,11 @@ function openDetail(id) {
   if (isDesktop) {
     document.getElementById('detailSheet').classList.add('desktop-active');
     document.getElementById('map').classList.add('detail-open');
-    if(map) map.relayout();
+    if (map) {
+      setTimeout(() => map.relayout(), 0);
+      setTimeout(() => map.relayout(), 100);
+      setTimeout(() => map.relayout(), 300);
+    }
   } else {
     document.getElementById('detailOverlay').classList.add('show');
     setTimeout(() => document.getElementById('detailSheet').classList.add('show'), 10);
@@ -3132,7 +3148,11 @@ function closeDetail() {
   if (isDesktop) {
     document.getElementById('detailSheet').classList.remove('desktop-active');
     document.getElementById('map').classList.remove('detail-open');
-    if(map) map.relayout();
+    if (map) {
+      setTimeout(() => map.relayout(), 0);
+      setTimeout(() => map.relayout(), 100);
+      setTimeout(() => map.relayout(), 300);
+    }
   } else {
     document.getElementById('detailSheet').classList.remove('show');
     document.getElementById('detailOverlay').classList.remove('show');
