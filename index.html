@@ -291,8 +291,7 @@
 </script>
 <title>사업장 MAP</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=edd8f53cc651a8a01b6eea15e336dd7c&libraries=services&autoload=false"></script>
 <style>:root {
     --primary: #F05A22;
     --primary-light: #FF7A45;
@@ -622,6 +621,21 @@ a.staff-tag:active { background: #E8E8E4; }
 .leaflet-popup-tip { background: var(--surface) !important; }
 
 .leaflet-popup-content { margin: 14px 16px !important; font-size: 13px !important; }
+
+/* 카카오맵 팝업 */
+.kakao-popup-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  min-width: 180px;
+  max-width: 280px;
+  margin-bottom: 8px;
+}
 
 .lp-name { font-weight: 700; font-size: 14px; color: var(--text); }
 
@@ -2014,250 +2028,7 @@ a.staff-tag:active { background: #E8E8E4; }
    ========================================================= */
 
 /* 순회 연필 컨트롤 (leaflet-bar 스타일 통일) */
-.patrol-pencil-control a {
-  color: #333 !important;
-  background: white !important;
-  transition: background 0.15s, color 0.15s;
-}
 
-.patrol-pencil-control a:hover {
-  background: #f4f4f4 !important;
-  color: #F05A22 !important;
-}
-
-.patrol-pencil-control a.patrol-active {
-  background: #F05A22 !important;
-  color: white !important;
-}
-
-/* 순회 편집 하단 바 */
-.patrol-bar {
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
-  z-index: 450;
-  background: white;
-  border-top: 1px solid #E8E8E4;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.13);
-  padding-bottom: var(--safe-bottom);
-  transform: translateY(100%);
-  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
-}
-
-.patrol-bar.show { transform: translateY(0); }
-
-.patrol-bar-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 11px 16px 7px;
-}
-
-.patrol-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1; min-width: 0;
-}
-
-.patrol-icon { font-size: 18px; flex-shrink: 0; }
-
-.patrol-title { font-size: 13px; font-weight: 700; color: #1A1A1A; }
-
-.patrol-btns { display: flex; gap: 8px; flex-shrink: 0; }
-
-.patrol-btn-reset {
-  padding: 8px 13px; border-radius: 10px;
-  border: 1px solid #E8E8E4; background: #F7F7F5;
-  font-size: 12px; font-weight: 700; color: #555;
-  cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
-}
-
-.patrol-btn-confirm {
-  padding: 8px 16px; border-radius: 10px;
-  border: none; background: #F05A22;
-  font-size: 12px; font-weight: 700; color: white;
-  cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
-}
-
-.patrol-btn-confirm:active { opacity: 0.85; }
-
-.patrol-btn-reset:active { background: #EDEDEA; }
-
-/* 배지 스크롤 영역 - 편집/결과 공통 */
-.patrol-badge-scroll {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 16px 11px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  white-space: nowrap;
-  min-height: 34px;
-}
-
-.patrol-badge-scroll::-webkit-scrollbar { display: none; }
-
-.patrol-empty-hint {
-  font-size: 12px;
-  color: #aaa;
-  white-space: nowrap;
-}
-
-/* 배지 스크롤 내 개별 배지 */
-.patrol-scroll-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  color: white;
-  font-size: 12px;
-  font-weight: 800;
-  white-space: nowrap;
-  flex-shrink: 0;
-  line-height: 1;
-  cursor: default;
-}
-
-.patrol-scroll-badge .patrol-scroll-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 17px; height: 17px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.35);
-  font-size: 10px;
-  font-weight: 900;
-  flex-shrink: 0;
-}
-
-.patrol-scroll-arrow {
-  font-size: 13px;
-  color: #bbb;
-  flex-shrink: 0;
-  user-select: none;
-}
-
-/* 결과 바 */
-.patrol-result-bar {
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
-  z-index: 450;
-  background: white;
-  border-top: 2px solid #F05A22;
-  box-shadow: 0 -4px 20px rgba(240,90,34,0.15);
-  padding-bottom: var(--safe-bottom);
-  transform: translateY(100%);
-  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
-}
-
-.patrol-result-bar.show { transform: translateY(0); }
-
-.patrol-result-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 11px 16px 7px;
-}
-
-.patrol-result-edit {
-  padding: 7px 12px; border-radius: 10px;
-  border: 1px solid #F05A22; background: #FFF0EB;
-  font-size: 12px; font-weight: 700; color: #F05A22;
-  cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
-  white-space: nowrap;
-}
-
-.patrol-result-close {
-  padding: 7px 12px; border-radius: 10px;
-  border: 1px solid #E8E8E4; background: #F7F7F5;
-  font-size: 12px; font-weight: 700; color: #555;
-  cursor: pointer; font-family: 'Noto Sans KR', sans-serif;
-  white-space: nowrap;
-}
-
-/* 순회 선택된 배지 강조 */
-.store-badge-marker.patrol-selected {
-  box-shadow: 0 0 0 3px #185FA5, 0 5px 16px rgba(0,0,0,0.26) !important;
-}
-
-/* 순회 모드에서 선택 안 된 배지 희미하게 */
-.patrol-mode-active .store-badge-marker:not(.patrol-selected) {
-  opacity: 0.38;
-}
-
-/* 순서 번호 배지 - 사업장 배지 우상단에 딱 붙게 */
-.patrol-order-badge {
-  position: absolute;
-  top: -7px;
-  right: -7px;
-  width: 19px;
-  height: 19px;
-  border-radius: 50%;
-  background: #185FA5;
-  color: white;
-  font-size: 10px;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid white;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-  pointer-events: none;
-  z-index: 10;
-  font-family: 'Noto Sans KR', sans-serif;
-}
-
-.patrol-scroll-badge .patrol-badge-name {
-  white-space: nowrap;
-}
-
-/* X 취소 버튼 */
-.patrol-badge-x {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 15px; height: 15px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.35);
-  border: none;
-  color: white;
-  font-size: 9px;
-  font-weight: 900;
-  cursor: pointer;
-  padding: 0;
-  margin-left: 3px;
-  flex-shrink: 0;
-  line-height: 1;
-  font-family: 'Noto Sans KR', sans-serif;
-  transition: background 0.12s;
-}
-
-.patrol-badge-x:hover { background: rgba(255,255,255,0.55); }
-
-.patrol-badge-x:active { background: rgba(0,0,0,0.18); }
-
-/* 드래그 중 배지 커서 + 드롭 대상 강조 */
-.patrol-scroll-badge[draggable="true"] { cursor: grab; }
-
-.patrol-scroll-badge[draggable="true"]:active { cursor: grabbing; }
-
-.patrol-scroll-badge.patrol-badge-dragover {
-  outline: 2.5px dashed rgba(255,255,255,0.85);
-  outline-offset: 2px;
-  transform: scale(1.06);
-  transition: transform 0.1s;
-}
-
-/* 데스크탑 */
-@media (min-width: 768px) {
-  .patrol-bar, .patrol-result-bar {
-    left: var(--side-width, 320px);
-  }
 }
 
 /* =========================================================
@@ -2344,9 +2115,23 @@ a.staff-tag:active { background: #E8E8E4; }
 </head>
 <body>
 
+
+<!-- 업데이트 안내 팝업 -->
+<div id="updatePopupOverlay" onclick="closeUpdatePopup()" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.45);backdrop-filter:blur(2px);align-items:center;justify-content:center;">
+  <div onclick="event.stopPropagation()" style="background:var(--surface);border-radius:18px;padding:24px 22px 20px;width:min(88vw,360px);box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+    <div style="font-size:16px;font-weight:800;color:var(--text);margin-bottom:8px;">사업장지도 업데이트 중 <span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:#F05A22;color:#fff;">안내</span></div>
+    <div style="font-size:12px;color:#999;margin-bottom:12px;">2026.07.01</div>
+    <div style="font-size:13.5px;color:var(--text);line-height:1.7;margin-bottom:18px;white-space:pre-wrap;">지도의 가독성을 위해 카카오 지도로 변경하고 있습니다
+
+• 이로 인해 일부 기능이 작동하지 않을 수 있습니다
+• 문의 사항은 담당자에게 연락주세요</div>
+    <button onclick="closeUpdatePopup()" style="width:100%;padding:11px;border-radius:10px;border:none;background:#F05A22;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">닫기</button>
+  </div>
+</div>
+
 <header>
   <div class="header-inner">
-    <div class="logo-wrap" onclick="resetToMain()">
+    <div class="logo-wrap">
       <!-- 로고 SVG: 파랑+주황+골드 3색 패널 -->
       <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="2" y="6" width="11" height="28" rx="3" fill="#5BB8F5"/>
@@ -2355,7 +2140,6 @@ a.staff-tag:active { background: #E8E8E4; }
       </svg>
       <div class="logo-text">사업장<span>지도</span></div>
     </div>
-    <style>.logo-wrap { cursor: pointer; }</style>
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="ex) 사업장명, 근무자명" autocomplete="off"/>
       <span class="search-icon">🔍</span>
@@ -2386,36 +2170,7 @@ a.staff-tag:active { background: #E8E8E4; }
 </button>
 
 <!-- 현장순회 하단 바 (편집 모드용) -->
-<div class="patrol-bar" id="patrolBar">
-  <div class="patrol-bar-top">
-    <div class="patrol-info">
-      <span class="patrol-icon">🗺️</span>
-      <div class="patrol-title">현장순회 경로 설정</div>
-    </div>
-    <div class="patrol-btns">
-      <button class="patrol-btn-reset" onclick="resetPatrol()">초기화</button>
-      <button class="patrol-btn-confirm" onclick="confirmPatrol()">확인</button>
-    </div>
-  </div>
-  <div class="patrol-badge-scroll" id="patrolBadgeScroll">
-    <span class="patrol-empty-hint" id="patrolEmptyHint">방문할 사업지를 순서대로 클릭하세요</span>
-  </div>
-</div>
 
-<!-- 현장순회 결과 바 (확인 후) -->
-<div class="patrol-result-bar" id="patrolResultBar">
-  <div class="patrol-result-top">
-    <div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">
-      <span style="font-size:17px;">🗺️</span>
-      <span style="font-size:13px;font-weight:700;color:#1A1A1A;">현장순회 경로</span>
-    </div>
-    <div style="display:flex;gap:8px;align-items:center;flex-shrink:0;">
-      <button class="patrol-result-edit" onclick="editPatrol()">✏️ 편집</button>
-      <button class="patrol-result-close" onclick="clearPatrol()">✕ 닫기</button>
-    </div>
-  </div>
-  <div class="patrol-badge-scroll" id="patrolResultBadgeScroll"></div>
-</div>
 
 <div class="bottom-sheet" id="bottomSheet">
   <div class="sheet-handle-area" id="sheetHandle" onclick="toggleSheet()">
@@ -2526,7 +2281,7 @@ window.statusColors = {
  *   오전/오후: [ { label:'오전', start:'09:00', end:'13:00', staff:['이름'] },
  *                { label:'오후', start:'13:00', end:'18:00', staff:['이름'] } ]
  */
-const stores = [{"id": 1, "name": "김영삼도서관", "branch": "김영삼도서관", "address": "서울특별시 동작구 매봉로 2", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "16:30", "staff": [{"name": "권영순", "leader": false}, {"name": "김영희", "leader": true}, {"name": "김정순", "leader": false}, {"name": "박연옥", "leader": false}, {"name": "박하순", "leader": false}, {"name": "이순자", "leader": false}, {"name": "이재만", "leader": false}, {"name": "이향손", "leader": false}, {"name": "정명자", "leader": false}, {"name": "정향남", "leader": false}]}, {"label": "오전", "start": "08:00", "end": "17:00", "staff": [{"name": "윤우중", "leader": true}, {"name": "이홍범", "leader": false}]}, {"label": "오전", "start": "09:00", "end": "18:00", "staff": [{"name": "소재춘", "leader": false}]}, {"label": "오후", "start": "13:00", "end": "22:00", "staff": [{"name": "소재춘", "leader": false}, {"name": "조규표", "leader": false}]}], "lat": 37.5054078, "lng": 126.9499279, "weekly": [{"name": "권영순", "phone": "010-5126-2566", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:30~16:30", "3": "07:30~16:30", "4": "07:30~16:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "김영삼도서관"}, {"name": "김영희", "phone": "010-5302-4841", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"2": "07:30~16:30", "3": "07:30~16:30", "4": "07:30~16:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "김영삼도서관"}, {"name": "김정순", "phone": "010-4166-6207", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:30~16:30", "6": "07:30~16:30", "0": "07:30~16:30"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "김영삼도서관"}, {"name": "박연옥", "phone": "010-7153-0734", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:30~16:30", "6": "07:30~16:30", "0": "07:30~16:30"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "김영삼도서관"}, {"name": "박하순", "phone": "010-9144-6282", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:30~16:30", "6": "07:30~16:30", "0": "07:30~16:30"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "김영삼도서관"}, {"name": "이순자", "phone": "010-3100-1740", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:30~16:30", "6": "07:30~16:30", "0": "07:30~16:30"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "김영삼도서관"}, {"name": "이재만", "phone": "010-5149-8116", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:30~16:30", "3": "07:30~16:30", "4": "07:30~16:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "김영삼도서관"}, {"name": "이향손", "phone": "010-9359-3667", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:30~16:30", "6": "07:30~16:30", "0": "07:30~16:30"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "김영삼도서관"}, {"name": "정명자", "phone": "010-3179-5713", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:30~16:30", "3": "07:30~16:30", "4": "07:30~16:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "김영삼도서관"}, {"name": "정향남", "phone": "010-7735-0311", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:30~16:30", "3": "07:30~16:30", "4": "07:30~16:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "김영삼도서관"}, {"name": "윤우중", "phone": "010-3382-2788", "shift_type": "주차", "shift_label": "오전", "leader": true, "days": {"5": "08:00~17:00", "6": "08:00~17:00", "0": "08:00~17:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "김영삼도서관"}, {"name": "이홍범", "phone": "010-2874-5505", "shift_type": "주차", "shift_label": "오전", "leader": false, "days": {"2": "08:00~17:00", "3": "08:00~17:00", "4": "08:00~17:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "김영삼도서관"}, {"name": "소재춘", "phone": "010-6268-2419", "shift_type": "주차", "shift_label": "오전", "leader": false, "days": {"6": "09:00~18:00", "0": "09:00~18:00", "5": "13:00~22:00"}, "labels": {"6": "오전", "0": "오전", "5": "오후"}, "source": "김영삼도서관"}, {"name": "조규표", "phone": "010-3808-0060", "shift_type": "주차", "shift_label": "오후", "leader": false, "days": {"2": "13:00~22:00", "3": "13:00~22:00", "4": "13:00~22:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후"}, "source": "김영삼도서관"}]}, {"id": 2, "name": "까망돌 도서관", "branch": "까망돌 도서관", "address": "서울특별시 동작구 서달로 129", "cat": "문화재단", "manager": "김상재", "memo": "근무자들끼리 교대근무 잦음", "shifts": [{"label": "오전", "start": "07:00", "end": "16:00", "staff": [{"name": "김영숙", "leader": false}, {"name": "여영화", "leader": false}, {"name": "권명숙", "leader": false}, {"name": "김길환", "leader": true}, {"name": "김옥희", "leader": false}, {"name": "이경순", "leader": false}]}, {"label": "오후", "start": "12:00", "end": "17:00", "staff": [{"name": "윤대섭", "leader": false}]}, {"label": "오후", "start": "16:00", "end": "21:00", "staff": [{"name": "윤대섭", "leader": false}]}], "lat": 37.5051202, "lng": 126.960611, "weekly": [{"name": "김영숙", "phone": "010-5189-0545", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:00~16:00", "6": "07:00~16:00", "0": "07:00~16:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "까망돌 도서관"}, {"name": "여영화", "phone": "010-7118-6322", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:00~16:00", "6": "07:00~16:00", "0": "07:00~16:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "까망돌 도서관"}, {"name": "권명숙", "phone": "010-2548-5091", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~16:00", "3": "07:00~16:00", "4": "07:00~16:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "까망돌 도서관"}, {"name": "김길환", "phone": "010-2223-7158", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"2": "07:00~16:00", "3": "07:00~16:00", "4": "07:00~16:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "까망돌 도서관"}, {"name": "김옥희", "phone": "010-5217-6176", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~16:00", "3": "07:00~16:00", "4": "07:00~16:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "까망돌 도서관"}, {"name": "이경순", "phone": "010-8700-9077", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:00~16:00", "6": "07:00~16:00", "0": "07:00~16:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "까망돌 도서관"}, {"name": "윤대섭", "phone": "010-6455-1076", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"6": "12:00~17:00", "0": "12:00~17:00", "2": "16:00~21:00", "3": "16:00~21:00", "4": "16:00~21:00", "5": "16:00~21:00"}, "labels": {"6": "오후", "0": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "까망돌 도서관"}]}, {"id": 3, "name": "노량진1동 청소년독서실", "branch": "노량진1동 청소년독서실", "address": "서울특별시 동작구 만양로3길 8", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "16:00", "end": "23:00", "staff": [{"name": "안정옥", "leader": false}, {"name": "이승자", "leader": false}]}], "lat": 37.5078124, "lng": 126.9473055, "weekly": [{"name": "안정옥", "phone": "010-3338-1959", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "노량진1동 청소년독서실"}, {"name": "이승자", "phone": "010-3063-8764", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "노량진1동 청소년독서실"}]}, {"id": 4, "name": "노량진1동주민센터", "branch": "노량진1동주민센터", "address": "서울특별시 동작구 노량진로 190, 3층·4층(노량진동 333)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오후", "start": "12:30", "end": "15:30", "staff": [{"name": "강금임", "leader": false}]}], "lat": 37.5129588, "lng": 126.9468626, "weekly": [{"name": "강금임", "phone": "010-5290-2194", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:30~15:30", "2": "12:30~15:30", "3": "12:30~15:30", "4": "12:30~15:30", "5": "12:30~15:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "노량진1동주민센터"}]}, {"id": 5, "name": "노량진2동주민센터", "branch": "노량진2동주민센터", "address": "서울특별시 동작구 장승배기로19길 48 (노량진2동 302-97)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "10:30", "staff": [{"name": "최숙희", "leader": false}]}], "lat": 37.5085316, "lng": 126.9373592, "weekly": [{"name": "최숙희", "phone": "010-7196-1678", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진2동주민센터"}]}, {"id": 6, "name": "노량진청사", "branch": "노량진청사", "address": "서울특별시 동작구 장승배기로 161", "cat": "유관기관", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "06:30", "end": "13:30", "staff": [{"name": "김홍순", "leader": false}, {"name": "오정숙", "leader": false}, {"name": "윤선동", "leader": false}, {"name": "이순옥", "leader": false}, {"name": "이영숙", "leader": false}, {"name": "이영재", "leader": true}, {"name": "임영숙", "leader": false}, {"name": "조영님", "leader": false}, {"name": "조은희", "leader": false}]}, {"label": "오후", "start": "13:00", "end": "18:00", "staff": [{"name": "김혜영", "leader": false}, {"name": "류인용", "leader": false}, {"name": "홍명순", "leader": false}]}], "lat": 37.5124129, "lng": 126.9395452, "weekly": [{"name": "김홍순", "phone": "010-3181-8836", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "오정숙", "phone": "010-9058-5410", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "윤선동", "phone": "010-3171-3854", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "이순옥", "phone": "010-8864-4247", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "이영숙", "phone": "010-7682-7768", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "이영재", "phone": "010-3755-8304", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "임영숙", "phone": "010-5470-3838", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "조영님", "phone": "010-5291-4121", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "조은희", "phone": "010-2827-6134", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "김혜영", "phone": "010-8257-3300", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "노량진청사"}, {"name": "류인용", "phone": "010-2653-7373", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "노량진청사"}, {"name": "홍명순", "phone": "010-9054-6387", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "노량진청사"}]}, {"id": 7, "name": "다울작은도서관", "branch": "다울작은도서관", "address": "서울특별시 동작구 사당로20길 132", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "12:00", "staff": [{"name": "손금녀", "leader": false}]}], "lat": 37.4788904, "lng": 126.973255, "weekly": [{"name": "손금녀", "phone": "010-2701-0484", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~12:00", "3": "07:00~12:00", "4": "07:00~12:00", "5": "07:00~12:00", "6": "07:00~12:00", "0": "07:00~12:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전", "0": "오전"}, "source": "다울작은도서관"}]}, {"id": 8, "name": "대방동주민센터", "branch": "대방동주민센터", "address": "서울특별시 동작구 여의대방로44길 20(대방동 501-2)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "10:00", "staff": [{"name": "장선자", "leader": false}]}], "lat": 37.508158, "lng": 126.9263549, "weekly": [{"name": "장선자", "phone": "010-2545-7292", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~10:00", "2": "07:00~10:00", "3": "07:00~10:00", "4": "07:00~10:00", "5": "07:00~10:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "대방동주민센터"}]}, {"id": 9, "name": "대방어린이도서관", "branch": "대방어린이도서관", "address": "서울특별시 동작구 대방동길 55", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "12:00", "staff": [{"name": "송수란", "leader": false}]}], "lat": 37.5030271, "lng": 126.9252319, "weekly": [{"name": "송수란", "phone": "010-3886-6947", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~12:00", "3": "07:00~12:00", "4": "07:00~12:00", "5": "07:00~12:00", "6": "07:00~12:00", "0": "07:00~12:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전", "0": "오전"}, "source": "대방어린이도서관"}]}, {"id": 10, "name": "동작구 자원봉사센터", "branch": "동작구 자원봉사센터", "address": "서울특별시 동작구 만양로3길 14", "cat": "유관기관", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "09:30", "staff": [{"name": "최순연", "leader": false}]}], "lat": 37.5080372, "lng": 126.9469689, "weekly": [{"name": "최순연", "phone": "010-7599-9197", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~09:30", "2": "06:00~09:30", "3": "06:00~09:30", "4": "06:00~09:30", "5": "06:00~09:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구 자원봉사센터"}]}, {"id": 11, "name": "동작구민체육센터", "branch": "동작구민체육센터", "address": "서울특별시 동작구 여의대방로16길 53 동작구민체육센터", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "강병옥", "leader": true}, {"name": "김미옥", "leader": false}, {"name": "김시종", "leader": false}, {"name": "김옥순", "leader": false}, {"name": "신정자", "leader": false}, {"name": "조완행", "leader": false}]}, {"label": "오전", "start": "08:30", "end": "18:00", "staff": [{"name": "강병옥", "leader": true}, {"name": "김미옥", "leader": false}, {"name": "김성자", "leader": false}, {"name": "김시종", "leader": false}, {"name": "김옥순", "leader": false}, {"name": "조완행", "leader": false}]}, {"label": "오후", "start": "13:00", "end": "18:00", "staff": [{"name": "김정화", "leader": false}, {"name": "송문섭", "leader": false}]}, {"label": "오후", "start": "14:30", "end": "22:30", "staff": [{"name": "김성자", "leader": false}, {"name": "김정화", "leader": false}, {"name": "이중희", "leader": false}, {"name": "송문섭", "leader": false}, {"name": "홍란희", "leader": false}]}], "lat": 37.4947228, "lng": 126.9167552, "weekly": [{"name": "강병옥", "phone": "010-3389-5594", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~18:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작구민체육센터"}, {"name": "김미옥", "phone": "010-4602-6618", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~18:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작구민체육센터"}, {"name": "김시종", "phone": "010-5226-0747", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~18:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작구민체육센터"}, {"name": "김옥순", "phone": "010-2389-3246", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~18:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작구민체육센터"}, {"name": "신정자", "phone": "010-9992-8694", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구민체육센터"}, {"name": "조완행", "phone": "010-6400-8436", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~18:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작구민체육센터"}, {"name": "김성자", "phone": "010-4925-1571", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"6": "08:30~18:00", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구민체육센터"}, {"name": "김정화", "phone": "010-5266-3153", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"0": "13:00~18:00", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"0": "오후", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구민체육센터"}, {"name": "송문섭", "phone": "010-9050-0643", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"0": "13:00~18:00", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"0": "오후", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구민체육센터"}, {"name": "이중희", "phone": "010-6325-0616", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구민체육센터"}, {"name": "홍란희", "phone": "010-2307-5619", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구민체육센터"}]}, {"id": 12, "name": "동작구보건소", "branch": "동작구보건소", "address": "서울특별시 동작구 노량진동 328 동작구 보건소 건강관리청", "cat": "유관기관", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "13:00", "staff": [{"name": "김양옥", "leader": false}, {"name": "김창열", "leader": true}, {"name": "임영하", "leader": false}]}, {"label": "오전", "start": "07:00", "end": "12:00", "staff": [{"name": "박춘자", "leader": false}]}, {"label": "오후", "start": "13:00", "end": "18:00", "staff": [{"name": "김화진", "leader": false}, {"name": "이충환", "leader": false}]}], "lat": 37.5056892, "lng": 126.9404547, "weekly": [{"name": "김양옥", "phone": "010-5069-5278", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구보건소"}, {"name": "김창열", "phone": "010-5205-8351", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구보건소"}, {"name": "박춘자", "phone": "010-9315-0684", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~12:00", "2": "07:00~12:00", "3": "07:00~12:00", "4": "07:00~12:00", "5": "07:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구보건소"}, {"name": "임영하", "phone": "010-6743-3699", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구보건소"}, {"name": "김화진", "phone": "010-7509-9890", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구보건소"}, {"name": "이충환", "phone": "010-6788-3541", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구보건소"}]}, {"id": 13, "name": "동작구시설관리공단 본부", "branch": "동작구시설관리공단 본부", "address": "서울 동작구 보라매로5길 35", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "09:30", "staff": [{"name": "박성찬", "leader": false}]}], "lat": 37.4920902, "lng": 126.9235082, "weekly": [{"name": "박성찬", "phone": "010-9913-9418", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~09:30", "2": "06:00~09:30", "3": "06:00~09:30", "4": "06:00~09:30", "5": "06:00~09:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구시설관리공단 본부"}]}, {"id": 14, "name": "동작문화복지센터", "branch": "동작문화복지센터", "address": "서울특별시 동작구 장승배기로 70 동작문화복지센타", "cat": "유관기관", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "13:00", "staff": [{"name": "권정자", "leader": false}, {"name": "유제환", "leader": true}, {"name": "장종", "leader": false}, {"name": "조송희", "leader": false}]}, {"label": "오후", "start": "13:00", "end": "18:00", "staff": [{"name": "강옥이", "leader": false}, {"name": "허찬", "leader": false}]}], "lat": 37.504417115156684, "lng": 126.94105600444067, "weekly": [{"name": "권정자", "phone": "010-8988-2669", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작문화복지센터"}, {"name": "유제환", "phone": "010-2369-1051", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작문화복지센터"}, {"name": "장종", "phone": "010-4768-3025", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작문화복지센터"}, {"name": "조송희", "phone": "010-5495-3542", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작문화복지센터"}, {"name": "강옥이", "phone": "010-5055-7072", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작문화복지센터"}, {"name": "허찬", "phone": "010-5636-6442", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작문화복지센터"}]}, {"id": 15, "name": "동작반려견공원", "branch": "동작반려견공원", "address": "서울특별시 동작구 노량진동 24-10", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "09:30", "end": "20:30", "staff": [{"name": "김경주", "leader": false}, {"name": "윤석우", "leader": false}]}], "lat": 37.5134684, "lng": 126.9348257, "weekly": [{"name": "김경주", "phone": "010-5255-4610", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "09:30~20:30", "3": "09:30~20:30", "4": "09:30~20:30", "5": "09:30~20:30", "6": "09:30~20:30", "0": "09:30~20:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전", "0": "오전"}, "source": "동작반려견공원"}, {"name": "윤석우", "phone": "010-7930-6298", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "09:30~20:30", "3": "09:30~20:30", "4": "09:30~20:30", "5": "09:30~20:30", "6": "09:30~20:30", "0": "09:30~20:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전", "0": "오전"}, "source": "동작반려견공원"}]}, {"id": 16, "name": "동작삼일수영장", "branch": "동작삼일수영장", "address": "서울특별시 동작구 사당로27길 103", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "김석준", "leader": false}, {"name": "임지현", "leader": false}]}, {"label": "오전", "start": "07:30", "end": "15:30", "staff": [{"name": "김행심", "leader": true}]}, {"label": "오전", "start": "08:30", "end": "17:30", "staff": [{"name": "김만호", "leader": false}, {"name": "임지현", "leader": false}]}, {"label": "오후", "start": "14:30", "end": "22:30", "staff": [{"name": "김만호", "leader": false}, {"name": "김연자", "leader": false}]}], "lat": 37.4873412, "lng": 126.9744243, "weekly": [{"name": "김석준", "phone": "010-4917-1891", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작삼일수영장"}, {"name": "임지현", "phone": "010-5345-0985", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~17:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작삼일수영장"}, {"name": "김행심", "phone": "010-4903-1187", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "07:30~15:30", "2": "07:30~15:30", "3": "07:30~15:30", "4": "07:30~15:30", "5": "07:30~15:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작삼일수영장"}, {"name": "김만호", "phone": "010-5273-9831", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작삼일수영장"}, {"name": "김연자", "phone": "010-8757-5062", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작삼일수영장"}]}, {"id": 17, "name": "동작샘터도서관", "branch": "동작샘터도서관", "address": "서울특별시 동작구 동작대로29길 63-26", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "12:00", "staff": [{"name": "고부돌", "leader": false}]}], "lat": 37.4883795, "lng": 126.9775849, "weekly": [{"name": "고부돌", "phone": "010-6385-7566", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~12:00", "3": "07:00~12:00", "4": "07:00~12:00", "5": "07:00~12:00", "6": "07:00~12:00", "0": "07:00~12:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전", "0": "오전"}, "source": "동작샘터도서관"}]}, {"id": 18, "name": "동작수학놀이터 및 힐링센터", "branch": "동작수학놀이터 및 힐링센터", "address": "서울특별시 동작구 사당로17길 4 2층", "cat": "유관기관", "manager": "정성현", "memo": "", "shifts": [{"label": "오전", "start": "06:30", "end": "11:00", "staff": [{"name": "최연숙", "leader": false}]}], "lat": 37.4835896, "lng": 126.9746697, "weekly": [{"name": "최연숙", "phone": "010-5524-8228", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "06:30~11:00", "3": "06:30~11:00", "4": "06:30~11:00", "5": "06:30~11:00", "6": "06:30~11:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작수학놀이터 및 힐링센터"}]}, {"id": 19, "name": "동작아트갤러리", "branch": "동작아트갤러리", "address": "서울특별시 동작구 보라매로5길 28-1 동작아트갤러리", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "06:30", "end": "10:30", "staff": [{"name": "왕자순", "leader": false}]}], "lat": 37.4937925, "lng": 126.9231084, "weekly": [{"name": "왕자순", "phone": "010-9138-3027", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "06:30~10:30", "3": "06:30~10:30", "4": "06:30~10:30", "5": "06:30~10:30", "6": "06:30~10:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작아트갤러리"}]}, {"id": 20, "name": "동작영어마루", "branch": "동작영어마루", "address": "서울특별시 동작구 장승배기로16길 98", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "16:00", "staff": [{"name": "권광옥", "leader": false}, {"name": "임향희", "leader": false}]}], "lat": 37.5092029, "lng": 126.9434364, "weekly": [{"name": "권광옥", "phone": "010-9690-1180", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:00~16:00", "6": "07:00~16:00", "0": "07:00~16:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "동작영어마루"}, {"name": "임향희", "phone": "010-3257-5517", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~16:00", "3": "07:00~16:00", "4": "07:00~16:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "동작영어마루"}]}, {"id": 21, "name": "동작입시지원센터", "branch": "동작입시지원센터", "address": "서울특별시 동작구 신대방1다길 19 4층", "cat": "유관기관", "manager": "정성현", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "14:00", "staff": [{"name": "조순애", "leader": false}, {"name": "최화숙", "leader": false}]}], "lat": 37.4861085, "lng": 126.905906, "weekly": [{"name": "조순애", "phone": "010-4768-4253", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~14:00", "3": "07:00~14:00", "4": "07:00~14:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "동작입시지원센터"}, {"name": "최화숙", "phone": "010-3100-2041", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:00~14:00", "6": "07:00~14:00", "0": "07:00~14:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "동작입시지원센터"}]}, {"id": 22, "name": "본동어울마당아트홀", "branch": "본동어울마당아트홀", "address": "서울특별시 동작구 노량진로32길 79 지하1층", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "08:00", "end": "13:00", "staff": [{"name": "진순옥", "leader": false}]}, {"label": "오전", "start": "11:00", "end": "16:00", "staff": [{"name": "진순옥", "leader": false}]}], "lat": 37.5105545, "lng": 126.9569133, "weekly": [{"name": "진순옥", "phone": "010-2338-6374", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:00~13:00", "2": "11:00~16:00", "3": "11:00~16:00", "4": "11:00~16:00", "5": "11:00~16:00"}, "labels": {"6": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "본동어울마당아트홀"}]}, {"id": 23, "name": "사당1동주민센터", "branch": "사당1동주민센터", "address": "서울특별시 동작구 동작대로17길 28(사당1동 1004-52)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "10:30", "staff": [{"name": "김홍유", "leader": false}, {"name": "민옥희", "leader": false}]}], "lat": 37.4830766, "lng": 126.9787824, "weekly": [{"name": "김홍유", "phone": "010-5380-7602", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당1동주민센터"}, {"name": "민옥희", "phone": "010-5299-4352", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당1동주민센터"}]}, {"id": 24, "name": "사당2동주민센터", "branch": "사당2동주민센터", "address": "서울특별시 동작구 동작대로29길 52(사당동)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "10:30", "staff": [{"name": "이강순", "leader": false}]}], "lat": 37.4887015, "lng": 126.9792511, "weekly": [{"name": "이강순", "phone": "010-5796-0889", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당2동주민센터"}]}, {"id": 25, "name": "사당3동 청소년독서실", "branch": "사당3동 청소년독서실", "address": "서울특별시 동작구 사당로13길 50", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "16:00", "end": "23:00", "staff": [{"name": "계영일", "leader": false}, {"name": "김명자", "leader": false}]}], "lat": 37.4862467, "lng": 126.9716709, "weekly": [{"name": "계영일", "phone": "010-2067-5977", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "사당3동 청소년독서실"}, {"name": "김명자", "phone": "010-2179-1119", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "사당3동 청소년독서실"}]}, {"id": 26, "name": "사당3동주민센터", "branch": "사당3동주민센터", "address": "서울특별시 동작구 사당로17길 86", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "13:00", "staff": [{"name": "김봉숙", "leader": false}]}], "lat": 37.4866368, "lng": 126.9720915, "weekly": [{"name": "김봉숙", "phone": "010-3321-7128", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~13:00", "2": "07:30~13:00", "3": "07:30~13:00", "4": "07:30~13:00", "5": "07:30~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당3동주민센터"}]}, {"id": 27, "name": "사당4동 청소년독서실", "branch": "사당4동 청소년독서실", "address": "서울특별시 동작구 사당로22나길 71", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "16:00", "end": "23:00", "staff": [{"name": "노승희", "leader": false}, {"name": "정연희", "leader": false}]}], "lat": 37.4804858, "lng": 126.9731027, "weekly": [{"name": "노승희", "phone": "010-6384-4065", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "사당4동 청소년독서실"}, {"name": "정연희", "phone": "010-3702-2536", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "사당4동 청소년독서실"}]}, {"id": 28, "name": "사당4동주민센터", "branch": "사당4동주민센터", "address": "서울 동작구 사당로20나길 3", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "13:30", "staff": [{"name": "박지수", "leader": false}]}], "lat": 37.4814855, "lng": 126.9754025, "weekly": [{"name": "박지수", "phone": "010-5419-7641", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~13:30", "2": "07:30~13:30", "3": "07:30~13:30", "4": "07:30~13:30", "5": "07:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당4동주민센터"}]}, {"id": 29, "name": "사당5동주민센터", "branch": "사당5동주민센터", "address": "서울특별시 동작구 사당로2가길 219(사당5동 228-11)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "08:00", "end": "11:00", "staff": [{"name": "박정숙", "leader": false}]}], "lat": 37.4846239, "lng": 126.971602, "weekly": [{"name": "박정숙", "phone": "010-9278-8300", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "08:00~11:00", "2": "08:00~11:00", "3": "08:00~11:00", "4": "08:00~11:00", "5": "08:00~11:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당5동주민센터"}]}, {"id": 30, "name": "사당문화회관", "branch": "사당문화회관", "address": "서울특별시 동작구 사당로8길 9 사당문화회관", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "김연옥", "leader": false}, {"name": "오순용", "leader": false}, {"name": "이상호", "leader": false}]}, {"label": "오전", "start": "08:30", "end": "17:30", "staff": [{"name": "정정순", "leader": false}, {"name": "최찬수", "leader": false}]}, {"label": "오전", "start": "09:00", "end": "17:00", "staff": [{"name": "김재원", "leader": true}]}, {"label": "오후", "start": "14:30", "end": "22:30", "staff": [{"name": "김준임", "leader": false}, {"name": "정정순", "leader": false}, {"name": "최찬수", "leader": false}]}], "lat": 37.4847212, "lng": 126.9696162, "weekly": [{"name": "김연옥", "phone": "010-4661-7367", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당문화회관"}, {"name": "오순용", "phone": "010-8420-6992", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당문화회관"}, {"name": "이상호", "phone": "010-5380-9204", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당문화회관"}, {"name": "정정순", "phone": "010-3044-7875", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "사당문화회관"}, {"name": "최찬수", "phone": "010-6711-3828", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "사당문화회관"}, {"name": "김재원", "phone": "010-3732-0180", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "09:00~17:00", "2": "09:00~17:00", "3": "09:00~17:00", "4": "09:00~17:00", "5": "09:00~17:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당문화회관"}, {"name": "김준임", "phone": "010-4237-1714", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "사당문화회관"}]}, {"id": 31, "name": "사당솔밭도서관", "branch": "사당솔밭도서관", "address": "서울특별시 동작구 솔밭로 86", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "15:00", "staff": [{"name": "김경순", "leader": false}, {"name": "이명희", "leader": false}, {"name": "최귀자", "leader": true}, {"name": "황금숙", "leader": false}]}], "lat": 37.4840897, "lng": 126.9673874, "weekly": [{"name": "김경순", "phone": "010-2581-2700", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "06:00~15:00", "6": "06:00~15:00", "0": "06:00~15:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "사당솔밭도서관"}, {"name": "이명희", "phone": "010-6213-0712", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "06:00~15:00", "3": "06:00~15:00", "4": "06:00~15:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "사당솔밭도서관"}, {"name": "최귀자", "phone": "010-4900-8161", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"5": "06:00~15:00", "6": "06:00~15:00", "0": "06:00~15:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "사당솔밭도서관"}, {"name": "황금숙", "phone": "010-5383-8195", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "06:00~15:00", "3": "06:00~15:00", "4": "06:00~15:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "사당솔밭도서관"}]}, {"id": 32, "name": "사당종합체육관", "branch": "사당종합체육관", "address": "서울특별시 동작구 사당로27길 232", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "곽재동", "leader": false}, {"name": "서충례", "leader": false}, {"name": "오한순", "leader": false}]}, {"label": "오전", "start": "08:30", "end": "17:30", "staff": [{"name": "곽재동", "leader": false}, {"name": "김재석", "leader": true}, {"name": "방경식", "leader": false}, {"name": "서충례", "leader": false}, {"name": "한강연", "leader": false}]}, {"label": "오전", "start": "09:00", "end": "17:00", "staff": [{"name": "김재석", "leader": true}]}, {"label": "오후", "start": "14:30", "end": "22:30", "staff": [{"name": "방경식", "leader": false}, {"name": "전명자", "leader": false}, {"name": "한강연", "leader": false}]}], "lat": 37.4928063, "lng": 126.9697426, "weekly": [{"name": "곽재동", "phone": "010-3711-5358", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~17:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "사당종합체육관"}, {"name": "서충례", "phone": "010-4517-6851", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "0": "08:30~17:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "0": "오전"}, "source": "사당종합체육관"}, {"name": "오한순", "phone": "010-9206-3956", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당종합체육관"}, {"name": "김재석", "phone": "010-3771-2672", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"0": "08:30~17:30", "1": "09:00~17:00", "2": "09:00~17:00", "3": "09:00~17:00", "4": "09:00~17:00", "5": "09:00~17:00"}, "labels": {"0": "오전", "1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당종합체육관"}, {"name": "방경식", "phone": "010-7233-9731", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "사당종합체육관"}, {"name": "한강연", "phone": "010-5216-2017", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "사당종합체육관"}, {"name": "전명자", "phone": "010-8630-1441", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "사당종합체육관"}]}, {"id": 33, "name": "사육신역사관", "branch": "사육신역사관", "address": "서울특별시 동작구 노량진로 191", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "12:00", "staff": [{"name": "이순규", "leader": false}]}], "lat": 37.5142249, "lng": 126.94817, "weekly": [{"name": "이순규", "phone": "010-9721-9991", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~12:00", "3": "07:00~12:00", "4": "07:00~12:00", "5": "07:00~12:00", "6": "07:00~12:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "사육신역사관"}]}, {"id": 34, "name": "상도1동주민센터", "branch": "상도1동주민센터", "address": "서울특별시 동작구 상도로53길 9(상도동 437)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "10:00", "staff": [{"name": "김춘경", "leader": false}]}], "lat": 37.4981099, "lng": 126.9530915, "weekly": [{"name": "김춘경", "phone": "010-3662-7107", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~10:00", "2": "07:00~10:00", "3": "07:00~10:00", "4": "07:00~10:00", "5": "07:00~10:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "상도1동주민센터"}]}, {"id": 35, "name": "상도2동주민센터", "branch": "상도2동주민센터", "address": "서울특별시 동작구 상도로 211 (상도2동 25-48)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "06:30", "end": "09:30", "staff": [{"name": "김미순", "leader": false}]}], "lat": 37.505469, "lng": 126.9423108, "weekly": [{"name": "김미순", "phone": "010-3863-3534", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~09:30", "2": "06:30~09:30", "3": "06:30~09:30", "4": "06:30~09:30", "5": "06:30~09:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "상도2동주민센터"}]}, {"id": 36, "name": "상도3동 청소년독서실", "branch": "상도3동 청소년독서실", "address": "서울특별시 동작구 국사봉2나길 25 구립상도3동청소년독서실", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "16:00", "end": "23:00", "staff": [{"name": "김경일", "leader": false}, {"name": "함진수", "leader": false}]}], "lat": 37.4970089, "lng": 126.9300158, "weekly": [{"name": "김경일", "phone": "010-8642-6140", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "상도3동 청소년독서실"}, {"name": "함진수", "phone": "010-9834-5877", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "상도3동 청소년독서실"}]}, {"id": 37, "name": "상도3동주민센터", "branch": "상도3동주민센터", "address": "서울특별시 동작구 성대로2길 11(상도3동 315-37)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "10:00", "staff": [{"name": "윤경자", "leader": false}]}], "lat": 37.4991276, "lng": 126.9313945, "weekly": [{"name": "윤경자", "phone": "010-8882-1054", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~10:00", "2": "07:00~10:00", "3": "07:00~10:00", "4": "07:00~10:00", "5": "07:00~10:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "상도3동주민센터"}]}, {"id": 38, "name": "상도4동 청소년독서실", "branch": "상도4동 청소년독서실", "address": "서울특별시 동작구 성대로11길 67", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "16:00", "end": "23:00", "staff": [{"name": "김남애", "leader": false}, {"name": "유용옥", "leader": false}]}], "lat": 37.5001846, "lng": 126.9337164, "weekly": [{"name": "김남애", "phone": "010-6278-6567", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "상도4동 청소년독서실"}, {"name": "유용옥", "phone": "010-3250-3124", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "상도4동 청소년독서실"}]}, {"id": 39, "name": "상도4동주민센터", "branch": "상도4동주민센터", "address": "서울특별시 동작구 양녕로27길 44(상도동 202-58)", "cat": "주민센터", "manager": "김유정", "memo": "이명희님 샤플가입X", "shifts": [{"label": "오전", "start": "07:30", "end": "10:30", "staff": [{"name": "박순화", "leader": false}, {"name": "이명희", "leader": false}]}], "lat": 37.4993993, "lng": 126.9414102, "weekly": [{"name": "박순화", "phone": "010-4548-6957", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "상도4동주민센터"}, {"name": "이명희", "phone": "?", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "상도4동주민센터"}]}, {"id": 40, "name": "상도스포츠클럽", "branch": "상도스포츠클럽", "address": "서울특별시 동작구 성대로2길 11 상도4동 주민센터", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "우정옥", "leader": false}]}, {"label": "오전", "start": "08:30", "end": "17:30", "staff": [{"name": "우정옥", "leader": false}]}, {"label": "오후", "start": "14:30", "end": "22:30", "staff": [{"name": "김순금", "leader": true}]}], "lat": 37.4991276, "lng": 126.9313945, "weekly": [{"name": "우정옥", "phone": "010-9487-9533", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~17:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "상도스포츠클럽"}, {"name": "김순금", "phone": "010-6517-1746", "shift_type": "미화", "shift_label": "오후", "leader": true, "days": {"1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "상도스포츠클럽"}]}, {"id": 41, "name": "상도어울마당", "branch": "상도어울마당", "address": "서울특별시 동작구 성대로 180 지하 1층", "cat": "유관기관", "manager": "정성현", "memo": "", "shifts": [{"label": "오전", "start": "08:00", "end": "13:00", "staff": [{"name": "공순임", "leader": false}]}], "lat": 37.4992555, "lng": 126.9403722, "weekly": [{"name": "공순임", "phone": "010-6227-0138", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "08:00~13:00", "3": "08:00~13:00", "4": "08:00~13:00", "5": "08:00~13:00", "6": "08:00~13:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "상도어울마당"}]}, {"id": 42, "name": "신대방1동주민센터", "branch": "신대방1동주민센터", "address": "서울특별시 동작구 신대방길72(신대방1동 604-8)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "10:30", "staff": [{"name": "안성자", "leader": false}]}], "lat": 37.4889584, "lng": 126.9100645, "weekly": [{"name": "안성자", "phone": "010-3661-0770", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신대방1동주민센터"}]}, {"id": 43, "name": "신대방2동주민센터", "branch": "신대방2동주민센터", "address": "서울특별시 동작구 여의대방로24길 76(신대방동 723)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "10:00", "staff": [{"name": "오금숙", "leader": false}, {"name": "홍은혜", "leader": false}]}], "lat": 37.498417, "lng": 126.9245435, "weekly": [{"name": "오금숙", "phone": "010-2718-6908", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~10:00", "2": "07:00~10:00", "3": "07:00~10:00", "4": "07:00~10:00", "5": "07:00~10:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신대방2동주민센터"}, {"name": "홍은혜", "phone": "010-9147-9296", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~10:00", "2": "07:00~10:00", "3": "07:00~10:00", "4": "07:00~10:00", "5": "07:00~10:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신대방2동주민센터"}]}, {"id": 44, "name": "신대방누리도서관", "branch": "신대방누리도서관", "address": "서울특별시 동작구 신대방1다길 19", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "16:00", "staff": [{"name": "안복란", "leader": false}, {"name": "이혜경", "leader": true}]}], "lat": 37.497, "lng": 126.939, "weekly": [{"name": "안복란", "phone": "010-7158-0715", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~16:00", "3": "07:00~16:00", "4": "07:00~16:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "신대방누리도서관"}, {"name": "이혜경", "phone": "010-7388-4860", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"5": "07:00~16:00", "6": "07:00~16:00", "0": "07:00~16:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "신대방누리도서관"}]}, {"id": 45, "name": "신대방햇살도서관", "branch": "신대방햇살도서관", "address": "서울특별시 동작구 여의대방로16길 53 (신대방동) 동작구민체육센터광장앞", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "08:30", "end": "11:30", "staff": [{"name": "양동술", "leader": false}]}], "lat": 37.4947228, "lng": 126.9167552, "weekly": [{"name": "양동술", "phone": "010-4611-3745", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "08:30~11:30", "3": "08:30~11:30", "4": "08:30~11:30", "5": "08:30~11:30", "6": "08:30~11:30", "0": "08:30~11:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전", "0": "오전"}, "source": "신대방햇살도서관"}]}, {"id": 46, "name": "신청사", "branch": "신청사", "address": "서울특별시 동작구 장승배기로 70", "cat": "유관기관", "manager": "정성현", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "12:00", "staff": [{"name": "공금선", "leader": false}, {"name": "김연숙", "leader": false}, {"name": "노연숙", "leader": false}, {"name": "박경심", "leader": false}, {"name": "박인숙", "leader": false}, {"name": "박정희", "leader": false}, {"name": "송숙자", "leader": false}, {"name": "송화진", "leader": false}, {"name": "유영애", "leader": false}, {"name": "이옥선", "leader": false}, {"name": "장재근", "leader": false}, {"name": "정순남", "leader": false}, {"name": "최진숙", "leader": false}, {"name": "황영숙", "leader": false}]}, {"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "정유화", "leader": true}]}, {"label": "오전", "start": "08:00", "end": "17:00", "staff": [{"name": "양순모", "leader": false}, {"name": "이봉준", "leader": false}, {"name": "정은임", "leader": false}]}, {"label": "오후", "start": "16:30", "end": "21:00", "staff": [{"name": "김옥선", "leader": false}, {"name": "정순희", "leader": false}]}, {"label": "오후", "start": "12:00", "end": "18:00", "staff": [{"name": "강경옥", "leader": false}, {"name": "박승자", "leader": false}, {"name": "이귀덕", "leader": false}, {"name": "이귀자", "leader": false}, {"name": "이상엽", "leader": false}, {"name": "이옥희", "leader": false}, {"name": "이현정", "leader": false}, {"name": "정계윤", "leader": false}, {"name": "최복수", "leader": false}]}, {"label": "오전", "start": "10:30", "end": "15:00", "staff": [{"name": "정순희", "leader": false}]}], "lat": 37.5042528, "lng": 126.9402905, "weekly": [{"name": "공금선", "phone": "010-9045-0266", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "김연숙", "phone": "010-7543-3950", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "노연숙", "phone": "010-7292-2070", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "박경심", "phone": "010-8720-5606", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "박인숙", "phone": "010-2083-0783", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "박정희", "phone": "010-2733-0497", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "송숙자", "phone": "010-6320-7817", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "송화진", "phone": "010-3418-3036", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "유영애", "phone": "010-3025-8799", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "이옥선", "phone": "010-3994-5703", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "장재근", "phone": "010-4309-2743", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "정순남", "phone": "010-9800-4908", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "정유화", "phone": "010-2489-0429", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "최진숙", "phone": "010-3947-7050", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "황영숙", "phone": "010-2226-2500", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "양순모", "phone": "010-5008-9021", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:00~17:00", "0": "08:00~17:00"}, "labels": {"6": "오전", "0": "오전"}, "source": "신청사"}, {"name": "이봉준", "phone": "010-9728-1848", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:00~17:00", "0": "08:00~17:00"}, "labels": {"6": "오전", "0": "오전"}, "source": "신청사"}, {"name": "정은임", "phone": "010-4947-5486", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:00~17:00", "0": "08:00~17:00"}, "labels": {"6": "오전", "0": "오전"}, "source": "신청사"}, {"name": "김옥선", "phone": "010-3213-7376", "shift_type": "푸드코트", "shift_label": "오후", "leader": false, "days": {"1": "16:30~21:00", "2": "16:30~21:00", "3": "16:30~21:00", "4": "16:30~21:00", "5": "16:30~21:00", "6": "16:30~21:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후"}, "source": "신청사"}, {"name": "강경옥", "phone": "010-5406-8036", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "박승자", "phone": "010-3451-8752", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "이귀덕", "phone": "010-9113-5966", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "이귀자", "phone": "010-6740-7275", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "이상엽", "phone": "010-6573-3579", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "이옥희", "phone": "010-3123-9478", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "이현정", "phone": "010-5294-2295", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "정계윤", "phone": "010-5343-9648", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "최복수", "phone": "010-3676-4252", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "정순희", "phone": "010-7205-7805", "shift_type": "푸드코트", "shift_label": "오전", "leader": false, "days": {"1": "10:30~15:00", "2": "10:30~15:00", "3": "10:30~15:00", "4": "10:30~15:00", "5": "10:30~15:00", "0": "16:30~21:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "0": "오후"}, "source": "신청사"}]}, {"id": 47, "name": "아동보호전문기관", "branch": "아동보호전문기관", "address": "서울특별시 동작구 노량진로32길 79", "cat": "유관기관", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "09:00", "staff": [{"name": "박노금", "leader": false}]}], "lat": 37.5105545, "lng": 126.9569133, "weekly": [{"name": "박노금", "phone": "010-4267-2341", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~09:00", "2": "06:00~09:00", "3": "06:00~09:00", "4": "06:00~09:00", "5": "06:00~09:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "아동보호전문기관"}]}, {"id": 48, "name": "아이스팩재활용사업", "branch": "아이스팩재활용사업", "address": "서울특별시 동작구 등용로 41-5", "cat": "유관기관", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "08:30", "end": "15:30", "staff": [{"name": "송재민", "leader": true}, {"name": "윤광섭", "leader": false}, {"name": "윤석란", "leader": false}, {"name": "지창배", "leader": false}, {"name": "한국희", "leader": false}]}], "lat": 37.5055878, "lng": 126.9339338, "weekly": [{"name": "송재민", "phone": "010-3253-2070", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "08:30~15:30", "2": "08:30~15:30", "3": "08:30~15:30", "4": "08:30~15:30", "5": "08:30~15:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "아이스팩재활용사업"}, {"name": "윤광섭", "phone": "010-3714-9316", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "08:30~15:30", "2": "08:30~15:30", "3": "08:30~15:30", "4": "08:30~15:30", "5": "08:30~15:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "아이스팩재활용사업"}, {"name": "윤석란", "phone": "010-4058-7561", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "08:30~15:30", "2": "08:30~15:30", "3": "08:30~15:30", "4": "08:30~15:30", "5": "08:30~15:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "아이스팩재활용사업"}, {"name": "지창배", "phone": "010-4213-2922", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "08:30~15:30", "2": "08:30~15:30", "3": "08:30~15:30", "4": "08:30~15:30", "5": "08:30~15:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "아이스팩재활용사업"}, {"name": "한국희", "phone": "010-8523-7688", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "08:30~15:30", "2": "08:30~15:30", "3": "08:30~15:30", "4": "08:30~15:30", "5": "08:30~15:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "아이스팩재활용사업"}]}, {"id": 49, "name": "약수도서관", "branch": "약수도서관", "address": "서울특별시 동작구 양녕로22바길 64", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "16:00", "staff": [{"name": "김방실", "leader": false}, {"name": "유감순", "leader": false}]}], "lat": 37.4978813, "lng": 126.9474508, "weekly": [{"name": "김방실", "phone": "010-5660-2202", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:00~16:00", "6": "07:00~16:00", "0": "07:00~16:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "약수도서관"}, {"name": "유감순", "phone": "010-5412-4951", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~16:00", "3": "07:00~16:00", "4": "07:00~16:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "약수도서관"}]}, {"id": 50, "name": "양녕청년주택", "branch": "양녕청년주택", "address": "서울특별시 동작구 성대로10나길 17 양녕 청년주택 복합건물", "cat": "유관기관", "manager": "문지연", "memo": "토요일교대근무", "shifts": [{"label": "오전", "start": "08:00", "end": "13:00", "staff": [{"name": "이경희", "leader": false}]}, {"label": "오후", "start": "13:00", "end": "18:00", "staff": [{"name": "이용자", "leader": false}]}], "lat": 37.4968536, "lng": 126.9357417, "weekly": [{"name": "이경희", "phone": "010-3230-2596", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "08:00~13:00", "2": "08:00~13:00", "3": "08:00~13:00", "4": "08:00~13:00", "5": "08:00~13:00", "6": "08:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "양녕청년주택"}, {"name": "이용자", "phone": "010-3136-5590", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00", "6": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후"}, "source": "양녕청년주택"}]}, {"id": 51, "name": "현충배드민턴장", "branch": "현충배드민턴장", "address": "서울특별시 동작구 서달로2길 8", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "11:00", "end": "18:00", "staff": [{"name": "오세희", "leader": true}]}, {"label": "오후", "start": "08:30", "end": "13:00", "staff": [{"name": "오세희", "leader": false}]}, {"label": "오전", "start": "07:00", "end": "14:00", "staff": [{"name": "유승희", "leader": false}]}, {"label": "오전", "start": "13:00", "end": "17:30", "staff": [{"name": "유승희", "leader": false}]}, {"label": "오후", "start": "16:30", "end": "21:30", "staff": [{"name": "전재우", "leader": false}]}, {"label": "오후", "start": "08:30", "end": "17:30", "staff": [{"name": "전재우", "leader": false}]}], "lat": 37.4996094, "lng": 126.9616024, "weekly": [{"name": "오세희", "phone": "010-4441-6693", "shift_type": "미화", "shift_label": "오후", "leader": true, "days": {"1": "11:00~18:00", "2": "11:00~18:00", "3": "11:00~18:00", "4": "11:00~18:00", "5": "11:00~18:00", "6": "08:30~13:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오전"}, "source": "현충배드민턴장"}, {"name": "유승희", "phone": "010-5216-1066", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~14:00", "2": "07:00~14:00", "3": "07:00~14:00", "4": "07:00~14:00", "5": "07:00~14:00", "6": "13:00~17:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오후"}, "source": "현충배드민턴장"}, {"name": "전재우", "phone": "010-8750-9505", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "16:30~21:30", "2": "16:30~21:30", "3": "16:30~21:30", "4": "16:30~21:30", "5": "16:30~21:30", "0": "08:30~17:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후", "0": "오전"}, "source": "현충배드민턴장"}]}, {"id": 52, "name": "흑석 청소년독서실", "branch": "흑석 청소년독서실", "address": "서울특별시 동작구 서달로13길 17 3층", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "16:00", "end": "23:00", "staff": [{"name": "공용표", "leader": false}, {"name": "최남숙", "leader": false}]}], "lat": 37.5085051, "lng": 126.9619383, "weekly": [{"name": "공용표", "phone": "010-5923-0911", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "흑석 청소년독서실"}, {"name": "최남숙", "phone": "010-5891-7580", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "흑석 청소년독서실"}]}, {"id": 53, "name": "흑석동주민센터", "branch": "흑석동주민센터", "address": "서울특별시 동작구 흑석한강로 11 (흑석동 335-2)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "12:30", "staff": [{"name": "강길정", "leader": false}]}], "lat": 37.5057909, "lng": 126.9666428, "weekly": [{"name": "강길정", "phone": "010-9266-3678", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~12:30", "2": "07:00~12:30", "3": "07:00~12:30", "4": "07:00~12:30", "5": "07:00~12:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "흑석동주민센터"}]}, {"id": 54, "name": "흑석체육센터", "branch": "흑석체육센터", "address": "서울특별시 동작구 현충로 73 흑석 체육센타", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "김복자", "leader": false}, {"name": "백두진", "leader": false}, {"name": "이병석", "leader": true}, {"name": "임현숙", "leader": false}]}, {"label": "오전", "start": "08:30", "end": "17:30", "staff": [{"name": "김영국", "leader": false}, {"name": "나순희", "leader": false}, {"name": "이명자", "leader": false}, {"name": "이재규", "leader": false}]}, {"label": "오후", "start": "14:30", "end": "22:30", "staff": [{"name": "김영국", "leader": false}, {"name": "나순희", "leader": false}, {"name": "이명자", "leader": false}, {"name": "이재규", "leader": false}]}], "lat": 37.5100566, "lng": 126.963469, "weekly": [{"name": "김복자", "phone": "010-7458-0284", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "흑석체육센터"}, {"name": "백두진", "phone": "010-6777-7308", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "흑석체육센터"}, {"name": "이병석", "phone": "010-5323-2498", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "흑석체육센터"}, {"name": "임현숙", "phone": "010-5160-3144", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "흑석체육센터"}, {"name": "김영국", "phone": "010-9001-5735", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "흑석체육센터"}, {"name": "나순희", "phone": "010-9450-5392", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "흑석체육센터"}, {"name": "이명자", "phone": "010-4057-9885", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "흑석체육센터"}, {"name": "이재규", "phone": "010-7310-2233", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "흑석체육센터"}]}, {"id": 55, "name": "흑석재활용적환장", "branch": "흑석재활용적환장", "address": "서울특별시 동작구 현충로 85-5", "cat": "유관기관", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "05:00", "end": "17:00", "staff": [{"name": "장정운", "leader": false}]}], "lat": 37.5097, "lng": 126.9648, "weekly": [{"name": "장정운", "phone": "010-2857-6350", "shift_type": "시설관리", "shift_label": "오전", "leader": false, "days": {"0": "05:00~17:00"}, "labels": {"0": "오전"}, "source": "흑석재활용적환장"}]}, {"id": 56, "name": "환경지원센터", "branch": "환경지원센터", "address": "서울특별시 동작구 노들로 756", "cat": "유관기관", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "18:00", "staff": [{"name": "정태학", "leader": false}]}], "lat": 37.5164253, "lng": 126.9470032, "weekly": [{"name": "정태학", "phone": "010-2663-8526", "shift_type": "시설관리", "shift_label": "오전", "leader": false, "days": {"0": "06:00~18:00"}, "labels": {"0": "오전"}, "source": "환경지원센터"}]}, {"id": 57, "name": "대방차고지", "branch": "대방차고지", "address": "서울특별시 동작구 노량진로 47", "cat": "유관기관", "manager": "김상재", "memo": "24시간, 근무자교대근무", "shifts": [{"label": "오전", "start": "06:00", "end": "06:00", "staff": [{"name": "김명기", "leader": false}, {"name": "김재민", "leader": false}]}], "lat": 37.5148, "lng": 126.9374, "weekly": [{"name": "김명기", "phone": "010-6372-6857", "shift_type": "시설관리", "shift_label": "오전", "leader": false, "days": {"6": "06:00~06:00", "0": "06:00~06:00"}, "labels": {"6": "오전", "0": "오전"}, "source": "대방차고지"}, {"name": "김재민", "phone": "010-2745-9448", "shift_type": "시설관리", "shift_label": "오전", "leader": false, "days": {"6": "06:00~06:00", "0": "06:00~06:00"}, "labels": {"6": "오전", "0": "오전"}, "source": "대방차고지"}]}];
+const stores = [{"id": 1, "name": "김영삼도서관", "branch": "김영삼도서관", "address": "서울특별시 동작구 매봉로 2", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "16:30", "staff": [{"name": "권영순", "leader": false}, {"name": "김영희", "leader": true}, {"name": "김정순", "leader": false}, {"name": "박연옥", "leader": false}, {"name": "박하순", "leader": false}, {"name": "이순자", "leader": false}, {"name": "이재만", "leader": false}, {"name": "이향손", "leader": false}, {"name": "정명자", "leader": false}, {"name": "정향남", "leader": false}]}, {"label": "오전", "start": "08:00", "end": "17:00", "staff": [{"name": "윤우중", "leader": true}, {"name": "이홍범", "leader": false}]}, {"label": "오전", "start": "09:00", "end": "18:00", "staff": [{"name": "소재춘", "leader": false}]}, {"label": "오후", "start": "13:00", "end": "22:00", "staff": [{"name": "소재춘", "leader": false}, {"name": "조규표", "leader": false}]}], "lat": 37.5054078, "lng": 126.9499279, "weekly": [{"name": "권영순", "phone": "010-5126-2566", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:30~16:30", "3": "07:30~16:30", "4": "07:30~16:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "김영삼도서관"}, {"name": "김영희", "phone": "010-5302-4841", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"2": "07:30~16:30", "3": "07:30~16:30", "4": "07:30~16:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "김영삼도서관"}, {"name": "김정순", "phone": "010-4166-6207", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:30~16:30", "6": "07:30~16:30", "0": "07:30~16:30"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "김영삼도서관"}, {"name": "박연옥", "phone": "010-7153-0734", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:30~16:30", "6": "07:30~16:30", "0": "07:30~16:30"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "김영삼도서관"}, {"name": "박하순", "phone": "010-9144-6282", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:30~16:30", "6": "07:30~16:30", "0": "07:30~16:30"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "김영삼도서관"}, {"name": "이순자", "phone": "010-3100-1740", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:30~16:30", "6": "07:30~16:30", "0": "07:30~16:30"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "김영삼도서관"}, {"name": "이재만", "phone": "010-5149-8116", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:30~16:30", "3": "07:30~16:30", "4": "07:30~16:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "김영삼도서관"}, {"name": "이향손", "phone": "010-9359-3667", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:30~16:30", "6": "07:30~16:30", "0": "07:30~16:30"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "김영삼도서관"}, {"name": "정명자", "phone": "010-3179-5713", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:30~16:30", "3": "07:30~16:30", "4": "07:30~16:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "김영삼도서관"}, {"name": "정향남", "phone": "010-7735-0311", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:30~16:30", "3": "07:30~16:30", "4": "07:30~16:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "김영삼도서관"}, {"name": "윤우중", "phone": "010-3382-2788", "shift_type": "주차", "shift_label": "오전", "leader": true, "days": {"5": "08:00~17:00", "6": "08:00~17:00", "0": "08:00~17:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "김영삼도서관"}, {"name": "이홍범", "phone": "010-2874-5505", "shift_type": "주차", "shift_label": "오전", "leader": false, "days": {"2": "08:00~17:00", "3": "08:00~17:00", "4": "08:00~17:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "김영삼도서관"}, {"name": "소재춘", "phone": "010-6268-2419", "shift_type": "주차", "shift_label": "오전", "leader": false, "days": {"6": "09:00~18:00", "0": "09:00~18:00", "5": "13:00~22:00"}, "labels": {"6": "오전", "0": "오전", "5": "오후"}, "source": "김영삼도서관"}, {"name": "조규표", "phone": "010-3808-0060", "shift_type": "주차", "shift_label": "오후", "leader": false, "days": {"2": "13:00~22:00", "3": "13:00~22:00", "4": "13:00~22:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후"}, "source": "김영삼도서관"}]}, {"id": 2, "name": "까망돌 도서관", "branch": "까망돌 도서관", "address": "서울특별시 동작구 서달로 129", "cat": "문화재단", "manager": "김상재", "memo": "근무자들끼리 교대근무 잦음", "shifts": [{"label": "오전", "start": "07:00", "end": "16:00", "staff": [{"name": "김영숙", "leader": false}, {"name": "여영화", "leader": false}, {"name": "권명숙", "leader": false}, {"name": "김길환", "leader": true}, {"name": "김옥희", "leader": false}, {"name": "이경순", "leader": false}]}, {"label": "오후", "start": "12:00", "end": "17:00", "staff": [{"name": "윤대섭", "leader": false}]}, {"label": "오후", "start": "16:00", "end": "21:00", "staff": [{"name": "윤대섭", "leader": false}]}], "lat": 37.5051202, "lng": 126.960611, "weekly": [{"name": "김영숙", "phone": "010-5189-0545", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:00~16:00", "6": "07:00~16:00", "0": "07:00~16:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "까망돌 도서관"}, {"name": "여영화", "phone": "010-7118-6322", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:00~16:00", "6": "07:00~16:00", "0": "07:00~16:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "까망돌 도서관"}, {"name": "권명숙", "phone": "010-2548-5091", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~16:00", "3": "07:00~16:00", "4": "07:00~16:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "까망돌 도서관"}, {"name": "김길환", "phone": "010-2223-7158", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"2": "07:00~16:00", "3": "07:00~16:00", "4": "07:00~16:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "까망돌 도서관"}, {"name": "김옥희", "phone": "010-5217-6176", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~16:00", "3": "07:00~16:00", "4": "07:00~16:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "까망돌 도서관"}, {"name": "이경순", "phone": "010-8700-9077", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:00~16:00", "6": "07:00~16:00", "0": "07:00~16:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "까망돌 도서관"}, {"name": "윤대섭", "phone": "010-6455-1076", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"6": "12:00~17:00", "0": "12:00~17:00", "2": "16:00~21:00", "3": "16:00~21:00", "4": "16:00~21:00", "5": "16:00~21:00"}, "labels": {"6": "오후", "0": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "까망돌 도서관"}]}, {"id": 3, "name": "노량진1동 청소년독서실", "branch": "노량진1동 청소년독서실", "address": "서울특별시 동작구 만양로3길 8", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "16:00", "end": "23:00", "staff": [{"name": "안정옥", "leader": false}, {"name": "이승자", "leader": false}]}], "lat": 37.5078124, "lng": 126.9473055, "weekly": [{"name": "안정옥", "phone": "010-3338-1959", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "노량진1동 청소년독서실"}, {"name": "이승자", "phone": "010-3063-8764", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "노량진1동 청소년독서실"}]}, {"id": 4, "name": "노량진1동주민센터", "branch": "노량진1동주민센터", "address": "서울특별시 동작구 노량진로 190, 3층·4층(노량진동 333)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오후", "start": "12:30", "end": "15:30", "staff": [{"name": "강금임", "leader": false}]}], "lat": 37.5129588, "lng": 126.9468626, "weekly": [{"name": "강금임", "phone": "010-5290-2194", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:30~15:30", "2": "12:30~15:30", "3": "12:30~15:30", "4": "12:30~15:30", "5": "12:30~15:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "노량진1동주민센터"}]}, {"id": 5, "name": "노량진2동주민센터", "branch": "노량진2동주민센터", "address": "서울특별시 동작구 장승배기로19길 48 (노량진2동 302-97)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "10:30", "staff": [{"name": "최숙희", "leader": false}]}], "lat": 37.5085316, "lng": 126.9373592, "weekly": [{"name": "최숙희", "phone": "010-7196-1678", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진2동주민센터"}]}, {"id": 6, "name": "노량진청사", "branch": "노량진청사", "address": "서울특별시 동작구 장승배기로 161", "cat": "유관기관", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "06:30", "end": "13:30", "staff": [{"name": "김홍순", "leader": false}, {"name": "오정숙", "leader": false}, {"name": "윤선동", "leader": false}, {"name": "이순옥", "leader": false}, {"name": "이영숙", "leader": false}, {"name": "이영재", "leader": true}, {"name": "임영숙", "leader": false}, {"name": "조영님", "leader": false}, {"name": "조은희", "leader": false}]}, {"label": "오후", "start": "13:00", "end": "18:00", "staff": [{"name": "김혜영", "leader": false}, {"name": "류인용", "leader": false}, {"name": "홍명순", "leader": false}]}], "lat": 37.5124129, "lng": 126.9395452, "weekly": [{"name": "김홍순", "phone": "010-3181-8836", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "오정숙", "phone": "010-9058-5410", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "윤선동", "phone": "010-3171-3854", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "이순옥", "phone": "010-8864-4247", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "이영숙", "phone": "010-7682-7768", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "이영재", "phone": "010-3755-8304", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "임영숙", "phone": "010-5470-3838", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "조영님", "phone": "010-5291-4121", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "조은희", "phone": "010-2827-6134", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~13:30", "2": "06:30~13:30", "3": "06:30~13:30", "4": "06:30~13:30", "5": "06:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "노량진청사"}, {"name": "김혜영", "phone": "010-8257-3300", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "노량진청사"}, {"name": "류인용", "phone": "010-2653-7373", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "노량진청사"}, {"name": "홍명순", "phone": "010-9054-6387", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "노량진청사"}]}, {"id": 7, "name": "다울작은도서관", "branch": "다울작은도서관", "address": "서울특별시 동작구 사당로20길 132", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "12:00", "staff": [{"name": "손금녀", "leader": false}]}], "lat": 37.4788904, "lng": 126.973255, "weekly": [{"name": "손금녀", "phone": "010-2701-0484", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~12:00", "3": "07:00~12:00", "4": "07:00~12:00", "5": "07:00~12:00", "6": "07:00~12:00", "0": "07:00~12:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전", "0": "오전"}, "source": "다울작은도서관"}]}, {"id": 8, "name": "대방동주민센터", "branch": "대방동주민센터", "address": "서울특별시 동작구 여의대방로44길 20(대방동 501-2)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "10:00", "staff": [{"name": "장선자", "leader": false}]}], "lat": 37.508158, "lng": 126.9263549, "weekly": [{"name": "장선자", "phone": "010-2545-7292", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~10:00", "2": "07:00~10:00", "3": "07:00~10:00", "4": "07:00~10:00", "5": "07:00~10:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "대방동주민센터"}]}, {"id": 9, "name": "대방어린이도서관", "branch": "대방어린이도서관", "address": "서울특별시 동작구 대방동길 55", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "12:00", "staff": [{"name": "송수란", "leader": false}]}], "lat": 37.5030271, "lng": 126.9252319, "weekly": [{"name": "송수란", "phone": "010-3886-6947", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~12:00", "3": "07:00~12:00", "4": "07:00~12:00", "5": "07:00~12:00", "6": "07:00~12:00", "0": "07:00~12:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전", "0": "오전"}, "source": "대방어린이도서관"}]}, {"id": 10, "name": "동작구 자원봉사센터", "branch": "동작구 자원봉사센터", "address": "서울특별시 동작구 만양로3길 14", "cat": "유관기관", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "09:30", "staff": [{"name": "최순연", "leader": false}]}], "lat": 37.5080372, "lng": 126.9469689, "weekly": [{"name": "최순연", "phone": "010-7599-9197", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~09:30", "2": "06:00~09:30", "3": "06:00~09:30", "4": "06:00~09:30", "5": "06:00~09:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구 자원봉사센터"}]}, {"id": 11, "name": "동작구민체육센터", "branch": "동작구민체육센터", "address": "서울특별시 동작구 여의대방로16길 53 동작구민체육센터", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "강병옥", "leader": true}, {"name": "김미옥", "leader": false}, {"name": "김시종", "leader": false}, {"name": "김옥순", "leader": false}, {"name": "신정자", "leader": false}, {"name": "조완행", "leader": false}]}, {"label": "오전", "start": "08:30", "end": "18:00", "staff": [{"name": "강병옥", "leader": true}, {"name": "김미옥", "leader": false}, {"name": "김성자", "leader": false}, {"name": "김시종", "leader": false}, {"name": "김옥순", "leader": false}, {"name": "조완행", "leader": false}]}, {"label": "오후", "start": "13:00", "end": "18:00", "staff": [{"name": "김정화", "leader": false}, {"name": "송문섭", "leader": false}]}, {"label": "오후", "start": "14:30", "end": "22:30", "staff": [{"name": "김성자", "leader": false}, {"name": "김정화", "leader": false}, {"name": "이중희", "leader": false}, {"name": "송문섭", "leader": false}, {"name": "홍란희", "leader": false}]}], "lat": 37.4947228, "lng": 126.9167552, "weekly": [{"name": "강병옥", "phone": "010-3389-5594", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~18:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작구민체육센터"}, {"name": "김미옥", "phone": "010-4602-6618", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~18:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작구민체육센터"}, {"name": "김시종", "phone": "010-5226-0747", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~18:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작구민체육센터"}, {"name": "김옥순", "phone": "010-2389-3246", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~18:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작구민체육센터"}, {"name": "신정자", "phone": "010-9992-8694", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구민체육센터"}, {"name": "조완행", "phone": "010-6400-8436", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~18:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작구민체육센터"}, {"name": "김성자", "phone": "010-4925-1571", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:30~18:00", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구민체육센터"}, {"name": "김정화", "phone": "010-5266-3153", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"0": "13:00~18:00", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"0": "오후", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구민체육센터"}, {"name": "송문섭", "phone": "010-9050-0643", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"0": "13:00~18:00", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"0": "오후", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구민체육센터"}, {"name": "이중희", "phone": "010-6325-0616", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구민체육센터"}, {"name": "홍란희", "phone": "010-2307-5619", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구민체육센터"}]}, {"id": 12, "name": "동작구보건소", "branch": "동작구보건소", "address": "서울특별시 동작구 노량진동 328 동작구 보건소 건강관리청", "cat": "유관기관", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "13:00", "staff": [{"name": "김양옥", "leader": false}, {"name": "김창열", "leader": true}, {"name": "임영하", "leader": false}]}, {"label": "오전", "start": "07:00", "end": "12:00", "staff": [{"name": "박춘자", "leader": false}]}, {"label": "오후", "start": "13:00", "end": "18:00", "staff": [{"name": "김화진", "leader": false}, {"name": "이충환", "leader": false}]}], "lat": 37.5056892, "lng": 126.9404547, "weekly": [{"name": "김양옥", "phone": "010-5069-5278", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구보건소"}, {"name": "김창열", "phone": "010-5205-8351", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구보건소"}, {"name": "박춘자", "phone": "010-9315-0684", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~12:00", "2": "07:00~12:00", "3": "07:00~12:00", "4": "07:00~12:00", "5": "07:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구보건소"}, {"name": "임영하", "phone": "010-6743-3699", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구보건소"}, {"name": "김화진", "phone": "010-7509-9890", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구보건소"}, {"name": "이충환", "phone": "010-6788-3541", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작구보건소"}]}, {"id": 13, "name": "동작구시설관리공단 본부", "branch": "동작구시설관리공단 본부", "address": "서울 동작구 보라매로5길 35", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "09:30", "staff": [{"name": "박성찬", "leader": false}]}], "lat": 37.4920902, "lng": 126.9235082, "weekly": [{"name": "박성찬", "phone": "010-9913-9418", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~09:30", "2": "06:00~09:30", "3": "06:00~09:30", "4": "06:00~09:30", "5": "06:00~09:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작구시설관리공단 본부"}]}, {"id": 14, "name": "동작문화복지센터", "branch": "동작문화복지센터", "address": "서울특별시 동작구 장승배기로 70 동작문화복지센타", "cat": "유관기관", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "13:00", "staff": [{"name": "권정자", "leader": false}, {"name": "유제환", "leader": true}, {"name": "장종", "leader": false}, {"name": "조송희", "leader": false}]}, {"label": "오후", "start": "13:00", "end": "18:00", "staff": [{"name": "강옥이", "leader": false}, {"name": "허찬", "leader": false}]}], "lat": 37.504417115156684, "lng": 126.94105600444067, "weekly": [{"name": "권정자", "phone": "010-8988-2669", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작문화복지센터"}, {"name": "유제환", "phone": "010-2369-1051", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작문화복지센터"}, {"name": "장종", "phone": "010-4768-3025", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작문화복지센터"}, {"name": "조송희", "phone": "010-5495-3542", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~13:00", "2": "07:00~13:00", "3": "07:00~13:00", "4": "07:00~13:00", "5": "07:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작문화복지센터"}, {"name": "강옥이", "phone": "010-5055-7072", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작문화복지센터"}, {"name": "허찬", "phone": "010-5636-6442", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작문화복지센터"}]}, {"id": 15, "name": "동작반려견공원", "branch": "동작반려견공원", "address": "서울특별시 동작구 노량진동 24-10", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "09:30", "end": "20:30", "staff": [{"name": "김경주", "leader": false}, {"name": "윤석우", "leader": false}]}], "lat": 37.5134684, "lng": 126.9348257, "weekly": [{"name": "김경주", "phone": "010-5255-4610", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "09:30~20:30", "3": "09:30~20:30", "4": "09:30~20:30", "5": "09:30~20:30", "6": "09:30~20:30", "0": "09:30~20:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전", "0": "오전"}, "source": "동작반려견공원"}, {"name": "윤석우", "phone": "010-7930-6298", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "09:30~20:30", "3": "09:30~20:30", "4": "09:30~20:30", "5": "09:30~20:30", "6": "09:30~20:30", "0": "09:30~20:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전", "0": "오전"}, "source": "동작반려견공원"}]}, {"id": 16, "name": "동작삼일수영장", "branch": "동작삼일수영장", "address": "서울특별시 동작구 사당로27길 103", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "김석준", "leader": false}, {"name": "임지현", "leader": false}]}, {"label": "오전", "start": "07:30", "end": "15:30", "staff": [{"name": "김행심", "leader": true}]}, {"label": "오전", "start": "08:30", "end": "17:30", "staff": [{"name": "김만호", "leader": false}, {"name": "임지현", "leader": false}]}, {"label": "오후", "start": "14:30", "end": "22:30", "staff": [{"name": "김만호", "leader": false}, {"name": "김연자", "leader": false}]}], "lat": 37.4873412, "lng": 126.9744243, "weekly": [{"name": "김석준", "phone": "010-4917-1891", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작삼일수영장"}, {"name": "임지현", "phone": "010-5345-0985", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~17:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작삼일수영장"}, {"name": "김행심", "phone": "010-4903-1187", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "07:30~15:30", "2": "07:30~15:30", "3": "07:30~15:30", "4": "07:30~15:30", "5": "07:30~15:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "동작삼일수영장"}, {"name": "김만호", "phone": "010-5273-9831", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작삼일수영장"}, {"name": "김연자", "phone": "010-8757-5062", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "동작삼일수영장"}]}, {"id": 17, "name": "동작샘터도서관", "branch": "동작샘터도서관", "address": "서울특별시 동작구 동작대로29길 63-26", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "12:00", "staff": [{"name": "고부돌", "leader": false}]}], "lat": 37.4883795, "lng": 126.9775849, "weekly": [{"name": "고부돌", "phone": "010-6385-7566", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~12:00", "3": "07:00~12:00", "4": "07:00~12:00", "5": "07:00~12:00", "6": "07:00~12:00", "0": "07:00~12:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전", "0": "오전"}, "source": "동작샘터도서관"}]}, {"id": 18, "name": "동작수학놀이터 및 힐링센터", "branch": "동작수학놀이터 및 힐링센터", "address": "서울특별시 동작구 사당로17길 4 2층", "cat": "유관기관", "manager": "정성현", "memo": "", "shifts": [{"label": "오전", "start": "06:30", "end": "11:00", "staff": [{"name": "최연숙", "leader": false}]}], "lat": 37.4835896, "lng": 126.9746697, "weekly": [{"name": "최연숙", "phone": "010-5524-8228", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "06:30~11:00", "3": "06:30~11:00", "4": "06:30~11:00", "5": "06:30~11:00", "6": "06:30~11:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작수학놀이터 및 힐링센터"}]}, {"id": 19, "name": "동작아트갤러리", "branch": "동작아트갤러리", "address": "서울특별시 동작구 보라매로5길 28-1 동작아트갤러리", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "06:30", "end": "10:30", "staff": [{"name": "왕자순", "leader": false}]}], "lat": 37.4937925, "lng": 126.9231084, "weekly": [{"name": "왕자순", "phone": "010-9138-3027", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "06:30~10:30", "3": "06:30~10:30", "4": "06:30~10:30", "5": "06:30~10:30", "6": "06:30~10:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "동작아트갤러리"}]}, {"id": 20, "name": "동작영어마루", "branch": "동작영어마루", "address": "서울특별시 동작구 장승배기로16길 98", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "16:00", "staff": [{"name": "권광옥", "leader": false}, {"name": "임향희", "leader": false}]}], "lat": 37.5092029, "lng": 126.9434364, "weekly": [{"name": "권광옥", "phone": "010-9690-1180", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:00~16:00", "6": "07:00~16:00", "0": "07:00~16:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "동작영어마루"}, {"name": "임향희", "phone": "010-3257-5517", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~16:00", "3": "07:00~16:00", "4": "07:00~16:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "동작영어마루"}]}, {"id": 21, "name": "동작입시지원센터", "branch": "동작입시지원센터", "address": "서울특별시 동작구 신대방1다길 19 4층", "cat": "유관기관", "manager": "정성현", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "14:00", "staff": [{"name": "조순애", "leader": false}, {"name": "최화숙", "leader": false}]}], "lat": 37.4861085, "lng": 126.905906, "weekly": [{"name": "조순애", "phone": "010-4768-4253", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~14:00", "3": "07:00~14:00", "4": "07:00~14:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "동작입시지원센터"}, {"name": "최화숙", "phone": "010-3100-2041", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:00~14:00", "6": "07:00~14:00", "0": "07:00~14:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "동작입시지원센터"}]}, {"id": 22, "name": "본동어울마당아트홀", "branch": "본동어울마당아트홀", "address": "서울특별시 동작구 노량진로32길 79 지하1층", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "08:00", "end": "13:00", "staff": [{"name": "진순옥", "leader": false}]}, {"label": "오전", "start": "11:00", "end": "16:00", "staff": [{"name": "진순옥", "leader": false}]}], "lat": 37.5105545, "lng": 126.9569133, "weekly": [{"name": "진순옥", "phone": "010-2338-6374", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:00~13:00", "2": "11:00~16:00", "3": "11:00~16:00", "4": "11:00~16:00", "5": "11:00~16:00"}, "labels": {"6": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "본동어울마당아트홀"}]}, {"id": 23, "name": "사당1동주민센터", "branch": "사당1동주민센터", "address": "서울특별시 동작구 동작대로17길 28(사당1동 1004-52)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "10:30", "staff": [{"name": "김홍유", "leader": false}, {"name": "민옥희", "leader": false}]}], "lat": 37.4830766, "lng": 126.9787824, "weekly": [{"name": "김홍유", "phone": "010-5380-7602", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당1동주민센터"}, {"name": "민옥희", "phone": "010-5299-4352", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당1동주민센터"}]}, {"id": 24, "name": "사당2동주민센터", "branch": "사당2동주민센터", "address": "서울특별시 동작구 동작대로29길 52(사당동)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "10:30", "staff": [{"name": "이강순", "leader": false}]}], "lat": 37.4887015, "lng": 126.9792511, "weekly": [{"name": "이강순", "phone": "010-5796-0889", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당2동주민센터"}]}, {"id": 25, "name": "사당3동 청소년독서실", "branch": "사당3동 청소년독서실", "address": "서울특별시 동작구 사당로13길 50", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "16:00", "end": "23:00", "staff": [{"name": "계영일", "leader": false}, {"name": "김명자", "leader": false}]}], "lat": 37.4862467, "lng": 126.9716709, "weekly": [{"name": "계영일", "phone": "010-2067-5977", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "사당3동 청소년독서실"}, {"name": "김명자", "phone": "010-2179-1119", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "사당3동 청소년독서실"}]}, {"id": 26, "name": "사당3동주민센터", "branch": "사당3동주민센터", "address": "서울특별시 동작구 사당로17길 86", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "13:00", "staff": [{"name": "김봉숙", "leader": false}]}], "lat": 37.4866368, "lng": 126.9720915, "weekly": [{"name": "김봉숙", "phone": "010-3321-7128", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~13:00", "2": "07:30~13:00", "3": "07:30~13:00", "4": "07:30~13:00", "5": "07:30~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당3동주민센터"}]}, {"id": 27, "name": "사당4동 청소년독서실", "branch": "사당4동 청소년독서실", "address": "서울특별시 동작구 사당로22나길 71", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "16:00", "end": "23:00", "staff": [{"name": "노승희", "leader": false}, {"name": "정연희", "leader": false}]}], "lat": 37.4804858, "lng": 126.9731027, "weekly": [{"name": "노승희", "phone": "010-6384-4065", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "사당4동 청소년독서실"}, {"name": "정연희", "phone": "010-3702-2536", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "사당4동 청소년독서실"}]}, {"id": 28, "name": "사당4동주민센터", "branch": "사당4동주민센터", "address": "서울 동작구 사당로20나길 3", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "13:30", "staff": [{"name": "박지수", "leader": false}]}], "lat": 37.4814855, "lng": 126.9754025, "weekly": [{"name": "박지수", "phone": "010-5419-7641", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~13:30", "2": "07:30~13:30", "3": "07:30~13:30", "4": "07:30~13:30", "5": "07:30~13:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당4동주민센터"}]}, {"id": 29, "name": "사당5동주민센터", "branch": "사당5동주민센터", "address": "서울특별시 동작구 사당로2가길 219(사당5동 228-11)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "08:00", "end": "11:00", "staff": [{"name": "박정숙", "leader": false}]}], "lat": 37.4846239, "lng": 126.971602, "weekly": [{"name": "박정숙", "phone": "010-9278-8300", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "08:00~11:00", "2": "08:00~11:00", "3": "08:00~11:00", "4": "08:00~11:00", "5": "08:00~11:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당5동주민센터"}]}, {"id": 30, "name": "사당문화회관", "branch": "사당문화회관", "address": "서울특별시 동작구 사당로8길 9 사당문화회관", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "김연옥", "leader": false}, {"name": "오순용", "leader": false}, {"name": "이상호", "leader": false}]}, {"label": "오전", "start": "08:30", "end": "17:30", "staff": [{"name": "정정순", "leader": false}, {"name": "최찬수", "leader": false}]}, {"label": "오전", "start": "09:00", "end": "17:00", "staff": [{"name": "김재원", "leader": true}]}, {"label": "오후", "start": "14:30", "end": "22:30", "staff": [{"name": "김준임", "leader": false}, {"name": "정정순", "leader": false}, {"name": "최찬수", "leader": false}]}], "lat": 37.4847212, "lng": 126.9696162, "weekly": [{"name": "김연옥", "phone": "010-4661-7367", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당문화회관"}, {"name": "오순용", "phone": "010-8420-6992", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당문화회관"}, {"name": "이상호", "phone": "010-5380-9204", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당문화회관"}, {"name": "정정순", "phone": "010-3044-7875", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "사당문화회관"}, {"name": "최찬수", "phone": "010-6711-3828", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "사당문화회관"}, {"name": "김재원", "phone": "010-3732-0180", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "09:00~17:00", "2": "09:00~17:00", "3": "09:00~17:00", "4": "09:00~17:00", "5": "09:00~17:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당문화회관"}, {"name": "김준임", "phone": "010-4237-1714", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "사당문화회관"}]}, {"id": 31, "name": "사당솔밭도서관", "branch": "사당솔밭도서관", "address": "서울특별시 동작구 솔밭로 86", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "15:00", "staff": [{"name": "김경순", "leader": false}, {"name": "이명희", "leader": false}, {"name": "최귀자", "leader": true}, {"name": "황금숙", "leader": false}]}], "lat": 37.4840897, "lng": 126.9673874, "weekly": [{"name": "김경순", "phone": "010-2581-2700", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "06:00~15:00", "6": "06:00~15:00", "0": "06:00~15:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "사당솔밭도서관"}, {"name": "이명희", "phone": "010-6213-0712", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "06:00~15:00", "3": "06:00~15:00", "4": "06:00~15:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "사당솔밭도서관"}, {"name": "최귀자", "phone": "010-4900-8161", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"5": "06:00~15:00", "6": "06:00~15:00", "0": "06:00~15:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "사당솔밭도서관"}, {"name": "황금숙", "phone": "010-5383-8195", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "06:00~15:00", "3": "06:00~15:00", "4": "06:00~15:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "사당솔밭도서관"}]}, {"id": 32, "name": "사당종합체육관", "branch": "사당종합체육관", "address": "서울특별시 동작구 사당로27길 232", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "곽재동", "leader": false}, {"name": "서충례", "leader": false}, {"name": "오한순", "leader": false}]}, {"label": "오전", "start": "08:30", "end": "17:30", "staff": [{"name": "곽재동", "leader": false}, {"name": "김재석", "leader": true}, {"name": "방경식", "leader": false}, {"name": "서충례", "leader": false}, {"name": "한강연", "leader": false}]}, {"label": "오전", "start": "09:00", "end": "17:00", "staff": [{"name": "김재석", "leader": true}]}, {"label": "오후", "start": "14:30", "end": "22:30", "staff": [{"name": "방경식", "leader": false}, {"name": "전명자", "leader": false}, {"name": "한강연", "leader": false}]}], "lat": 37.4928063, "lng": 126.9697426, "weekly": [{"name": "곽재동", "phone": "010-3711-5358", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~17:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "사당종합체육관"}, {"name": "서충례", "phone": "010-4517-6851", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "0": "08:30~17:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "0": "오전"}, "source": "사당종합체육관"}, {"name": "오한순", "phone": "010-9206-3956", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당종합체육관"}, {"name": "김재석", "phone": "010-3771-2672", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"0": "08:30~17:30", "1": "09:00~17:00", "2": "09:00~17:00", "3": "09:00~17:00", "4": "09:00~17:00", "5": "09:00~17:00"}, "labels": {"0": "오전", "1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "사당종합체육관"}, {"name": "방경식", "phone": "010-7233-9731", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "사당종합체육관"}, {"name": "한강연", "phone": "010-5216-2017", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "사당종합체육관"}, {"name": "전명자", "phone": "010-8630-1441", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "사당종합체육관"}]}, {"id": 33, "name": "사육신역사관", "branch": "사육신역사관", "address": "서울특별시 동작구 노량진로 191", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "12:00", "staff": [{"name": "이순규", "leader": false}]}], "lat": 37.5142249, "lng": 126.94817, "weekly": [{"name": "이순규", "phone": "010-9721-9991", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~12:00", "3": "07:00~12:00", "4": "07:00~12:00", "5": "07:00~12:00", "6": "07:00~12:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "사육신역사관"}]}, {"id": 34, "name": "상도1동주민센터", "branch": "상도1동주민센터", "address": "서울특별시 동작구 상도로53길 9(상도동 437)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "10:00", "staff": [{"name": "김춘경", "leader": false}]}], "lat": 37.4981099, "lng": 126.9530915, "weekly": [{"name": "김춘경", "phone": "010-3662-7107", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~10:00", "2": "07:00~10:00", "3": "07:00~10:00", "4": "07:00~10:00", "5": "07:00~10:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "상도1동주민센터"}]}, {"id": 35, "name": "상도2동주민센터", "branch": "상도2동주민센터", "address": "서울특별시 동작구 상도로 211 (상도2동 25-48)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "06:30", "end": "09:30", "staff": [{"name": "김미순", "leader": false}]}], "lat": 37.505469, "lng": 126.9423108, "weekly": [{"name": "김미순", "phone": "010-3863-3534", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:30~09:30", "2": "06:30~09:30", "3": "06:30~09:30", "4": "06:30~09:30", "5": "06:30~09:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "상도2동주민센터"}]}, {"id": 36, "name": "상도3동 청소년독서실", "branch": "상도3동 청소년독서실", "address": "서울특별시 동작구 국사봉2나길 25 구립상도3동청소년독서실", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "16:00", "end": "23:00", "staff": [{"name": "김경일", "leader": false}, {"name": "함진수", "leader": false}]}], "lat": 37.4970089, "lng": 126.9300158, "weekly": [{"name": "김경일", "phone": "010-8642-6140", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "상도3동 청소년독서실"}, {"name": "함진수", "phone": "010-9834-5877", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "상도3동 청소년독서실"}]}, {"id": 37, "name": "상도3동주민센터", "branch": "상도3동주민센터", "address": "서울특별시 동작구 성대로2길 11(상도3동 315-37)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "10:00", "staff": [{"name": "윤경자", "leader": false}]}], "lat": 37.4991276, "lng": 126.9313945, "weekly": [{"name": "윤경자", "phone": "010-8882-1054", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~10:00", "2": "07:00~10:00", "3": "07:00~10:00", "4": "07:00~10:00", "5": "07:00~10:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "상도3동주민센터"}]}, {"id": 38, "name": "상도4동 청소년독서실", "branch": "상도4동 청소년독서실", "address": "서울특별시 동작구 성대로11길 67", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "16:00", "end": "23:00", "staff": [{"name": "김남애", "leader": false}, {"name": "유용옥", "leader": false}]}], "lat": 37.5001846, "lng": 126.9337164, "weekly": [{"name": "김남애", "phone": "010-6278-6567", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "상도4동 청소년독서실"}, {"name": "유용옥", "phone": "010-3250-3124", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "상도4동 청소년독서실"}]}, {"id": 39, "name": "상도4동주민센터", "branch": "상도4동주민센터", "address": "서울특별시 동작구 양녕로27길 44(상도동 202-58)", "cat": "주민센터", "manager": "김유정", "memo": "이명희님 샤플가입X", "shifts": [{"label": "오전", "start": "07:30", "end": "10:30", "staff": [{"name": "박순화", "leader": false}, {"name": "이명희", "leader": false}]}], "lat": 37.4993993, "lng": 126.9414102, "weekly": [{"name": "박순화", "phone": "010-4548-6957", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "상도4동주민센터"}, {"name": "이명희", "phone": "?", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "상도4동주민센터"}]}, {"id": 40, "name": "상도스포츠클럽", "branch": "상도스포츠클럽", "address": "서울특별시 동작구 성대로2길 11 상도4동 주민센터", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "우정옥", "leader": false}]}, {"label": "오전", "start": "08:30", "end": "17:30", "staff": [{"name": "우정옥", "leader": false}]}, {"label": "오후", "start": "14:30", "end": "22:30", "staff": [{"name": "김순금", "leader": true}]}], "lat": 37.4991276, "lng": 126.9313945, "weekly": [{"name": "우정옥", "phone": "010-9487-9533", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00", "6": "08:30~17:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "상도스포츠클럽"}, {"name": "김순금", "phone": "010-6517-1746", "shift_type": "미화", "shift_label": "오후", "leader": true, "days": {"1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "상도스포츠클럽"}]}, {"id": 41, "name": "상도어울마당", "branch": "상도어울마당", "address": "서울특별시 동작구 성대로 180 지하 1층", "cat": "유관기관", "manager": "정성현", "memo": "", "shifts": [{"label": "오전", "start": "08:00", "end": "13:00", "staff": [{"name": "공순임", "leader": false}]}], "lat": 37.4992555, "lng": 126.9403722, "weekly": [{"name": "공순임", "phone": "010-6227-0138", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "08:00~13:00", "3": "08:00~13:00", "4": "08:00~13:00", "5": "08:00~13:00", "6": "08:00~13:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "상도어울마당"}]}, {"id": 42, "name": "신대방1동주민센터", "branch": "신대방1동주민센터", "address": "서울특별시 동작구 신대방길72(신대방1동 604-8)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:30", "end": "10:30", "staff": [{"name": "안성자", "leader": false}]}], "lat": 37.4889584, "lng": 126.9100645, "weekly": [{"name": "안성자", "phone": "010-3661-0770", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:30~10:30", "2": "07:30~10:30", "3": "07:30~10:30", "4": "07:30~10:30", "5": "07:30~10:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신대방1동주민센터"}]}, {"id": 43, "name": "신대방2동주민센터", "branch": "신대방2동주민센터", "address": "서울특별시 동작구 여의대방로24길 76(신대방동 723)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "10:00", "staff": [{"name": "오금숙", "leader": false}, {"name": "홍은혜", "leader": false}]}], "lat": 37.498417, "lng": 126.9245435, "weekly": [{"name": "오금숙", "phone": "010-2718-6908", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~10:00", "2": "07:00~10:00", "3": "07:00~10:00", "4": "07:00~10:00", "5": "07:00~10:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신대방2동주민센터"}, {"name": "홍은혜", "phone": "010-9147-9296", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~10:00", "2": "07:00~10:00", "3": "07:00~10:00", "4": "07:00~10:00", "5": "07:00~10:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신대방2동주민센터"}]}, {"id": 44, "name": "신대방누리도서관", "branch": "신대방누리도서관", "address": "서울특별시 동작구 신대방1다길 19", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "16:00", "staff": [{"name": "안복란", "leader": false}, {"name": "이혜경", "leader": true}]}], "lat": 37.497, "lng": 126.939, "weekly": [{"name": "안복란", "phone": "010-7158-0715", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~16:00", "3": "07:00~16:00", "4": "07:00~16:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "신대방누리도서관"}, {"name": "이혜경", "phone": "010-7388-4860", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"5": "07:00~16:00", "6": "07:00~16:00", "0": "07:00~16:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "신대방누리도서관"}]}, {"id": 45, "name": "신대방햇살도서관", "branch": "신대방햇살도서관", "address": "서울특별시 동작구 여의대방로16길 53 (신대방동) 동작구민체육센터광장앞", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "08:30", "end": "11:30", "staff": [{"name": "양동술", "leader": false}]}], "lat": 37.4947228, "lng": 126.9167552, "weekly": [{"name": "양동술", "phone": "010-4611-3745", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "08:30~11:30", "3": "08:30~11:30", "4": "08:30~11:30", "5": "08:30~11:30", "6": "08:30~11:30", "0": "08:30~11:30"}, "labels": {"2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전", "0": "오전"}, "source": "신대방햇살도서관"}]}, {"id": 46, "name": "신청사", "branch": "신청사", "address": "서울특별시 동작구 장승배기로 70", "cat": "유관기관", "manager": "정성현", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "12:00", "staff": [{"name": "공금선", "leader": false}, {"name": "김연숙", "leader": false}, {"name": "노연숙", "leader": false}, {"name": "박경심", "leader": false}, {"name": "박인숙", "leader": false}, {"name": "박정희", "leader": false}, {"name": "송숙자", "leader": false}, {"name": "송화진", "leader": false}, {"name": "유영애", "leader": false}, {"name": "이옥선", "leader": false}, {"name": "장재근", "leader": false}, {"name": "정순남", "leader": false}, {"name": "최진숙", "leader": false}, {"name": "황영숙", "leader": false}]}, {"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "정유화", "leader": true}]}, {"label": "오전", "start": "08:00", "end": "17:00", "staff": [{"name": "양순모", "leader": false}, {"name": "이봉준", "leader": false}, {"name": "정은임", "leader": false}]}, {"label": "오후", "start": "16:30", "end": "21:00", "staff": [{"name": "김옥선", "leader": false}, {"name": "정순희", "leader": false}]}, {"label": "오후", "start": "12:00", "end": "18:00", "staff": [{"name": "강경옥", "leader": false}, {"name": "박승자", "leader": false}, {"name": "이귀덕", "leader": false}, {"name": "이귀자", "leader": false}, {"name": "이상엽", "leader": false}, {"name": "이옥희", "leader": false}, {"name": "이현정", "leader": false}, {"name": "정계윤", "leader": false}, {"name": "최복수", "leader": false}]}, {"label": "오전", "start": "10:30", "end": "15:00", "staff": [{"name": "정순희", "leader": false}]}], "lat": 37.5042528, "lng": 126.9402905, "weekly": [{"name": "공금선", "phone": "010-9045-0266", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "김연숙", "phone": "010-7543-3950", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "노연숙", "phone": "010-7292-2070", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "박경심", "phone": "010-8720-5606", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "박인숙", "phone": "010-2083-0783", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "박정희", "phone": "010-2733-0497", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "송숙자", "phone": "010-6320-7817", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "송화진", "phone": "010-3418-3036", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "유영애", "phone": "010-3025-8799", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "이옥선", "phone": "010-3994-5703", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "장재근", "phone": "010-4309-2743", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "정순남", "phone": "010-9800-4908", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "정유화", "phone": "010-2489-0429", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "최진숙", "phone": "010-3947-7050", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "황영숙", "phone": "010-2226-2500", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~12:00", "2": "06:00~12:00", "3": "06:00~12:00", "4": "06:00~12:00", "5": "06:00~12:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "신청사"}, {"name": "양순모", "phone": "010-5008-9021", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:00~17:00", "0": "08:00~17:00"}, "labels": {"6": "오전", "0": "오전"}, "source": "신청사"}, {"name": "이봉준", "phone": "010-9728-1848", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:00~17:00", "0": "08:00~17:00"}, "labels": {"6": "오전", "0": "오전"}, "source": "신청사"}, {"name": "정은임", "phone": "010-4947-5486", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:00~17:00", "0": "08:00~17:00"}, "labels": {"6": "오전", "0": "오전"}, "source": "신청사"}, {"name": "김옥선", "phone": "010-3213-7376", "shift_type": "푸드코트", "shift_label": "오후", "leader": false, "days": {"1": "16:30~21:00", "2": "16:30~21:00", "3": "16:30~21:00", "4": "16:30~21:00", "5": "16:30~21:00", "6": "16:30~21:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후"}, "source": "신청사"}, {"name": "강경옥", "phone": "010-5406-8036", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "박승자", "phone": "010-3451-8752", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "이귀덕", "phone": "010-9113-5966", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "이귀자", "phone": "010-6740-7275", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "이상엽", "phone": "010-6573-3579", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "이옥희", "phone": "010-3123-9478", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "이현정", "phone": "010-5294-2295", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "정계윤", "phone": "010-5343-9648", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "최복수", "phone": "010-3676-4252", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "12:00~18:00", "2": "12:00~18:00", "3": "12:00~18:00", "4": "12:00~18:00", "5": "12:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "신청사"}, {"name": "정순희", "phone": "010-7205-7805", "shift_type": "푸드코트", "shift_label": "오전", "leader": false, "days": {"1": "10:30~15:00", "2": "10:30~15:00", "3": "10:30~15:00", "4": "10:30~15:00", "5": "10:30~15:00", "0": "16:30~21:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "0": "오후"}, "source": "신청사"}]}, {"id": 47, "name": "아동보호전문기관", "branch": "아동보호전문기관", "address": "서울특별시 동작구 노량진로32길 79", "cat": "유관기관", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "09:00", "staff": [{"name": "박노금", "leader": false}]}], "lat": 37.5105545, "lng": 126.9569133, "weekly": [{"name": "박노금", "phone": "010-4267-2341", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~09:00", "2": "06:00~09:00", "3": "06:00~09:00", "4": "06:00~09:00", "5": "06:00~09:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "아동보호전문기관"}]}, {"id": 48, "name": "아이스팩재활용사업", "branch": "아이스팩재활용사업", "address": "서울특별시 동작구 등용로 41-5", "cat": "유관기관", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "08:30", "end": "15:30", "staff": [{"name": "송재민", "leader": true}, {"name": "윤광섭", "leader": false}, {"name": "윤석란", "leader": false}, {"name": "지창배", "leader": false}, {"name": "한국희", "leader": false}]}], "lat": 37.5055878, "lng": 126.9339338, "weekly": [{"name": "송재민", "phone": "010-3253-2070", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "08:30~15:30", "2": "08:30~15:30", "3": "08:30~15:30", "4": "08:30~15:30", "5": "08:30~15:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "아이스팩재활용사업"}, {"name": "윤광섭", "phone": "010-3714-9316", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "08:30~15:30", "2": "08:30~15:30", "3": "08:30~15:30", "4": "08:30~15:30", "5": "08:30~15:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "아이스팩재활용사업"}, {"name": "윤석란", "phone": "010-4058-7561", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "08:30~15:30", "2": "08:30~15:30", "3": "08:30~15:30", "4": "08:30~15:30", "5": "08:30~15:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "아이스팩재활용사업"}, {"name": "지창배", "phone": "010-4213-2922", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "08:30~15:30", "2": "08:30~15:30", "3": "08:30~15:30", "4": "08:30~15:30", "5": "08:30~15:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "아이스팩재활용사업"}, {"name": "한국희", "phone": "010-8523-7688", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "08:30~15:30", "2": "08:30~15:30", "3": "08:30~15:30", "4": "08:30~15:30", "5": "08:30~15:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "아이스팩재활용사업"}]}, {"id": 49, "name": "약수도서관", "branch": "약수도서관", "address": "서울특별시 동작구 양녕로22바길 64", "cat": "문화재단", "manager": "김상재", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "16:00", "staff": [{"name": "김방실", "leader": false}, {"name": "유감순", "leader": false}]}], "lat": 37.4978813, "lng": 126.9474508, "weekly": [{"name": "김방실", "phone": "010-5660-2202", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"5": "07:00~16:00", "6": "07:00~16:00", "0": "07:00~16:00"}, "labels": {"5": "오전", "6": "오전", "0": "오전"}, "source": "약수도서관"}, {"name": "유감순", "phone": "010-5412-4951", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"2": "07:00~16:00", "3": "07:00~16:00", "4": "07:00~16:00"}, "labels": {"2": "오전", "3": "오전", "4": "오전"}, "source": "약수도서관"}]}, {"id": 50, "name": "양녕청년주택", "branch": "양녕청년주택", "address": "서울특별시 동작구 성대로10나길 17 양녕 청년주택 복합건물", "cat": "유관기관", "manager": "문지연", "memo": "토요일교대근무", "shifts": [{"label": "오전", "start": "08:00", "end": "13:00", "staff": [{"name": "이경희", "leader": false}]}, {"label": "오후", "start": "13:00", "end": "18:00", "staff": [{"name": "이용자", "leader": false}]}], "lat": 37.4968536, "lng": 126.9357417, "weekly": [{"name": "이경희", "phone": "010-3230-2596", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "08:00~13:00", "2": "08:00~13:00", "3": "08:00~13:00", "4": "08:00~13:00", "5": "08:00~13:00", "6": "08:00~13:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오전"}, "source": "양녕청년주택"}, {"name": "이용자", "phone": "010-3136-5590", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "13:00~18:00", "2": "13:00~18:00", "3": "13:00~18:00", "4": "13:00~18:00", "5": "13:00~18:00", "6": "13:00~18:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후"}, "source": "양녕청년주택"}]}, {"id": 51, "name": "현충배드민턴장", "branch": "현충배드민턴장", "address": "서울특별시 동작구 서달로2길 8", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "11:00", "end": "18:00", "staff": [{"name": "오세희", "leader": true}]}, {"label": "오후", "start": "08:30", "end": "13:00", "staff": [{"name": "오세희", "leader": false}]}, {"label": "오전", "start": "07:00", "end": "14:00", "staff": [{"name": "유승희", "leader": false}]}, {"label": "오전", "start": "13:00", "end": "17:30", "staff": [{"name": "유승희", "leader": false}]}, {"label": "오후", "start": "16:30", "end": "21:30", "staff": [{"name": "전재우", "leader": false}]}, {"label": "오후", "start": "08:30", "end": "17:30", "staff": [{"name": "전재우", "leader": false}]}], "lat": 37.4996094, "lng": 126.9616024, "weekly": [{"name": "오세희", "phone": "010-4441-6693", "shift_type": "미화", "shift_label": "오후", "leader": true, "days": {"1": "11:00~18:00", "2": "11:00~18:00", "3": "11:00~18:00", "4": "11:00~18:00", "5": "11:00~18:00", "6": "08:30~13:00"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오전"}, "source": "현충배드민턴장"}, {"name": "유승희", "phone": "010-5216-1066", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~14:00", "2": "07:00~14:00", "3": "07:00~14:00", "4": "07:00~14:00", "5": "07:00~14:00", "6": "13:00~17:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전", "6": "오후"}, "source": "현충배드민턴장"}, {"name": "전재우", "phone": "010-8750-9505", "shift_type": "미화", "shift_label": "오후", "leader": false, "days": {"1": "16:30~21:30", "2": "16:30~21:30", "3": "16:30~21:30", "4": "16:30~21:30", "5": "16:30~21:30", "0": "08:30~17:30"}, "labels": {"1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후", "0": "오전"}, "source": "현충배드민턴장"}]}, {"id": 52, "name": "흑석 청소년독서실", "branch": "흑석 청소년독서실", "address": "서울특별시 동작구 서달로13길 17 3층", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오후", "start": "16:00", "end": "23:00", "staff": [{"name": "공용표", "leader": false}, {"name": "최남숙", "leader": false}]}], "lat": 37.5085051, "lng": 126.9619383, "weekly": [{"name": "공용표", "phone": "010-5923-0911", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "흑석 청소년독서실"}, {"name": "최남숙", "phone": "010-5891-7580", "shift_type": "총무", "shift_label": "오후", "leader": false, "days": {"2": "16:00~23:00", "3": "16:00~23:00", "4": "16:00~23:00", "5": "16:00~23:00", "6": "16:00~23:00", "0": "16:00~23:00"}, "labels": {"2": "오후", "3": "오후", "4": "오후", "5": "오후", "6": "오후", "0": "오후"}, "source": "흑석 청소년독서실"}]}, {"id": 53, "name": "흑석동주민센터", "branch": "흑석동주민센터", "address": "서울특별시 동작구 흑석한강로 11 (흑석동 335-2)", "cat": "주민센터", "manager": "김유정", "memo": "", "shifts": [{"label": "오전", "start": "07:00", "end": "12:30", "staff": [{"name": "강길정", "leader": false}]}], "lat": 37.5057909, "lng": 126.9666428, "weekly": [{"name": "강길정", "phone": "010-9266-3678", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "07:00~12:30", "2": "07:00~12:30", "3": "07:00~12:30", "4": "07:00~12:30", "5": "07:00~12:30"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "흑석동주민센터"}]}, {"id": 54, "name": "흑석체육센터", "branch": "흑석체육센터", "address": "서울특별시 동작구 현충로 73 흑석 체육센타", "cat": "시설공단", "manager": "문지연", "memo": "", "shifts": [{"label": "오전", "start": "06:00", "end": "14:00", "staff": [{"name": "김복자", "leader": false}, {"name": "백두진", "leader": false}, {"name": "이병석", "leader": true}, {"name": "임현숙", "leader": false}]}, {"label": "오전", "start": "08:30", "end": "17:30", "staff": [{"name": "김영국", "leader": false}, {"name": "나순희", "leader": false}, {"name": "이명자", "leader": false}, {"name": "이재규", "leader": false}]}, {"label": "오후", "start": "14:30", "end": "22:30", "staff": [{"name": "김영국", "leader": false}, {"name": "나순희", "leader": false}, {"name": "이명자", "leader": false}, {"name": "이재규", "leader": false}]}], "lat": 37.5100566, "lng": 126.963469, "weekly": [{"name": "김복자", "phone": "010-7458-0284", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "흑석체육센터"}, {"name": "백두진", "phone": "010-6777-7308", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "흑석체육센터"}, {"name": "이병석", "phone": "010-5323-2498", "shift_type": "미화", "shift_label": "오전", "leader": true, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "흑석체육센터"}, {"name": "임현숙", "phone": "010-5160-3144", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"1": "06:00~14:00", "2": "06:00~14:00", "3": "06:00~14:00", "4": "06:00~14:00", "5": "06:00~14:00"}, "labels": {"1": "오전", "2": "오전", "3": "오전", "4": "오전", "5": "오전"}, "source": "흑석체육센터"}, {"name": "김영국", "phone": "010-9001-5735", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "흑석체육센터"}, {"name": "나순희", "phone": "010-9450-5392", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "흑석체육센터"}, {"name": "이명자", "phone": "010-4057-9885", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "흑석체육센터"}, {"name": "이재규", "phone": "010-7310-2233", "shift_type": "미화", "shift_label": "오전", "leader": false, "days": {"6": "08:30~17:30", "1": "14:30~22:30", "2": "14:30~22:30", "3": "14:30~22:30", "4": "14:30~22:30", "5": "14:30~22:30"}, "labels": {"6": "오전", "1": "오후", "2": "오후", "3": "오후", "4": "오후", "5": "오후"}, "source": "흑석체육센터"}]}];
 
 /* ── 현재 시간 기준 근무 상태 계산 ── */
 function timeToMin(t) {
@@ -2697,46 +2452,36 @@ let activeId = null;
 let sheetState = 'peek';
 
 /* ── 지도 ── */
-// 동작구 중심 + 범위 제한
-const DONGJAK_BOUNDS = L.latLngBounds(
-  [37.463, 126.895],  // 남서
-  [37.525, 126.995]   // 북동
-);
-const map = L.map('map', {
-  zoomControl: false,
-  attributionControl: false,
-  minZoom: 12,
-  maxZoom: 18,
-  maxBounds: DONGJAK_BOUNDS.pad(0.15),
-  maxBoundsViscosity: 0.85,
-}).setView([37.4970, 126.9390], 13);
+let map = null;
+kakao.maps.load(function() {
+  map = new kakao.maps.Map(document.getElementById('map'), {
+    center: new kakao.maps.LatLng(37.4970, 126.9390),
+    level: 6
+  });
+  map.setMinLevel(3);
+  map.setMaxLevel(8);
+  map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  maxZoom: 18,
-  minZoom: 12,
-  bounds: DONGJAK_BOUNDS.pad(0.2),
-  updateWhenIdle: true,
-  keepBuffer: 1,
-}).addTo(map);
-L.control.zoom({ position: 'topright' }).addTo(map);
+  // 동작구 경계 마스킹
+  const dongjakRing = DONGJAK_POLY.map(p=>new kakao.maps.LatLng(p[0],p[1]));
+  const outerRing = [new kakao.maps.LatLng(85,-180),new kakao.maps.LatLng(85,180),new kakao.maps.LatLng(-85,180),new kakao.maps.LatLng(-85,-180)];
+  new kakao.maps.Polygon({map:map,path:[outerRing,dongjakRing],strokeWeight:0,fillColor:'#777',fillOpacity:0.5,zIndex:1});
+  new kakao.maps.Polygon({map:map,path:dongjakRing,strokeWeight:2,strokeColor:'#7C3AED',fillOpacity:0,zIndex:2});
 
-/* ── 현장순회 연필 컨트롤 (줌 버튼 바로 아래) ── */
-const PatrolControl = L.Control.extend({
-  options: { position: 'topright' },
-  onAdd: function() {
-    const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control patrol-pencil-control');
-    div.innerHTML = `<a id="fabPatrol" href="#" title="현장순회 경로 설정" role="button" aria-label="현장순회 경로 설정" style="display:flex;align-items:center;justify-content:center;">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
-    </a>`;
-    L.DomEvent.on(div.querySelector('a'), 'click', function(e) {
-      L.DomEvent.preventDefault(e);
-      togglePatrolMode();
-    });
-    L.DomEvent.disableClickPropagation(div);
-    return div;
-  }
+  // 마커/오버레이 초기화
+  buildMarkers();
+  buildHeadquartersMarker();
+
+  // 지도 클릭
+  kakao.maps.event.addListener(map, 'click', function() {
+    if (_activeInfoWindow) { _activeInfoWindow.close(); _activeInfoWindow = null; }
+    if (sheetState === 'expanded') setSheetState('peek');
+  });
+
+  applyMapTop();
 });
-new PatrolControl().addTo(map);
+
+
 
 const HEADQUARTERS = {
   name: '본사',
@@ -2753,17 +2498,18 @@ function applyMapTop() {
   const ds = document.getElementById('detailSheet');
   if (bs) bs.style.top = window.innerWidth >= 768 ? (h + 'px') : 'auto';
   if (ds) ds.style.top = window.innerWidth >= 768 ? (h + 'px') : 'auto';
-  map.invalidateSize();
+  if(map) map.relayout();
 }
 setTimeout(() => {
   applyMapTop();
   // 전체 사업장이 보이도록 자동 fit
   if (stores.length > 0) {
-    const lats = [...stores.map(s => s.lat), HEADQUARTERS.lat];
-    const lngs = [...stores.map(s => s.lng), HEADQUARTERS.lng];
-    const bounds = [[Math.min(...lats)-0.005, Math.min(...lngs)-0.005],
-                    [Math.max(...lats)+0.005, Math.max(...lngs)+0.005]];
-    map.fitBounds(bounds, { padding: [30, 30] });
+    if(map){
+      const bounds=new kakao.maps.LatLngBounds();
+      stores.forEach(s=>bounds.extend(new kakao.maps.LatLng(s.lat,s.lng)));
+      bounds.extend(new kakao.maps.LatLng(HEADQUARTERS.lat,HEADQUARTERS.lng));
+      map.setBounds(bounds,30,30,30,30);
+    }
   }
 }, 200);
 window.addEventListener('resize', applyMapTop);
@@ -2789,44 +2535,17 @@ function getMarkerLabelText(group) {
   return visible.length === 1 ? baseName : `${baseName} 외 ${visible.length - 1}개`;
 }
 
-function createIcon(storeOrGroup, isActive = false) {
-  // 핀 없이 사업장명 라벨만 표시. 색상은 사업장 구분 색상 유지
-  const group = Array.isArray(storeOrGroup) ? storeOrGroup : [storeOrGroup];
+function getMarkerIconHtml(storeOrGroup, isActive) {
+  const group = Array.isArray(storeOrGroup)?storeOrGroup:[storeOrGroup];
   const visible = getVisibleGroup(group);
-  const base = visible[0] || group[0];
-  const color = catColor(base.cat);
+  const target = visible.length?visible:group;
+  const cats = [...new Set(target.map(s=>s.cat))];
+  const colors = cats.map(cat=>catColor(cat));
+  const color = colors.length===1 ? colors[0] :
+    colors.length===2 ? 'linear-gradient(135deg,'+colors[0]+' 50%,'+colors[1]+' 50%)' :
+    'conic-gradient('+colors.map((c,i)=>`${c} ${i/colors.length*100}% ${(i+1)/colors.length*100}%`).join(',')+')';
   const text = getMarkerLabelText(group);
-  return L.divIcon({
-    html: `<div class="store-badge-marker ${isActive ? 'active' : ''}" style="background:${color};"><span class="store-marker-text">${text}</span></div>`,
-    className: '',
-    iconSize: [1, 1],
-    iconAnchor: [0, 0],
-    popupAnchor: [0, -18]
-  });
-}
-
-function createMixedIcon(group, isActive = false) {
-  // 같은 위치에 서로 다른 구분이 섞인 경우 라벨 배경을 그라데이션으로 표시
-  const colors = [...new Set((group || []).map(s => catColor(s.cat)))];
-  if (colors.length <= 1) return createIcon(group, isActive);
-  const gradient = colors.length === 2
-    ? `linear-gradient(135deg, ${colors[0]} 0 50%, ${colors[1]} 50% 100%)`
-    : `conic-gradient(${colors.map((c, i) => `${c} ${(i / colors.length) * 100}% ${((i + 1) / colors.length) * 100}%`).join(', ')})`;
-  const text = getMarkerLabelText(group);
-  return L.divIcon({
-    html: `<div class="store-badge-marker ${isActive ? 'active' : ''}" style="background:${gradient};"><span class="store-marker-text">${text}</span></div>`,
-    className: '',
-    iconSize: [1, 1],
-    iconAnchor: [0, 0],
-    popupAnchor: [0, -18]
-  });
-}
-
-function getMarkerIconForGroup(group, isActive = false) {
-  const visible = getVisibleGroup(group || []);
-  const target = visible.length ? visible : (group || []);
-  const cats = [...new Set(target.map(s => s.cat))];
-  return cats.length > 1 ? createMixedIcon(target, isActive) : createIcon(target, isActive);
+  return '<div class="store-badge-marker'+(isActive?' active':'')+'" style="background:'+color+'"><span class="store-marker-text">'+text+'</span></div>';
 }
 
 
@@ -2840,13 +2559,6 @@ const DONGJAK_POLY = [
   [37.483222,126.961163],[37.475258,126.970946],[37.476751,126.981473],[37.496746,126.982807],[37.499729,126.985094],
   [37.502476,126.97986],[37.506406,126.977452],[37.517842,126.946352],[37.51558,126.927275]
 ];
-const outerRing = [[85,-180],[85,180],[-85,180],[-85,-180]];
-L.polygon([outerRing, DONGJAK_POLY], {
-  color: 'none', fillColor: '#777777', fillOpacity: 0.50, interactive: false
-}).addTo(map);
-L.polygon(DONGJAK_POLY, {
-  color: '#7C3AED', weight: 2.5, fillOpacity: 0, interactive: false
-}).addTo(map);
 
 function coordKey(store) {
   return `${Number(store.lat || 0).toFixed(6)},${Number(store.lng || 0).toFixed(6)}`;
@@ -2949,60 +2661,64 @@ function buildGroupPopup(group) {
 function selectStoreFromPopup(id) {
   activeId = id;
   renderList();
-  map.closePopup();
-  const store = stores.find(s => s.id === id);
-  if (store) map.setView([store.lat, store.lng], Math.max(map.getZoom(), 15), { animate: true });
+  if (_activeInfoWindow) { _activeInfoWindow.setMap(null); _activeInfoWindow = null; }
   openDetail(id);
 }
 
+var _activeInfoWindow = null;
+
 function buildMarkers() {
-  Object.values(markers).forEach(m => m.remove && m.remove());
+  Object.values(markers).forEach(m => { if(m && m._overlay) m._overlay.setMap(null); });
   markers = {};
+  if(!map) return;
   const groups = groupStoresByLocation(stores);
   groups.forEach(group => {
     const base = group[0];
-    const marker = L.marker(getMarkerLatLng(base), { icon: getMarkerIconForGroup(group) }).addTo(map);
-    marker.storeGroup = group;
-    marker.bindPopup(() => buildGroupPopup(group), { maxWidth: 300 });
-    marker.on('click', () => {
-      // 순회 편집 모드에서는 배지 선택 처리
-      if (patrolMode) {
-        const visible = getVisibleGroup(group);
-        const rep = visible[0];
-        if (rep) handlePatrolMarkerClick(rep.id, marker, group);
-        return;
-      }
-      // 같은 위치는 상세를 바로 열지 않고 팝업에서 선택하게 둠
+    const latlng = getMarkerLatLng(base);
+    const pos = new kakao.maps.LatLng(latlng[0], latlng[1]);
+    const el = document.createElement('div');
+    el.innerHTML = getMarkerIconHtml(group, false);
+    const btn = el.firstElementChild || el;
+    btn.style.cursor = 'pointer';
+    const overlay = new kakao.maps.CustomOverlay({position:pos,content:btn,yAnchor:1,xAnchor:0,zIndex:1});
+    overlay.setMap(map);
+    const obj = {_overlay:overlay,_el:btn,_pos:pos,storeGroup:group};
+    btn.onclick = function(e){
+      e.stopPropagation();
       const visible = getVisibleGroup(group);
-      if (visible.length === 1) activeId = visible[0].id;
-      renderList();
-    });
-    group.forEach(s => { markers[s.id] = marker; });
+      if(visible.length===1){activeId=visible[0].id;renderList();}
+      if(_activeInfoWindow){_activeInfoWindow.setMap(null);_activeInfoWindow=null;}
+      const pw=document.createElement('div');
+      pw.className='kakao-popup-wrap';
+      pw.innerHTML=buildGroupPopup(group);
+      const iw=new kakao.maps.CustomOverlay({position:pos,content:pw,yAnchor:1.3,xAnchor:0.5,zIndex:1000});
+      iw.setMap(map);
+      _activeInfoWindow=iw;
+    };
+    group.forEach(s=>{markers[s.id]=obj;});
   });
 }
 
 
-function createHeadquartersIcon() {
-  return L.divIcon({
-    html: `<div class="hq-marker"><span class="hq-text">본사</span></div>`,
-    className: '',
-    iconSize: [1, 1],
-    iconAnchor: [0, 0],
-    popupAnchor: [0, -18]
-  });
-}
-
-let headquartersMarker = null;
 function buildHeadquartersMarker() {
-  if (headquartersMarker) headquartersMarker.remove();
-  headquartersMarker = L.marker([HEADQUARTERS.lat, HEADQUARTERS.lng], {
-    icon: createHeadquartersIcon(),
-    zIndexOffset: 1000
-  }).addTo(map);
-  headquartersMarker.bindPopup(`
-    <div class="hq-popup-title"> ${HEADQUARTERS.name}</div>
-    <div class="hq-popup-addr">${HEADQUARTERS.address}</div>
-  `, { maxWidth: 240 });
+  if(!map) return;
+  const pos = new kakao.maps.LatLng(HEADQUARTERS.lat, HEADQUARTERS.lng);
+  const el = document.createElement('div');
+  el.className = 'hq-marker';
+  el.innerHTML = '<span class="hq-text">본사</span>';
+  el.style.cursor='pointer';
+  const overlay = new kakao.maps.CustomOverlay({position:pos,content:el,yAnchor:1,xAnchor:0,zIndex:2});
+  overlay.setMap(map);
+  el.onclick=function(e){
+    e.stopPropagation();
+    if(_activeInfoWindow){_activeInfoWindow.setMap(null);_activeInfoWindow=null;}
+    const pw=document.createElement('div');
+    pw.className='kakao-popup-wrap';
+    pw.innerHTML='<div class="hq-popup-title">'+HEADQUARTERS.name+'</div><div class="hq-popup-addr">'+HEADQUARTERS.address+'</div>';
+    const iw=new kakao.maps.CustomOverlay({position:pos,content:pw,yAnchor:1.3,xAnchor:0.5,zIndex:1000});
+    iw.setMap(map);
+    _activeInfoWindow=iw;
+  };
 }
 
 buildMarkers();
@@ -3072,7 +2788,7 @@ function setActive(id) {
     const marker = markers[id];
     marker.setIcon(getMarkerIconForGroup(marker.storeGroup || [store], true));
     if (window.innerWidth < 768) marker.openPopup();
-    map.setView([store.lat, store.lng], 14, { animate: true });
+    if(map){map.setLevel(4);map.panTo(new kakao.maps.LatLng(store.lat,store.lng));}
   }
   // 새 active 아이템 클래스 추가 (renderList 전체 재호출 불필요)
   const newEl = document.getElementById(`item-${id}`);
@@ -3103,7 +2819,7 @@ handle.addEventListener('touchend', e => {
   if (dy < -40) setSheetState('expanded');
   else if (dy > 40) setSheetState(sheetState === 'expanded' ? 'peek' : 'collapsed');
 }, { passive: true });
-map.on('click', () => { if (sheetState === 'expanded') setSheetState('peek'); });
+
 
 
 /* ── 필터 ── */
@@ -3117,15 +2833,6 @@ function refreshCatButtons() {
   });
 }
 
-function resetToMain() {
-  document.getElementById('searchInput').value = '';
-  activeCats.clear();
-  refreshCatButtons();
-  closeDetail();
-  setSheetState('peek');
-  applyFilters();
-  map.setView([37.4970, 126.9390], 13);
-}
 function filterCat(btn) {
   const cat = btn.dataset.cat;
   if (cat === '전체') {
@@ -3155,19 +2862,16 @@ function applyFilters() {
   updateMarkers();
 }
 function updateMarkers() {
+  if(!map) return;
   const visibleIds = new Set(filteredStores.map(s => s.id));
-  const processed = new Set();
-  Object.values(markers).forEach(marker => {
-    if (!marker || processed.has(marker)) return;
-    processed.add(marker);
-    const group = marker.storeGroup || [];
-    const shouldShow = group.some(s => visibleIds.has(s.id));
-    if (shouldShow) {
-      marker.addTo(map);
-      marker.setIcon(getMarkerIconForGroup(group, group.some(s => s.id === activeId)));
-    } else {
-      marker.remove();
-    }
+  const done = new Set();
+  Object.values(markers).forEach(obj => {
+    if(!obj||done.has(obj)) return;
+    done.add(obj);
+    const group = obj.storeGroup||[];
+    const show = group.some(s=>visibleIds.has(s.id));
+    if(show) obj._overlay.setMap(map);
+    else obj._overlay.setMap(null);
   });
 }
 /* ── 검색 ── */
@@ -3417,7 +3121,7 @@ function openDetail(id) {
   if (isDesktop) {
     document.getElementById('detailSheet').classList.add('desktop-active');
     document.getElementById('map').classList.add('detail-open');
-    map.invalidateSize();
+    if(map) map.relayout();
   } else {
     document.getElementById('detailOverlay').classList.add('show');
     setTimeout(() => document.getElementById('detailSheet').classList.add('show'), 10);
@@ -3428,366 +3132,31 @@ function closeDetail() {
   if (isDesktop) {
     document.getElementById('detailSheet').classList.remove('desktop-active');
     document.getElementById('map').classList.remove('detail-open');
-    map.invalidateSize();
+    if(map) map.relayout();
   } else {
     document.getElementById('detailSheet').classList.remove('show');
     document.getElementById('detailOverlay').classList.remove('show');
   }
 }
 window.openDetail = openDetail;
+window.closeDetail = closeDetail;
+window.resetToMain = resetToMain;
+window.filterCat = filterCat;
+window.toggleSheet = toggleSheet;
+window.setActive = setActive;
+window.selectStoreFromPopup = selectStoreFromPopup;
+window.closeUploadModal = closeUploadModal;
+window.applyXlsxData = applyXlsxData;
+window.coordSkip = coordSkip;
+window.closePhonePopup = closePhonePopup;
+window.copyPhoneNumber = copyPhoneNumber;
+window.closeUpdatePopup = closeUpdatePopup;
 
-/* =========================================================
-   현장순회 기능
-   ========================================================= */
-let patrolMode = false;            // 편집 모드 여부
-let patrolOrder = [];              // 선택된 storeId 배열 (순서)
-let patrolActive = false;          // 순회 결과 표시 중 여부
-let patrolMarkerDivs = {};         // markerId -> div element (아이콘 내부 div)
-
-// 순회 선택 시 아이콘 재생성 (번호 배지 포함)
-function getPatrolIcon(group, orderNum, isSelected) {
-  const visible = getVisibleGroup(group || []);
-  const base = (visible.length ? visible : group)[0];
-  const color = catColor(base.cat);
-  const text = getMarkerLabelText(group);
-  const selectedClass = isSelected ? 'patrol-selected' : '';
-  const badge = orderNum
-    ? `<div class="patrol-order-badge">${orderNum}</div>`
-    : '';
-  return L.divIcon({
-    html: `<div class="store-badge-marker ${selectedClass}" style="background:${color};position:relative;transform:translate(-50%,-50%);">
-        <span class="store-marker-text">${text}</span>${badge}
-      </div>`,
-    className: '',
-    iconSize: [1, 1],
-    iconAnchor: [0, 0],
-    popupAnchor: [0, -18]
-  });
+if(!sessionStorage.getItem('updateNotice_20260701')){
+  document.getElementById('updatePopupOverlay').style.display='flex';
 }
 
-function handlePatrolMarkerClick(storeId, marker, group) {
-  const existingIdx = patrolOrder.indexOf(storeId);
-  if (existingIdx !== -1) {
-    // 이미 선택된 경우 → 선택 해제
-    patrolOrder.splice(existingIdx, 1);
-  } else {
-    // 새로 선택
-    patrolOrder.push(storeId);
-  }
-  refreshPatrolMarkers();
-  updatePatrolSubText();
-}
 
-function refreshPatrolMarkers() {
-  const processed = new Set();
-  Object.entries(markers).forEach(([id, marker]) => {
-    if (processed.has(marker)) return;
-    processed.add(marker);
-    const group = marker.storeGroup || [];
-    // 이 그룹에서 선택된 첫 번째 storeId의 순번 구하기
-    const selectedInGroup = group
-      .map(s => ({ id: s.id, idx: patrolOrder.indexOf(s.id) }))
-      .filter(x => x.idx !== -1)
-      .sort((a, b) => a.idx - b.idx);
-    const orderNum = selectedInGroup.length ? selectedInGroup[0].idx + 1 : null;
-    const isSelected = selectedInGroup.length > 0;
-    marker.setIcon(getPatrolIcon(group, orderNum, isSelected));
-  });
-}
-
-/* ── 드래그앤드롭 상태 ── */
-let dragSrcIdx = null;
-
-function renderPatrolBadges(containerId, showEmpty) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-
-  if (patrolOrder.length === 0) {
-    container.innerHTML = showEmpty
-      ? '<span class="patrol-empty-hint">방문할 사업지를 순서대로 클릭하세요</span>'
-      : '';
-    return;
-  }
-
-  const isEdit = (containerId === 'patrolBadgeScroll');
-
-  container.innerHTML = patrolOrder.map((id, i) => {
-    const s = stores.find(x => x.id === id);
-    if (!s) return '';
-    const color = catColor(s.cat);
-    const name = s.branch || s.name;
-    const arrow = i < patrolOrder.length - 1
-      ? '<span class="patrol-scroll-arrow">›</span>'
-      : '';
-    const xBtn = isEdit
-      ? `<button class="patrol-badge-x" onclick="removePatrolItem(${i})" title="제거">✕</button>`
-      : '';
-    const draggable = isEdit ? 'draggable="true"' : '';
-    return `<span class="patrol-scroll-badge" data-idx="${i}" ${draggable} style="background:${color};">
-        <span class="patrol-scroll-num">${i + 1}</span>
-        <span class="patrol-badge-name">${name}</span>
-        ${xBtn}
-      </span>${arrow}`;
-  }).join('');
-
-  // 드래그앤드롭 이벤트 (편집 바에서만)
-  if (isEdit) {
-    container.querySelectorAll('.patrol-scroll-badge').forEach(el => {
-      el.addEventListener('dragstart', onBadgeDragStart);
-      el.addEventListener('dragover',  onBadgeDragOver);
-      el.addEventListener('drop',      onBadgeDrop);
-      el.addEventListener('dragend',   onBadgeDragEnd);
-      // 터치 드래그 지원
-      el.addEventListener('touchstart', onBadgeTouchStart, { passive: true });
-      el.addEventListener('touchmove',  onBadgeTouchMove,  { passive: false });
-      el.addEventListener('touchend',   onBadgeTouchEnd,   { passive: true });
-    });
-  }
-}
-
-function removePatrolItem(idx) {
-  patrolOrder.splice(idx, 1);
-  refreshPatrolMarkers();
-  updatePatrolSubText();
-}
-
-/* ── 마우스 드래그 ── */
-function onBadgeDragStart(e) {
-  dragSrcIdx = parseInt(e.currentTarget.dataset.idx);
-  e.currentTarget.style.opacity = '0.45';
-  e.dataTransfer.effectAllowed = 'move';
-}
-function onBadgeDragOver(e) {
-  e.preventDefault();
-  e.dataTransfer.dropEffect = 'move';
-  document.querySelectorAll('#patrolBadgeScroll .patrol-scroll-badge').forEach(el => {
-    el.classList.toggle('patrol-badge-dragover', el.dataset.idx == parseInt(e.currentTarget.dataset.idx) && parseInt(e.currentTarget.dataset.idx) !== dragSrcIdx);
-  });
-}
-function onBadgeDrop(e) {
-  e.preventDefault();
-  const targetIdx = parseInt(e.currentTarget.dataset.idx);
-  if (dragSrcIdx === null || dragSrcIdx === targetIdx) return;
-  const moved = patrolOrder.splice(dragSrcIdx, 1)[0];
-  patrolOrder.splice(targetIdx, 0, moved);
-  dragSrcIdx = null;
-  refreshPatrolMarkers();
-  updatePatrolSubText();
-}
-function onBadgeDragEnd(e) {
-  e.currentTarget.style.opacity = '';
-  document.querySelectorAll('#patrolBadgeScroll .patrol-scroll-badge').forEach(el => el.classList.remove('patrol-badge-dragover'));
-  dragSrcIdx = null;
-}
-
-/* ── 터치 드래그 ── */
-let touchDragIdx = null, touchClone = null, touchScrollRef = null;
-function onBadgeTouchStart(e) {
-  touchDragIdx = parseInt(e.currentTarget.dataset.idx);
-  touchScrollRef = document.getElementById('patrolBadgeScroll');
-  const rect = e.currentTarget.getBoundingClientRect();
-  touchClone = e.currentTarget.cloneNode(true);
-  touchClone.style.cssText = `position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;opacity:0.75;pointer-events:none;z-index:9999;transition:none;`;
-  document.body.appendChild(touchClone);
-  e.currentTarget.style.opacity = '0.35';
-}
-function onBadgeTouchMove(e) {
-  if (touchClone === null) return;
-  e.preventDefault();
-  const t = e.touches[0];
-  touchClone.style.left = (t.clientX - 30) + 'px';
-  touchClone.style.top  = (t.clientY - 18) + 'px';
-  // 드롭 대상 계산
-  const badges = touchScrollRef.querySelectorAll('.patrol-scroll-badge');
-  badges.forEach(el => el.classList.remove('patrol-badge-dragover'));
-  badges.forEach(el => {
-    const r = el.getBoundingClientRect();
-    if (t.clientX >= r.left && t.clientX <= r.right && t.clientY >= r.top && t.clientY <= r.bottom) {
-      const tIdx = parseInt(el.dataset.idx);
-      if (tIdx !== touchDragIdx) el.classList.add('patrol-badge-dragover');
-    }
-  });
-}
-function onBadgeTouchEnd(e) {
-  if (touchClone) { touchClone.remove(); touchClone = null; }
-  if (touchDragIdx === null) return;
-  const t = e.changedTouches[0];
-  const badges = touchScrollRef ? touchScrollRef.querySelectorAll('.patrol-scroll-badge') : [];
-  let targetIdx = null;
-  badges.forEach(el => {
-    el.style.opacity = '';
-    el.classList.remove('patrol-badge-dragover');
-    const r = el.getBoundingClientRect();
-    if (t.clientX >= r.left && t.clientX <= r.right && t.clientY >= r.top && t.clientY <= r.bottom) {
-      targetIdx = parseInt(el.dataset.idx);
-    }
-  });
-  if (targetIdx !== null && targetIdx !== touchDragIdx) {
-    const moved = patrolOrder.splice(touchDragIdx, 1)[0];
-    patrolOrder.splice(targetIdx, 0, moved);
-    refreshPatrolMarkers();
-    updatePatrolSubText();
-  }
-  touchDragIdx = null; touchScrollRef = null;
-}
-
-function updatePatrolSubText() {
-  renderPatrolBadges('patrolBadgeScroll', true);
-}
-
-function togglePatrolMode() {
-  if (patrolActive) {
-    // 결과 표시 중이면 편집 모드로 전환
-    editPatrol();
-    return;
-  }
-  patrolMode = !patrolMode;
-  const btn = document.getElementById('fabPatrol');
-  const bar = document.getElementById('patrolBar');
-
-  if (patrolMode) {
-    btn.classList.add('patrol-active');
-    bar.classList.add('show');
-    // 하단 시트 닫기
-    setSheetState('collapsed');
-    // 지도 div에 patrol-mode-active 클래스 추가 (비선택 배지 희미하게)
-    document.getElementById('map').classList.add('patrol-mode-active');
-    updatePatrolSubText();
-    // 모든 팝업 닫기
-    map.closePopup();
-  } else {
-    exitPatrolMode();
-  }
-}
-
-function exitPatrolMode() {
-  patrolMode = false;
-  document.getElementById('fabPatrol').classList.remove('patrol-active');
-  document.getElementById('patrolBar').classList.remove('show');
-  document.getElementById('map').classList.remove('patrol-mode-active');
-  // 마커 원상복구
-  refreshNormalMarkers();
-}
-
-function refreshNormalMarkers() {
-  const processed = new Set();
-  Object.values(markers).forEach(marker => {
-    if (processed.has(marker)) return;
-    processed.add(marker);
-    const group = marker.storeGroup || [];
-    marker.setIcon(getMarkerIconForGroup(group, group.some(s => s.id === activeId)));
-  });
-}
-
-function resetPatrol() {
-  patrolOrder = [];
-  refreshPatrolMarkers();
-  updatePatrolSubText();
-}
-
-function confirmPatrol() {
-  if (patrolOrder.length === 0) {
-    // 아무것도 선택 안 했으면 그냥 닫기
-    exitPatrolMode();
-    return;
-  }
-
-  // 순회 결과 표시 모드
-  patrolMode = false;
-  patrolActive = true;
-
-  document.getElementById('fabPatrol').classList.add('patrol-active');
-  document.getElementById('patrolBar').classList.remove('show');
-  document.getElementById('map').classList.remove('patrol-mode-active');
-
-  // 선택된 사업장만 맵에 표시
-  applyPatrolFilter();
-
-  // 결과 바 표시
-  renderPatrolBadges('patrolResultBadgeScroll', false);
-  document.getElementById('patrolResultBar').classList.add('show');
-
-  // 지도를 선택된 사업장에 맞게 fit
-  fitMapToPatrol();
-}
-
-function applyPatrolFilter() {
-  const patrolSet = new Set(patrolOrder);
-  const processed = new Set();
-
-  Object.entries(markers).forEach(([id, marker]) => {
-    if (processed.has(marker)) return;
-    processed.add(marker);
-    const group = marker.storeGroup || [];
-
-    // 이 그룹에서 순회에 포함된 sores만 확인
-    const inPatrol = group.filter(s => patrolSet.has(s.id));
-    if (inPatrol.length > 0) {
-      marker.addTo(map);
-      // 번호 배지 포함 아이콘
-      const firstSelected = inPatrol
-        .map(s => ({ id: s.id, idx: patrolOrder.indexOf(s.id) }))
-        .sort((a, b) => a.idx - b.idx)[0];
-      const orderNum = firstSelected.idx + 1;
-      marker.setIcon(getPatrolIcon(group, orderNum, true));
-    } else {
-      marker.remove();
-    }
-  });
-}
-
-function fitMapToPatrol() {
-  const patrolStores = patrolOrder.map(id => stores.find(s => s.id === id)).filter(Boolean);
-  if (patrolStores.length === 0) return;
-  if (patrolStores.length === 1) {
-    map.setView([patrolStores[0].lat, patrolStores[0].lng], 15, { animate: true });
-    return;
-  }
-  const lats = patrolStores.map(s => s.lat);
-  const lngs = patrolStores.map(s => s.lng);
-  const bounds = [
-    [Math.min(...lats) - 0.003, Math.min(...lngs) - 0.003],
-    [Math.max(...lats) + 0.003, Math.max(...lngs) + 0.003]
-  ];
-  map.fitBounds(bounds, { padding: [40, 40], animate: true });
-}
-
-function editPatrol() {
-  // 결과 표시 → 다시 편집 모드
-  patrolActive = false;
-  document.getElementById('patrolResultBar').classList.remove('show');
-
-  // 마커 복구 후 편집 모드 재진입
-  refreshNormalMarkers();
-  patrolMode = true;
-  document.getElementById('fabPatrol').classList.add('patrol-active');
-  document.getElementById('patrolBar').classList.add('show');
-  document.getElementById('map').classList.add('patrol-mode-active');
-  refreshPatrolMarkers();
-  updatePatrolSubText();
-
-  // 전체 마커 다시 표시
-  const visibleIds = new Set(filteredStores.map(s => s.id));
-  const processed = new Set();
-  Object.values(markers).forEach(marker => {
-    if (processed.has(marker)) return;
-    processed.add(marker);
-    const group = marker.storeGroup || [];
-    if (group.some(s => visibleIds.has(s.id))) marker.addTo(map);
-  });
-  refreshPatrolMarkers();
-  map.closePopup();
-}
-
-function clearPatrol() {
-  patrolActive = false;
-  patrolOrder = [];
-  document.getElementById('fabPatrol').classList.remove('patrol-active');
-  document.getElementById('patrolResultBar').classList.remove('show');
-  // 마커 전부 복구
-  updateMarkers();
-  refreshNormalMarkers();
-}
 /* ── 전화번호 확인 팝업 (PC 전용) ── */
 function showPhonePopup(name, phone) {
   document.getElementById('phonePopupName').textContent = name;
