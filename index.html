@@ -2702,15 +2702,14 @@ function buildSinglePopup(store) {
   );
   const uniqueStaff = [...new Set((store.weekly || []).map(w => w.name).filter(Boolean))];
   const MAX = 7;
-  const staffBadges = (uniqueStaff.length > MAX
-    ? [...uniqueStaff.slice(0, MAX), '+ ' + (uniqueStaff.length - MAX) + '명']
-    : uniqueStaff
-  ).map(n => {
+  const shownStaff = uniqueStaff.slice(0, MAX);
+  const extraCount = uniqueStaff.length - MAX;
+  const staffBadges = shownStaff.map(n => {
     const isWorking = workingNames.has(n);
     const bg = isWorking ? '#E8F8EF' : 'var(--surface-2,#f3f3f1)';
     const color = isWorking ? '#059142' : 'var(--text-muted,#666)';
-    return `<span style="font-size:10.5px;font-weight:${isWorking?'700':'600'};padding:2px 8px;border-radius:20px;background:${bg};color:${color};">${n}</span>`;
-  }).join('');
+    return `<span style="font-size:10px;font-weight:${isWorking?'700':'600'};padding:2px 6px;border-radius:20px;background:${bg};color:${color};">${n}</span>`;
+  }).join('') + (extraCount > 0 ? `<span style="font-size:10px;font-weight:600;padding:2px 6px;border-radius:20px;background:var(--surface-2,#f3f3f1);color:var(--text-muted,#666);">+${extraCount}명</span>` : '');
 
   // 라벨: text-align:justify 로 글자수 달라도 동일 너비
   const lblBase = 'font-size:11px;font-weight:700;color:var(--text-muted,#888);flex-shrink:0;width:44px;display:inline-block;text-align:justify;text-align-last:justify;';
@@ -2732,7 +2731,7 @@ function buildSinglePopup(store) {
         ${uniqueStaff.length ? `<div style="display:flex;align-items:flex-start;gap:5px;">
           <span style="${lblBase}padding-top:2px;">근&nbsp;무&nbsp;자</span>
           <span style="margin:2px 2px 0;font-size:11px;color:var(--text-muted);">:</span>
-          <div style="display:flex;flex-wrap:wrap;gap:3px;max-height:46px;overflow:hidden;">${staffBadges}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:3px;">${staffBadges}</div>
         </div>` : ''}
       </div>
     </div>
