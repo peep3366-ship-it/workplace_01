@@ -2704,7 +2704,7 @@ function buildSinglePopup(store) {
     }).map(w => w.name)
   );
   const uniqueStaff = [...new Set((store.weekly || []).map(w => w.name).filter(Boolean))];
-  const MAX = 8;
+  const MAX = 7;
   const staffBadges = (uniqueStaff.length > MAX
     ? [...uniqueStaff.slice(0, MAX), '+ ' + (uniqueStaff.length - MAX) + '명']
     : uniqueStaff
