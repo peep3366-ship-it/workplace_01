@@ -2678,10 +2678,7 @@ function getShortShiftText(store) {
 function buildSinglePopup(store) {
   const status = getStoreStatus(store);
   const activeShifts = getActiveShifts(store);
-  let statusLabel = status.label;
-  if (status.key === 'working' && getStoreShifts(store).length > 1 && activeShifts.length) {
-    statusLabel = activeShifts.map(sh => sh.label).join(' · ') + ' 근무중';
-  }
+  let statusLabel = status.key === 'working' ? '근무중' : status.label;
   const statusColors = {
     working:  { bg: '#E8F8EF', color: '#059142', dot: '#27AE60' },
     upcoming: { bg: '#FFF8E6', color: '#B77900', dot: '#F4A300' },
@@ -2735,7 +2732,7 @@ function buildSinglePopup(store) {
         ${uniqueStaff.length ? `<div style="display:flex;align-items:flex-start;gap:5px;">
           <span style="${lblBase}padding-top:2px;">근&nbsp;무&nbsp;자</span>
           <span style="margin:2px 2px 0;font-size:11px;color:var(--text-muted);">:</span>
-          <div style="display:flex;flex-wrap:wrap;gap:3px;">${staffBadges}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:3px;max-height:46px;overflow:hidden;">${staffBadges}</div>
         </div>` : ''}
       </div>
     </div>
