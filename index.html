@@ -2701,7 +2701,7 @@ function buildSinglePopup(store) {
     }).map(w => w.name)
   );
   const uniqueStaff = [...new Set((store.weekly || []).map(w => w.name).filter(Boolean))];
-  const MAX = 7;
+  const MAX = uniqueStaff.length === 8 ? 8 : 7;
   const shownStaff = uniqueStaff.slice(0, MAX);
   const extraCount = uniqueStaff.length - MAX;
   const staffBadges = shownStaff.map(n => {
