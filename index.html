@@ -3258,7 +3258,7 @@ function openDetail(id) {
       // 그룹마다 pi가 0부터 다시 시작해서 오전/오후 구성원의 tooltip id가 중복되던 문제 수정
       const safeGroupKey = String(groupKey || 'group').replace(/[^가-힣a-zA-Z0-9_-]/g, '_');
       const cardId = `wcard_${id}_${safeGroupKey}_${pi}`;
-      const tipId  = `wtip_${id}_${safeGroupKey}_${pi}`;
+      const timeId = `wtime_${id}_${safeGroupKey}_${pi}`;
       // 근무 요일 set
       const workDays = Object.keys(person.days).map(Number);
       const isWorkingNow = workDays.includes(todayDay) && (() => {
@@ -3320,9 +3320,9 @@ function openDetail(id) {
         const bg = hasWork ? (isOnLeave ? '#9AA0A6' : cc.border) : '#fff';
         const color = hasWork ? '#fff' : '#6b7280';
         const border = hasWork ? 'none' : '1px solid #e9ebef';
-        const ring = isToday ? 'box-shadow:0 0 0 2px rgba(20,22,26,.35);' : '';
+        const ring = isToday ? 'box-shadow:0 0 0 2px #000;' : '';
         const onclick = timeForDay
-          ? `onclick="(function(){var t=document.getElementById('${tipId}');t.textContent='${dl}: '+decodeURIComponent('${encodeURIComponent(timeForDay)}');t.style.opacity='1';setTimeout(function(){t.style.opacity='0'},2000);})()"` : '';
+          ? `onclick="(function(){var t=document.getElementById('${timeId}');t.textContent=decodeURIComponent('${encodeURIComponent(timeForDay.replace('~','–'))}');})()"` : '';
         return `<span ${onclick} style="width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border-radius:5px;font-size:10.5px;font-weight:700;background:${bg};color:${color};border:${border};${ring}cursor:${timeForDay?'pointer':'default'};user-select:none;transition:box-shadow .15s;" title="${timeForDay||''}">${dl}</span>`;
       }).join('');
       // 평일/주말 시간 구분 안내 라인
@@ -3333,7 +3333,7 @@ function openDetail(id) {
           </div>`
         : '';
       const card = `
-        <div style="border:1px solid ${cardBorder};border-radius:12px;padding:13px 14px;background:${cardBg};margin-bottom:6px;">
+        <div style="border:1px solid ${cardBorder};border-radius:12px;padding:13px 14px 11px;background:${cardBg};margin-bottom:6px;">
           <div style="display:flex;align-items:center;gap:9px;">
             <span style="font-size:15px;font-weight:${liveKey === 'working' ? 750 : 650};letter-spacing:-.01em;color:#14161a;">${nameStr}</span>
             ${leaderBadge}${leaveBadge}
@@ -3343,10 +3343,9 @@ function openDetail(id) {
           </div>
           <div style="display:flex;align-items:center;gap:9px;margin-top:9px;">
             <div style="display:flex;gap:3px;">${dayBtns}</div>
-            <span style="flex:1;text-align:right;font-size:13.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#14161a;">${todayTime ? todayTime.replace('~','–') : '-'}</span>
+            <span id="${timeId}" style="flex:1;text-align:right;font-size:13.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#14161a;">${todayTime ? todayTime.replace('~','–') : '-'}</span>
           </div>
           ${diffTimeNote}
-          <div id="${tipId}" style="font-size:11px;color:#555;opacity:0;transition:opacity .3s;height:14px;"></div>
         </div>`;
         return card;
       }).join('');
