@@ -69,7 +69,7 @@
 
   /* 기본값: 흰 배경 + 지도 라벨 색상 테두리/글씨 */
   .bottom-sheet #catFilter .cat-filter-btn[data-cat="전체"]    { color:#555 !important; }
-  .bottom-sheet #catFilter .cat-filter-btn[data-cat="주민센터"] { color:#F05A22 !important; }
+  .bottom-sheet #catFilter .cat-filter-btn[data-cat="주민센터"] { color:#2E86DE !important; }
   .bottom-sheet #catFilter .cat-filter-btn[data-cat="문화재단"] { color:#9B59B6 !important; }
   .bottom-sheet #catFilter .cat-filter-btn[data-cat="시설공단"] { color:#E91E8C !important; }
   .bottom-sheet #catFilter .cat-filter-btn[data-cat="유관기관"] { color:#27AE60 !important; }
@@ -79,7 +79,7 @@
     color:#fff !important;
   }
   .bottom-sheet #catFilter .cat-filter-btn[data-cat="전체"].active    { background:#555 !important;    border-color:#555 !important; }
-  .bottom-sheet #catFilter .cat-filter-btn[data-cat="주민센터"].active { background:#F05A22 !important; border-color:#F05A22 !important; }
+  .bottom-sheet #catFilter .cat-filter-btn[data-cat="주민센터"].active { background:#2E86DE !important; border-color:#2E86DE !important; }
   .bottom-sheet #catFilter .cat-filter-btn[data-cat="문화재단"].active { background:#9B59B6 !important; border-color:#9B59B6 !important; }
   .bottom-sheet #catFilter .cat-filter-btn[data-cat="시설공단"].active { background:#E91E8C !important; border-color:#E91E8C !important; }
   .bottom-sheet #catFilter .cat-filter-btn[data-cat="유관기관"].active { background:#27AE60 !important; border-color:#27AE60 !important; }
@@ -310,8 +310,8 @@
     /* 카테고리 색상 */
     --cat-gu: #F4A300;
     --cat-gu-bg: #FFF8E6;
-    --cat-dong: #F05A22;
-    --cat-dong-bg: #FFF0EB;
+    --cat-dong: #2E86DE;
+    --cat-dong-bg: #E7F1FC;
     --cat-culture: #9B59B6;
     --cat-culture-bg: #F5EEFB;
     --cat-gongdan: #E91E8C;
@@ -484,7 +484,7 @@ html, body {
 
 .cat-gu      { background: #F4A300; color: #fff; }
 
-.cat-dong    { background: #F05A22; color: #fff; }
+.cat-dong    { background: #2E86DE; color: #fff; }
 
 .cat-culture { background: #9B59B6; color: #fff; }
 
@@ -824,7 +824,7 @@ a.staff-tag:active { background: #E8E8E4; }
 
 .cat-filter-btn[data-cat="전체"].active    { background:#555;    border-color:#555; }
 
-.cat-filter-btn[data-cat="주민센터"].active { background:#F05A22; border-color:#F05A22; }
+.cat-filter-btn[data-cat="주민센터"].active { background:#2E86DE; border-color:#2E86DE; }
 
 .cat-filter-btn[data-cat="문화재단"].active { background:#9B59B6; border-color:#9B59B6; }
 
@@ -1531,7 +1531,7 @@ a.staff-tag:active { background: #E8E8E4; }
 /* 비활성 상태도 지도 라벨 색상과 같은 계열로 보이게 */
   .bottom-sheet .cat-filter-btn[data-cat="전체"]    { background:#F2F2F0 !important; color:#555 !important; }
 
-.bottom-sheet .cat-filter-btn[data-cat="주민센터"] { background:#FFF0EB !important; color:#F05A22 !important; }
+.bottom-sheet .cat-filter-btn[data-cat="주민센터"] { background:#E7F1FC !important; color:#2E86DE !important; }
 
 .bottom-sheet .cat-filter-btn[data-cat="문화재단"] { background:#F5EEFB !important; color:#9B59B6 !important; }
 
@@ -1543,7 +1543,7 @@ a.staff-tag:active { background: #E8E8E4; }
 
 .bottom-sheet .cat-filter-btn[data-cat="전체"].active    { background:#555 !important;    border-color:#555 !important; }
 
-.bottom-sheet .cat-filter-btn[data-cat="주민센터"].active { background:#F05A22 !important; border-color:#F05A22 !important; }
+.bottom-sheet .cat-filter-btn[data-cat="주민센터"].active { background:#2E86DE !important; border-color:#2E86DE !important; }
 
 .bottom-sheet .cat-filter-btn[data-cat="문화재단"].active { background:#9B59B6 !important; border-color:#9B59B6 !important; }
 
@@ -1845,7 +1845,7 @@ a.staff-tag:active { background: #E8E8E4; }
 
 /* 기존 라벨 배경색을 카테고리색으로 유지하도록 클래스별 보강 */
 .map-label .cat-dong,
-.map-label-wrap.cat-dong { background:#F05A22 !important; }
+.map-label-wrap.cat-dong { background:#2E86DE !important; }
 
 .map-label .cat-culture,
 .map-label-wrap.cat-culture { background:#9B59B6 !important; }
@@ -2237,9 +2237,15 @@ a.staff-tag:active { background: #E8E8E4; }
     border-color: #14161a;
     color: #fff;
   }
+  .sched-chip.toggle {
+    background: #14161a;
+    border-color: #14161a;
+    color: #fff;
+  }
   .sched-chip.toggle.active {
     background: #F05A22;
     border-color: #F05A22;
+    color: #fff;
   }
 }
 @media (min-width: 768px) {
@@ -2417,7 +2423,7 @@ a.staff-tag:active { background: #E8E8E4; }
 <script>
 /* ── 카테고리 정의 ── */
 const CAT = {
-  '주민센터': { cls: 'cat-dong',    color: '#F05A22', label: '주민센터' },
+  '주민센터': { cls: 'cat-dong',    color: '#2E86DE', label: '주민센터' },
   '문화재단': { cls: 'cat-culture', color: '#9B59B6', label: '문화재단' },
   '시설공단': { cls: 'cat-gongdan', color: '#E91E8C', label: '시설공단' },
   '유관기관': { cls: 'cat-lib',     color: '#27AE60', label: '유관기관' },
@@ -2432,7 +2438,7 @@ window.statusColors = {
   off:      { bg: '#F2F2F0', color: '#888',    dot: '#aaa'    },
 };
 // 색상 범례 확인용 (이미지 기준)
-// 구청=노랑(#F4A300), 주민센터=주황(#F05A22), 문화재단=보라(#9B59B6), 시설공단=핑크(#E91E8C), 유관기관=초록(#27AE60)
+// 구청=노랑(#F4A300), 주민센터=파랑(#2E86DE), 문화재단=보라(#9B59B6), 시설공단=핑크(#E91E8C), 유관기관=초록(#27AE60)
 
 /*
  * shifts 구조:
@@ -3571,7 +3577,7 @@ var _schedCat = '전체';
 var _schedTreeOpen = new Set();
 
 var CAT_COLORS = {
-  '주민센터': { bar: '#FDE8DF', border: '#F05A22', text: '#C94415' },
+  '주민센터': { bar: '#E7F1FC', border: '#2E86DE', text: '#1B5FA8' },
   '문화재단': { bar: '#EFE5F9', border: '#9B59B6', text: '#7D3C98' },
   '시설공단': { bar: '#FDE7F1', border: '#E91E8C', text: '#A80F60' },
   '유관기관': { bar: '#D5F5E3', border: '#27AE60', text: '#1E8449' },
@@ -3746,7 +3752,7 @@ function buildSchedCatTree() {
   var container = document.getElementById('schedCatFilter');
   if (!container) return;
   var order = ['주민센터', '문화재단', '시설공단', '유관기관'];
-  var catColorMap = { '주민센터':'#F05A22', '문화재단':'#9B59B6', '시설공단':'#E91E8C', '유관기관':'#27AE60' };
+  var catColorMap = { '주민센터':'#2E86DE', '문화재단':'#9B59B6', '시설공단':'#E91E8C', '유관기관':'#27AE60' };
   var total = stores.length;
 
   var html = '';
@@ -3815,11 +3821,13 @@ window.renderSchedMobileToolbar = renderSchedMobileToolbar;
 function buildSchedCatChipsMobile(container) {
   if (!container) return;
   var order = ['주민센터', '문화재단', '시설공단', '유관기관'];
-  var catColorMap = { '주민센터':'#F05A22', '문화재단':'#9B59B6', '시설공단':'#E91E8C', '유관기관':'#27AE60' };
+  var catColorMap = { '주민센터':'#2E86DE', '문화재단':'#9B59B6', '시설공단':'#E91E8C', '유관기관':'#27AE60' };
   var workingOnlyChk = document.getElementById('schedWorkingOnly');
   var workingOnly = workingOnlyChk && workingOnlyChk.checked;
 
   var html = '<span class="sched-chip' + (_schedCat === '전체' ? ' active' : '') + '" onclick="schedFilterCat(\'전체\')">전체</span>';
+  html += '<span class="sched-chip toggle' + (workingOnly ? ' active' : '') + '" onclick="schedToggleWorkingOnlyMobile()">'
+    + (workingOnly ? '✓ ' : '') + '현재근무중</span>';
   order.forEach(function(cat) {
     var list = stores.filter(function(s) { return s.cat === cat; });
     if (!list.length) return;
@@ -3829,7 +3837,6 @@ function buildSchedCatChipsMobile(container) {
       + '<span style="width:8px;height:8px;border-radius:50%;background:' + (isActiveCat ? '#fff' : color) + ';display:inline-block;flex-shrink:0;"></span>'
       + cat + '</span>';
   });
-  html += '<span class="sched-chip toggle' + (workingOnly ? ' active' : '') + '" onclick="schedToggleWorkingOnlyMobile()">근무중만</span>';
   container.innerHTML = html;
 }
 
